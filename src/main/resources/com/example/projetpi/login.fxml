@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="service.LoginController" stylesheets="@login.css">
+    <children>
+        <HBox>
+            <children>
+                <VBox alignment="CENTER" spacing="20.0" styleClass="left-pane" prefWidth="600">
+                    <children>
+                        <ImageView fitWidth="200" fitHeight="200" pickOnBounds="true" preserveRatio="true" />
+                        <Label text="banekti" styleClass="title" />
+                        <Label text="Elevate Your Banking Experience" styleClass="subtitle" />
+                        <Label text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." styleClass="description" wrapText="true" textAlignment="CENTER" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" spacing="20.0" styleClass="right-pane" prefWidth="400">
+                    <children>
+                        <Label text="Sign in to your account." styleClass="login-title" />
+                        <Label text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text..." styleClass="login-description" wrapText="true" textAlignment="CENTER" />
+                        <GridPane hgap="10" vgap="10" alignment="CENTER">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="100" />
+                                <ColumnConstraints minWidth="200" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="40" />
+                                <RowConstraints minHeight="40" />
+                                <RowConstraints minHeight="40" />
+                                <RowConstraints minHeight="40" />
+                                <RowConstraints minHeight="40" />
+                            </rowConstraints>
+                            <children>
+                                <Label text="E-mail:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <TextField fx:id="EmailField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="input-field" promptText="Placeholder"/>
+                                <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="input-field" promptText="************"/>
+                                <Label text="Forgot your password?" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="forgot-password" />
+                                <Button fx:id="signInButton" text="Sign In" onAction="#handleLoginButtonAction" styleClass="login-button" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>
