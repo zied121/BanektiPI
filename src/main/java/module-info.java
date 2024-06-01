@@ -13,12 +13,12 @@ module com.example.projetpi {
     requires com.almasb.fxgl.all;
     requires java.sql;
 
-    opens com.example.projetpi to javafx.fxml;
-    exports com.example.projetpi;
+    opens Main to javafx.fxml;
+    exports Main;
     exports entite;
     opens entite to javafx.fxml;
     exports util;
     opens util to javafx.fxml;
-    exports service;
-    opens service to javafx.fxml;
+    exports Controllers;
+    opens Controllers to javafx.fxml;
 }
