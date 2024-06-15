@@ -2,11 +2,8 @@ package Service;
 
 import entite.User;
 import entite.Compte;
-import entite.UserWithCompte;
 import util.DatabaseUtil;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +20,7 @@ public class UserService  {
                 userStatement.setInt(3, user.getAge());
                 userStatement.setString(4, user.getMdp());
                 userStatement.setInt(5, user.getCin());
-                userStatement.setString(6, user.getRole());
+                userStatement.setString(6, "client");
                 userStatement.setInt(7, 0); // nb_compte is initially 0
                 userStatement.executeUpdate();
 
@@ -37,7 +34,7 @@ public class UserService  {
 
 
     public void updateUser(User user) throws SQLException {
-        String query = "UPDATE user SET nom = ?, prenom = ?, age = ?, mdp = ?, CIN = ?, role = ?, nb_compte = ? WHERE id = ?";
+        String query = "UPDATE user SET nom = ?, prenom = ?, age = ?, mdp = ?, CIN = ? WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getNom());
@@ -45,9 +42,7 @@ public class UserService  {
             statement.setInt(3, user.getAge());
             statement.setString(4, user.getMdp());
             statement.setInt(5, user.getCin());
-            statement.setString(6, user.getRole());
-            statement.setInt(7, user.getNbCompte());
-            statement.setInt(8, user.getId());
+            statement.setInt(6, user.getId());
             statement.executeUpdate();
         }
     }
