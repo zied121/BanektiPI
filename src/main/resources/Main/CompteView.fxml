@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CompteController">
+    <children>
+        <TableView fx:id="compteTable">
+            <columns>
+                <TableColumn fx:id="compteIdColumn" text="Compte ID"/>
+                <TableColumn fx:id="typeColumn" text="Type"/>
+                <TableColumn fx:id="numColumn" text="Num"/>
+                <TableColumn fx:id="ribColumn" text="RIB"/>
+                <TableColumn fx:id="statutColumn" text="Statut"/>
+                <TableColumn fx:id="soldeColumn" text="Solde"/>
+                <TableColumn fx:id="deviseColumn" text="Devise"/>
+            </columns>
+        </TableView>
+        <TextField fx:id="compteIdField" promptText="Compte ID" disable="true"/>
+        <TextField fx:id="typeField" promptText="Type"/>
+        <TextField fx:id="numField" promptText="Num"/>
+        <TextField fx:id="ribField" promptText="RIB"/>
+        <TextField fx:id="statutField" promptText="Statut"/>
+        <TextField fx:id="soldeField" promptText="Solde"/>
+        <TextField fx:id="deviseField" promptText="Devise"/>
+        <HBox>
+            <Button text="Create Compte" onAction="#createCompte"/>
+            <Button text="Update Compte" onAction="#updateCompte"/>
+            <Button text="Delete Compte" onAction="#deleteCompte"/>
+            <Button text="Clear Fields" onAction="#clearCompteFields"/>
+        </HBox>
+    </children>
+</VBox>
