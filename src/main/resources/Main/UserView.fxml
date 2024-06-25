@@ -23,7 +23,7 @@
         <TextField fx:id="ageField" promptText="Age"/>
         <TextField fx:id="mdpField" promptText="Mot de passe"/>
         <TextField fx:id="cinField" promptText="CIN"/>
-
+        <TextField fx:id="roleField" promptText="Role"/>
         <HBox>
             <Button text="Create User" onAction="#createUser"/>
             <Button text="Update User" onAction="#updateUser"/>

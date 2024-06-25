@@ -1,7 +1,7 @@
 package Controllers;
 
 import entite.User;
-import entite.Compte;
+import Service.UserServiceInterface;
 import Service.UserService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,10 +54,9 @@ public class UserController {
     private TextField cinField;
     @FXML
     private TextField roleField;
-    @FXML
-    private TextField nbCompteField;
 
-    private UserService userService = new UserService();
+
+    private UserServiceInterface userService = new UserService();
 
     @FXML
     public void initialize() {
@@ -94,6 +93,7 @@ public class UserController {
             ageField.setText(String.valueOf(selectedUser.getAge()));
             mdpField.setText(selectedUser.getMdp());
             cinField.setText(String.valueOf(selectedUser.getCin()));
+            roleField.setText(selectedUser.getRole());
 
         }
     }
@@ -118,7 +118,7 @@ public class UserController {
             e.printStackTrace();
         }
     }
-@FXML
+    @FXML
     private void loadUsers() throws SQLException {
         List<User> users = userService.getAllUsers();
         userTable.getItems().setAll(users);
@@ -132,6 +132,7 @@ public class UserController {
         user.setAge(Integer.parseInt(ageField.getText()));
         user.setMdp(mdpField.getText());
         user.setCin(Integer.parseInt(cinField.getText()));
+        user.setRole(roleField.getText());
         userService.createUser(user);
         showAlert(AlertType.INFORMATION, "User Created", "User created successfully!");
         loadUsers();
@@ -146,7 +147,7 @@ public class UserController {
         user.setAge(Integer.parseInt(ageField.getText()));
         user.setMdp(mdpField.getText());
         user.setCin(Integer.parseInt(cinField.getText()));
-
+        user.setRole(roleField.getText());
         userService.updateUser(user);
         showAlert(AlertType.INFORMATION, "User Updated", "User updated successfully!");
         loadUsers();
@@ -168,6 +169,7 @@ public class UserController {
         ageField.clear();
         mdpField.clear();
         cinField.clear();
+        roleField.clear();
     }
 
     private void showAlert(AlertType alertType, String title, String message) {

@@ -2,7 +2,8 @@ package Controllers;
 
 import entite.Compte;
 import entite.User;
-import Service.UserService;
+import Service.CompteServiceInterface;
+import Service.CompteService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -49,7 +50,7 @@ public class CompteController {
     private TextField deviseField;
 
     private User selectedUser;
-    private UserService userService = new UserService();
+    private CompteServiceInterface compteService = new CompteService();
 
     public void setUser(User user) {
         this.selectedUser = user;
@@ -75,7 +76,7 @@ public class CompteController {
     }
 
     public void loadComptes(int userId) throws SQLException {
-        List<Compte> comptes = userService.getComptesByUserId(userId);
+        List<Compte> comptes = compteService.getComptesByUserId(userId);
         compteTable.getItems().setAll(comptes);
     }
 
@@ -102,7 +103,7 @@ public class CompteController {
         compte.setSolde(Float.parseFloat(soldeField.getText()));
         compte.setDevise(deviseField.getText());
         compte.setUserId(selectedUser.getId());
-        userService.createCompte(compte);
+        compteService.createCompte(compte);
         showAlert(AlertType.INFORMATION, "Compte Created", "Compte created successfully!");
         loadComptes(selectedUser.getId());
     }
@@ -117,7 +118,7 @@ public class CompteController {
         compte.setStatut(statutField.getText());
         compte.setSolde(Float.parseFloat(soldeField.getText()));
         compte.setDevise(deviseField.getText());
-        userService.updateCompte(compte);
+        compteService.updateCompte(compte);
         showAlert(AlertType.INFORMATION, "Compte Updated", "Compte updated successfully!");
         loadComptes(selectedUser.getId());
     }
@@ -125,7 +126,7 @@ public class CompteController {
     @FXML
     private void deleteCompte() throws SQLException {
         int compteId = Integer.parseInt(compteIdField.getText());
-        userService.deleteCompte(compteId, selectedUser.getId());
+        compteService.deleteCompte(compteId, selectedUser.getId());
         showAlert(AlertType.INFORMATION, "Compte Deleted", "Compte deleted successfully!");
         loadComptes(selectedUser.getId());
     }
