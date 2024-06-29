@@ -2,24 +2,24 @@ package Main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
-
         try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/Main/CreditOperation.fxml"));
-            AnchorPane rootLayout = loader.load();
+            // Load the FXML file for the admin interface
+            Parent root = FXMLLoader.load(getClass().getResource("/Main/user.fxml"));
 
-            Scene scene = new Scene(rootLayout);
+            // Set the scene
+            Scene scene = new Scene(root);
+
+            // Set the stage properties
+            primaryStage.setTitle("Bank App - Admin");
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Banekti");
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
