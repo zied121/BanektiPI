@@ -38,6 +38,8 @@ public class UserController {
     @FXML
     private TableColumn<User, String> roleColumn;
     @FXML
+    private TableColumn<User, String> emailColumn;
+    @FXML
     private TableColumn<User, Integer> nbCompteColumn;
 
     @FXML
@@ -54,7 +56,8 @@ public class UserController {
     private TextField cinField;
     @FXML
     private TextField roleField;
-
+    @FXML
+    private TextField EmailField ;
 
     private UserServiceInterface userService = new UserService();
 
@@ -66,6 +69,7 @@ public class UserController {
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
         mdpColumn.setCellValueFactory(new PropertyValueFactory<>("mdp"));
         cinColumn.setCellValueFactory(new PropertyValueFactory<>("cin"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
         nbCompteColumn.setCellValueFactory(new PropertyValueFactory<>("nbCompte"));
 
@@ -94,6 +98,7 @@ public class UserController {
             mdpField.setText(selectedUser.getMdp());
             cinField.setText(String.valueOf(selectedUser.getCin()));
             roleField.setText(selectedUser.getRole());
+            EmailField.setText(selectedUser.getEmail());
 
         }
     }
@@ -133,6 +138,7 @@ public class UserController {
         user.setMdp(mdpField.getText());
         user.setCin(Integer.parseInt(cinField.getText()));
         user.setRole(roleField.getText());
+        user.setEmail(EmailField.getText());
         userService.createUser(user);
         showAlert(AlertType.INFORMATION, "User Created", "User created successfully!");
         loadUsers();
@@ -148,6 +154,7 @@ public class UserController {
         user.setMdp(mdpField.getText());
         user.setCin(Integer.parseInt(cinField.getText()));
         user.setRole(roleField.getText());
+        user.setEmail(EmailField.getText());
         userService.updateUser(user);
         showAlert(AlertType.INFORMATION, "User Updated", "User updated successfully!");
         loadUsers();
@@ -170,6 +177,7 @@ public class UserController {
         mdpField.clear();
         cinField.clear();
         roleField.clear();
+        EmailField.clear();
     }
 
     private void showAlert(AlertType alertType, String title, String message) {

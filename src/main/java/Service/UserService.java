@@ -11,7 +11,7 @@ public class UserService implements UserServiceInterface {
     @Override
     public void createUser(User user) throws SQLException {
         try (Connection connection = DatabaseUtil.getConnection()) {
-            String userQuery = "INSERT INTO user (nom, prenom, age, mdp, CIN, role, nb_compte) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO user (nom, prenom, age, mdp, CIN, role, nb_compte,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement userStatement = connection.prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS)) {
                 userStatement.setString(1, user.getNom());
                 userStatement.setString(2, user.getPrenom());
@@ -20,6 +20,7 @@ public class UserService implements UserServiceInterface {
                 userStatement.setInt(5, user.getCin());
                 userStatement.setString(6, user.getRole());
                 userStatement.setInt(7, 0); // nb_compte is initially 0
+                userStatement.setString(8, user.getEmail());
                 userStatement.executeUpdate();
 
                 ResultSet rs = userStatement.getGeneratedKeys();
@@ -32,7 +33,7 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public void updateUser(User user) throws SQLException {
-        String query = "UPDATE user SET nom = ?, prenom = ?, age = ?, mdp = ?, CIN = ?, role = ? WHERE id = ?";
+        String query = "UPDATE user SET nom = ?, prenom = ?, age = ?, mdp = ?, CIN = ?, role = ? ,email= ?  WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getNom());
@@ -41,7 +42,9 @@ public class UserService implements UserServiceInterface {
             statement.setString(4, user.getMdp());
             statement.setInt(5, user.getCin());
             statement.setString(6, user.getRole());
-            statement.setInt(7, user.getId());
+            statement.setString(7, user.getEmail());
+            statement.setInt(8, user.getId());
+
             statement.executeUpdate();
         }
     }
@@ -72,6 +75,7 @@ public class UserService implements UserServiceInterface {
                 user.setAge(resultSet.getInt("age"));
                 user.setMdp(resultSet.getString("mdp"));
                 user.setCin(resultSet.getInt("CIN"));
+                user.setEmail(resultSet.getString("email"));
                 user.setRole(resultSet.getString("role"));
                 user.setNbCompte(resultSet.getInt("nb_compte"));
                 users.add(user);

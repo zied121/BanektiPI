@@ -14,6 +14,7 @@
                 <TableColumn fx:id="mdpColumn" text="Mot de passe"/>
                 <TableColumn fx:id="cinColumn" text="CIN"/>
                 <TableColumn fx:id="roleColumn" text="Role"/>
+                <TableColumn fx:id="emailColumn" text="email"/>
                 <TableColumn fx:id="nbCompteColumn" text="Nombre de comptes"/>
             </columns>
         </TableView>
@@ -23,6 +24,7 @@
         <TextField fx:id="ageField" promptText="Age"/>
         <TextField fx:id="mdpField" promptText="Mot de passe"/>
         <TextField fx:id="cinField" promptText="CIN"/>
+        <TextField fx:id="EmailField" promptText="email"/>
         <TextField fx:id="roleField" promptText="Role"/>
         <HBox>
             <Button text="Create User" onAction="#createUser"/>
