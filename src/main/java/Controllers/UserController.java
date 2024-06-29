@@ -1,138 +1,127 @@
 package Controllers;
 
-import entite.User;
-import entite.UserWithCompte;
-import Service.UserService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import entite.Credit;
+import Service.CreditService;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import util.DatabaseConnection;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Date;
-import java.util.List;
 
-public class UserController {
-    @FXML
-    private TableView<UserWithCompte> userTable;
-    @FXML
-    private TableColumn<UserWithCompte, Integer> userIdColumn;
-    @FXML
-    private TableColumn<UserWithCompte, String> nomColumn;
-    @FXML
-    private TableColumn<UserWithCompte, String> prenomColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Integer> ageColumn;
-    @FXML
-    private TableColumn<UserWithCompte, String> mdpColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Integer> cinColumn;
-    @FXML
-    private TableColumn<UserWithCompte, String> roleColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Integer> nbCompteColumn;
-    @FXML
-    private TableColumn<UserWithCompte, String> typeColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Integer> numColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Integer> ribColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Timestamp> dateOuvertureColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Date> dateValiditeColumn;
-    @FXML
-    private TableColumn<UserWithCompte, String> statutColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Float> soldeColumn;
-    @FXML
-    private TableColumn<UserWithCompte, String> deviseColumn;
+public class userController {
 
     @FXML
-    private TextField userIdField;
-    @FXML
-    private TextField nomField;
-    @FXML
-    private TextField prenomField;
-    @FXML
-    private TextField ageField;
-    @FXML
-    private TextField mdpField;
-    @FXML
-    private TextField cinField;
-    @FXML
-    private TextField roleField;
-    @FXML
-    private TextField nbCompteField;
-
-    private UserService userService = new UserService();
+    private TextField idCompteField;
 
     @FXML
-    public void initialize() {
-        userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        prenomColumn.setCellValueFactory(new PropertyValueFactory<>("prenom"));
-        ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
-        mdpColumn.setCellValueFactory(new PropertyValueFactory<>("mdp"));
-        cinColumn.setCellValueFactory(new PropertyValueFactory<>("cin"));
-        roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
-        nbCompteColumn.setCellValueFactory(new PropertyValueFactory<>("nbCompte"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        numColumn.setCellValueFactory(new PropertyValueFactory<>("num"));
-        ribColumn.setCellValueFactory(new PropertyValueFactory<>("rib"));
-        dateOuvertureColumn.setCellValueFactory(new PropertyValueFactory<>("dateOuverture"));
-        dateValiditeColumn.setCellValueFactory(new PropertyValueFactory<>("dateValidite"));
-        statutColumn.setCellValueFactory(new PropertyValueFactory<>("statut"));
-        soldeColumn.setCellValueFactory(new PropertyValueFactory<>("solde"));
-        deviseColumn.setCellValueFactory(new PropertyValueFactory<>("devise"));
+    private ComboBox<String> typeCreditCombo;
+
+    @FXML
+    private TextField montantField;
+
+    @FXML
+    private ComboBox<String> statusCombo;
+
+    @FXML
+    private TextField documentField;
+
+    @FXML
+    private TextField echeancierField;
+
+    private CreditService creditService = new CreditService();
+
+    @FXML
+    public void handleValidate(ActionEvent actionEvent) {
+        // Validate inputs
+        String idCompte = idCompteField.getText();
+        String typeCredit = typeCreditCombo.getValue();
+        String montant = montantField.getText();
+//        String statut = statusCombo.getValue();
+        String document = documentField.getText();
+        String echeancier = echeancierField.getText();
+
+        if (idCompte.isEmpty() || typeCredit == null || montant.isEmpty()  || document.isEmpty() || echeancier.isEmpty()) {
+            showAlert("Validation Error", "Please fill in all fields.");
+            return;
+        }
 
         try {
-            loadUsersWithCompte();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            double amount = Double.parseDouble(montant);
+            // Create a new Credit object
+            Credit credit = new Credit();
+            credit.setIdCompte(Integer.parseInt(idCompte));
+            credit.setTypeCredit(typeCredit);
+            credit.setMontant(amount);
+//            credit.setStatus(statut);
+            credit.setDocument(document);
+            credit.setEcheancier(echeancier);
+
+            // Save credit using CreditService
+            creditService.saveCredit(credit);
+
+            showAlert("Success", "Credit validated successfully!");
+
+        } catch (NumberFormatException e) {
+            showAlert("Validation Error", "Montant must be a valid number.");
         }
     }
-    @FXML
-    private void loadUsersWithCompte() throws SQLException {
-        List<UserWithCompte> usersWithCompte = userService.getAllUsersWithCompte();
-        userTable.getItems().setAll(usersWithCompte);
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
+    private static final String UPLOAD_DIR = "uploads/";
 
     @FXML
-    private void createUser() throws SQLException {
-        User user = new User();
-        user.setNom(nomField.getText());
-        user.setPrenom(prenomField.getText());
-        user.setAge(Integer.parseInt(ageField.getText()));
-        user.setMdp(mdpField.getText());
-        user.setCin(Integer.parseInt(cinField.getText()));
-        user.setRole(roleField.getText());
-        user.setNbCompte(Integer.parseInt(nbCompteField.getText()));
-        userService.createUser(user);
-        loadUsersWithCompte();
+    public void handleUpload(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        if (selectedFile != null) {
+            try (Connection connection = DatabaseConnection.getInstance().getConnection();
+                 FileInputStream inputStream = new FileInputStream(selectedFile)) {
+                String query = "UPDATE credit SET document = ? WHERE id_compte = ?";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setBinaryStream(1, inputStream, (int) selectedFile.length());
+                statement.setString(2, idCompteField.getText());
+
+                int rowsUpdated = statement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "PDF uploaded successfully.");
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to upload PDF.");
+                }
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while uploading the PDF.");
+            }
+        }
     }
 
-    @FXML
-    private void updateUser() throws SQLException {
-        User user = new User();
-        user.setId(Integer.parseInt(userIdField.getText()));
-        user.setNom(nomField.getText());
-        user.setPrenom(prenomField.getText());
-        user.setAge(Integer.parseInt(ageField.getText()));
-        user.setMdp(mdpField.getText());
-        user.setCin(Integer.parseInt(cinField.getText()));
-        user.setRole(roleField.getText());
-        user.setNbCompte(Integer.parseInt(nbCompteField.getText()));
-        userService.updateUser(user);
-        loadUsersWithCompte();
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
-    @FXML
-    private void deleteUser() throws SQLException {
-        int userId = Integer.parseInt(userIdField.getText());
-        userService.deleteUser(userId);
-        loadUsersWithCompte();
-    }
 }
