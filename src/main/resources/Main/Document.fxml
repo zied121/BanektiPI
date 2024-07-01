@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Demandecontroller">
+    <children>
+        <TableView fx:id="demandeTable" onMouseClicked="#getSelected">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="50">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="id" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="typeColumn"
+                             text="Type" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="type" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="statutColumn" text="Statut" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="statut" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="description" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="userIdColumn" text="User ID" prefWidth="80">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="id_user" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="dateColumn" text="Date" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="date" />
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+
+        <TextField fx:id="idField" promptText="ID" disable="true"/>
+        <TextField fx:id="typeField" promptText="Type"/>
+        <TextField fx:id="statutField" promptText="Statut"/>
+        <TextField fx:id="descriptionField" promptText="Description"/>
+        <TextField fx:id="userIdField" promptText="User ID"/>
+        <TextField fx:id="dateField" promptText="Date (YYYY-MM-DD)"/>
+
+        <Button fx:id="btnisert" text="Create Demande" onAction="#hundleButtonAction"/>
+        <Button text="Update Demande" onAction="#edit"/>
+        <Button  fx:id="bttnsupp"  text="Delete Demande" onAction="#hundleButtonAction"/>
+        <Button text="Refresh" onAction="#loadDemandes"/>
+    </children>
+</VBox>
