@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chart Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
+</head>
+<body>
+<canvas id="myChart" width="400" height="400"></canvas>
+
+<script>
+    // Define function to display chart
+    function displayChart() {
+        var jsonData = JavaApp.getJsonData(); // Access Java data
+        var data = JSON.parse(jsonData); // Parse JSON string to object
+
+        // Extract dates and adjusted close prices for chart data
+        var dates = Object.keys(data["Weekly Adjusted Time Series"]).reverse();
+        var adjustedClosePrices = dates.map(function(date) {
+            return parseFloat(data["Weekly Adjusted Time Series"][date]["5. adjusted close"]);
+        }).reverse();
+
+        // Example chart with Chart.js
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Weekly Adjusted Closing Prices',
+                    data: adjustedClosePrices,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: false
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    // Call displayChart function when window is loaded
+    window.onload = function() {
+        displayChart();
+    };
+</script>
+</body>
+</html>

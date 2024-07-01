@@ -1,0 +1,24 @@
+.sidebar {
+    -fx-background-color: #2c3e50;
+    -fx-padding: 10;
+}
+
+.navButton {
+    -fx-background-color: #34495e;
+    -fx-text-fill: white;
+    -fx-pref-width: 180;
+}
+
+.navButton:hover {
+    -fx-background-color: #3d566e;
+}
+
+.header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+#creditListView {
+    -fx-pref-height: 400;
+    -fx-pref-width: 550;
+}

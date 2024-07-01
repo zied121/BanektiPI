@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<?import java.net.URL?>
+
+<?import javafx.scene.control.ListView?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.adminController">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+
+    <HBox spacing="0" prefHeight="600.0" prefWidth="800.0">
+        <!-- Sidebar -->
+        <VBox spacing="10" alignment="TOP_LEFT" prefWidth="200.0" styleClass="sidebar">
+            <ImageView fitWidth="150.0" fitHeight="100.0">
+                <Image url="@logo.png" />
+            </ImageView>
+            <VBox spacing="5">
+                <Button text="Home" styleClass="navButton"/>
+                <Button text="Users" styleClass="navButton"/>
+                <Button text="Credits" styleClass="navButton"/>
+                <Button text="Assurance" styleClass="navButton"/>
+                <Button text="Operation" styleClass="navButton"/>
+                <Button text="Create Account" styleClass="navButton"/>
+                <Button text="Settings" styleClass="navButton"/>
+            </VBox>
+        </VBox>
+
+        <!-- Main Content -->
+        <AnchorPane prefWidth="600.0">
+            <VBox spacing="10" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0">
+                <Label text="Consult Credit Operation" styleClass="header"/>
+                <VBox spacing="10" alignment="CENTER">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+                    <TextField fx:id="idCompteField" promptText="Account ID" />
+                    <ComboBox fx:id="typeCreditCombo" promptText="Type of Credit" disable="true"/>
+                    <TextField fx:id="montantField" promptText="Amount" disable="true"/>
+                    <ComboBox fx:id="statusCombo" promptText="Status">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Welcome to your agency"/>
+                                <String fx:value="refused"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                    <TextField fx:id="documentField" promptText="Document" disable="true"/>
+                    <Button text="Download Selected File" onAction="#handleDownloadDocument"/>
+
+                    <TextField fx:id="echeancierField" promptText="Schedule" disable="true"/>
+                    <Button text="Check account" onAction="#handleCheckAccount" styleClass="checkButton"/>
+                    <Button text="Update Status" onAction="#handleValidate" styleClass="validateButton"/>
+                </VBox>
+            </VBox>
+        </AnchorPane>
+    </HBox>
+</AnchorPane>
