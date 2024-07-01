@@ -1,51 +1,77 @@
 package entite;
 
 public class User {
-    private String id;
-    private String username;
-    private String dateCreation;
-    private String email;
-
-    // Constructors
-    public User() {}
-
-    public User(String id, String username, String dateCreation, String email) {
-        this.id = id;
-        this.username = username;
-        this.dateCreation = dateCreation;
-        this.email = email;
-    }
+    private int id;
+    private String nom;
+    private String prenom;
+    private int age;
+    private String mdp;
+    private int cin;
+    private String role;
+    private int nbCompte;
 
     // Getters and Setters
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNom() {
+        return nom;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
-    public String getDateCreation() {
-        return dateCreation;
+    public String getPrenom() {
+        return prenom;
     }
 
-    public void setDateCreation(String dateCreation) {
-        this.dateCreation = dateCreation;
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 
-    public String getEmail() {
-        return email;
+    public int getAge() {
+        return age;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getMdp() {
+        return mdp;
+    }
+
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
+    }
+
+    public int getCin() {
+        return cin;
+    }
+
+    public void setCin(int cin) {
+        this.cin = cin;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public int getNbCompte() {
+        return nbCompte;
+    }
+
+    public void setNbCompte(int nbCompte) {
+        this.nbCompte = nbCompte;
     }
 }
