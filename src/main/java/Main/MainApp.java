@@ -6,13 +6,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
         try {
             // Load the FXML file for the admin interface
-            Parent root = FXMLLoader.load(getClass().getResource("/Main/user.fxml"));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Main/user.fxml")));
 
             // Set the scene
             Scene scene = new Scene(root);
