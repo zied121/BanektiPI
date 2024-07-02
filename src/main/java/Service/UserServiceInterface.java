@@ -10,4 +10,5 @@ public interface UserServiceInterface {
     void updateUser(User user) throws SQLException;
     void deleteUser(int userId) throws SQLException;
     List<User> getAllUsers() throws SQLException;
+    void sendCredentials(User user);
 }

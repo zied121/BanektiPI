@@ -2,7 +2,9 @@ package Service;
 
 import entite.User;
 import util.DatabaseUtil;
-
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.util.Properties;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,5 +84,37 @@ public class UserService implements UserServiceInterface {
             }
         }
         return users;
+    }
+    @Override
+    public void sendCredentials(User user) {
+        // Email configuration
+        String to = user.getEmail();
+        String from = "zied.s@convegen.io";
+        String host = "smtp.gmail.com";
+
+        Properties properties = System.getProperties();
+        properties.setProperty("mail.smtp.host", host);
+        properties.setProperty("mail.smtp.port", "587"); // replace with your SMTP port
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("zied.s@convergen.io", "yxdnryxspyycpvjd"); // replace with your credentials
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.setSubject("Your Access Credentials");
+            message.setText("CIN: " + user.getCin() + "\nPassword: " + user.getMdp());
+
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
     }
 }

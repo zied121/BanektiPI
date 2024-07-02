@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.OperationController">
+    <children>
+        <HBox spacing="10">
+            <children>
+                <Label text="Type Operation:"/>
+                <TextField fx:id="typeOpField"/>
+                <Label text="Montant:"/>
+                <TextField fx:id="montantField"/>
+                <Label text="Compte ID:"/>
+                <TextField fx:id="idCompteField"/>
+                <Label text="Date Operation:"/>
+                <DatePicker fx:id="dateOpPicker"/>
+                <Label text="Compte Destination ID:"/>
+                <TextField fx:id="idCompteDestinationField"/>
+                <Button text="Add Operation" onAction="#handleAddOperation"/>
+                <Button text="View Operations" onAction="#handleViewOperations"/>
+            </children>
+        </HBox>
+        <TableView fx:id="operationTable">
+            <columns>
+                <TableColumn fx:id="typeOpColumn" text="Type Operation"/>
+                <TableColumn fx:id="montantColumn" text="Montant"/>
+                <TableColumn fx:id="idCompteColumn" text="Compte ID"/>
+                <TableColumn fx:id="idCompteDestinationColumn" text="Compte Destination ID"/>
+                <TableColumn fx:id="dateOpColumn" text="Date Operation"/>
+            </columns>
+        </TableView>
+    </children>
+</VBox>

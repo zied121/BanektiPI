@@ -187,4 +187,16 @@ public class UserController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    @FXML
+    private void sendCredentials() {
+        User selectedUser = userTable.getSelectionModel().getSelectedItem();
+        if (selectedUser != null) {
+            userService.sendCredentials(selectedUser);
+            showAlert(AlertType.INFORMATION, "Email sent", "Email has been sent  successfully!");
+        } else {
+            // Handle case where no user is selected
+            showAlert(AlertType.INFORMATION, "Select  User", "please Click on user u want to sent him the email");
+            System.out.println("No user selected");
+        }
+    }
 }
