@@ -3,19 +3,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.image.Image?>
+<?import java.net.URL?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<?import java.net.URL?>
-
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.UserController">
     <stylesheets>
         <URL value="@UserView.css" />
@@ -40,7 +32,7 @@
         <!-- Main Content -->
         <AnchorPane prefWidth="600.0">
             <VBox spacing="10" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0">
-                <Label text="user management" styleClass="header"/>
+                <Label text="User Management" styleClass="header"/>
                 <VBox spacing="10" alignment="CENTER">
                     <padding>
                         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -54,19 +46,58 @@
                             <TableColumn fx:id="mdpColumn" text="Mot de passe"/>
                             <TableColumn fx:id="cinColumn" text="CIN"/>
                             <TableColumn fx:id="roleColumn" text="Role"/>
-                            <TableColumn fx:id="emailColumn" text="email"/>
+                            <TableColumn fx:id="emailColumn" text="Email"/>
                             <TableColumn fx:id="nbCompteColumn" text="Nombre de comptes"/>
                         </columns>
                     </TableView>
-                    <TextField fx:id="userIdField" promptText="User ID" disable="true"/>
-                    <TextField fx:id="nomField" promptText="Nom"/>
-                    <TextField fx:id="prenomField" promptText="Prenom"/>
-                    <TextField fx:id="ageField" promptText="Age"/>
-                    <TextField fx:id="mdpField" promptText="Mot de passe"/>
-                    <TextField fx:id="cinField" promptText="CIN"/>
-                    <TextField fx:id="EmailField" promptText="email"/>
-                    <TextField fx:id="roleField" promptText="Role"/>
-                    <HBox>
+
+                    <VBox spacing="5" alignment="CENTER_LEFT">
+                        <HBox spacing="10">
+                            <Label text="User ID"/>
+                            <TextField fx:id="userIdField" promptText="User ID" disable="true"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Nom"/>
+                            <TextField fx:id="nomField" promptText="Nom"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Prenom"/>
+                            <TextField fx:id="prenomField" promptText="Prenom"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Birthdate"/>
+                            <DatePicker fx:id="birthdatePicker" promptText="Birthdate"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Age"/>
+                            <TextField fx:id="ageField" promptText="Age" disable="true"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Mot de passe"/>
+                            <TextField fx:id="mdpField" promptText="Mot de passe"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="CIN"/>
+                            <TextField fx:id="cinField" promptText="CIN"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Email"/>
+                            <TextField fx:id="EmailField" promptText="Email"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Role"/>
+                            <ComboBox fx:id="roleComboBox">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="client"/>
+                                        <String fx:value="admin"/>
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                        </HBox>
+                    </VBox>
+
+                    <HBox spacing="10">
                         <Button text="Create User" onAction="#createUser"/>
                         <Button text="Update User" onAction="#updateUser"/>
                         <Button text="Delete User" onAction="#deleteUser"/>

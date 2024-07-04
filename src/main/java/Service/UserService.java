@@ -59,6 +59,12 @@ public class UserService implements UserServiceInterface {
                 userStatement.setInt(1, userId);
                 userStatement.executeUpdate();
             }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1451) { // MySQL error code for foreign key constraint violation
+                throw new SQLException("Cannot delete user because they have associated accounts.");
+            } else {
+                throw e;
+            }
         }
     }
 

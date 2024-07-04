@@ -15,10 +15,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class UserController {
     @FXML
@@ -55,9 +60,11 @@ public class UserController {
     @FXML
     private TextField cinField;
     @FXML
-    private TextField roleField;
+    private TextField EmailField;
     @FXML
-    private TextField EmailField ;
+    private ComboBox<String> roleComboBox;
+    @FXML
+    private DatePicker birthdatePicker;
 
     private UserServiceInterface userService = new UserService();
 
@@ -81,10 +88,19 @@ public class UserController {
             }
         });
 
+        birthdatePicker.valueProperty().addListener((observable, oldValue, newValue) -> calculateAndSetAge(newValue));
+
         try {
             loadUsers();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void calculateAndSetAge(LocalDate birthdate) {
+        if (birthdate != null) {
+            int age = Period.between(birthdate, LocalDate.now()).getYears();
+            ageField.setText(String.valueOf(age));
         }
     }
 
@@ -97,9 +113,9 @@ public class UserController {
             ageField.setText(String.valueOf(selectedUser.getAge()));
             mdpField.setText(selectedUser.getMdp());
             cinField.setText(String.valueOf(selectedUser.getCin()));
-            roleField.setText(selectedUser.getRole());
+            roleComboBox.setValue(selectedUser.getRole());
             EmailField.setText(selectedUser.getEmail());
-
+            birthdatePicker.setValue(null);  // Reset DatePicker, or set to a saved value if available
         }
     }
 
@@ -123,6 +139,7 @@ public class UserController {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void loadUsers() throws SQLException {
         List<User> users = userService.getAllUsers();
@@ -131,13 +148,22 @@ public class UserController {
 
     @FXML
     private void createUser() throws SQLException {
+        if (!isCINValid(cinField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid CIN", "CIN must be exactly 8 digits.");
+            return;
+        }
+        if (!isEmailValid(EmailField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid Email", "Please enter a valid email address.");
+            return;
+        }
+
         User user = new User();
         user.setNom(nomField.getText());
         user.setPrenom(prenomField.getText());
         user.setAge(Integer.parseInt(ageField.getText()));
         user.setMdp(mdpField.getText());
         user.setCin(Integer.parseInt(cinField.getText()));
-        user.setRole(roleField.getText());
+        user.setRole(roleComboBox.getValue());
         user.setEmail(EmailField.getText());
         userService.createUser(user);
         showAlert(AlertType.INFORMATION, "User Created", "User created successfully!");
@@ -146,6 +172,15 @@ public class UserController {
 
     @FXML
     private void updateUser() throws SQLException {
+        if (!isCINValid(cinField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid CIN", "CIN must be exactly 8 digits.");
+            return;
+        }
+        if (!isEmailValid(EmailField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid Email", "Please enter a valid email address.");
+            return;
+        }
+
         User user = new User();
         user.setId(Integer.parseInt(userIdField.getText()));
         user.setNom(nomField.getText());
@@ -153,7 +188,7 @@ public class UserController {
         user.setAge(Integer.parseInt(ageField.getText()));
         user.setMdp(mdpField.getText());
         user.setCin(Integer.parseInt(cinField.getText()));
-        user.setRole(roleField.getText());
+        user.setRole(roleComboBox.getValue());
         user.setEmail(EmailField.getText());
         userService.updateUser(user);
         showAlert(AlertType.INFORMATION, "User Updated", "User updated successfully!");
@@ -162,10 +197,18 @@ public class UserController {
 
     @FXML
     private void deleteUser() throws SQLException {
-        int userId = Integer.parseInt(userIdField.getText());
-        userService.deleteUser(userId);
-        showAlert(AlertType.INFORMATION, "User Deleted", "User deleted successfully!");
-        loadUsers();
+        try {
+            int userId = Integer.parseInt(userIdField.getText());
+            userService.deleteUser(userId);
+            showAlert(AlertType.INFORMATION, "User Deleted", "User deleted successfully!");
+            loadUsers();
+        } catch (SQLException e) {
+            if (e.getMessage().contains("Cannot delete user because they have associated accounts")) {
+                showAlert(AlertType.ERROR, "Delete Error", "Cannot delete user because they have associated accounts.");
+            } else {
+                showAlert(AlertType.ERROR, "Error", "An error occurred: " + e.getMessage());
+            }
+        }
     }
 
     @FXML
@@ -176,8 +219,9 @@ public class UserController {
         ageField.clear();
         mdpField.clear();
         cinField.clear();
-        roleField.clear();
+        roleComboBox.setValue(null);
         EmailField.clear();
+        birthdatePicker.setValue(null);
     }
 
     private void showAlert(AlertType alertType, String title, String message) {
@@ -187,16 +231,25 @@ public class UserController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    private boolean isCINValid(String cin) {
+        return cin != null && cin.matches("\\d{8}");
+    }
+
+    private boolean isEmailValid(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return email != null && pattern.matcher(email).matches();
+    }
+
     @FXML
     private void sendCredentials() {
         User selectedUser = userTable.getSelectionModel().getSelectedItem();
         if (selectedUser != null) {
             userService.sendCredentials(selectedUser);
-            showAlert(AlertType.INFORMATION, "Email sent", "Email has been sent  successfully!");
+            showAlert(AlertType.INFORMATION, "Email sent", "Email has been sent successfully!");
         } else {
-            // Handle case where no user is selected
-            showAlert(AlertType.INFORMATION, "Select  User", "please Click on user u want to sent him the email");
-            System.out.println("No user selected");
+            showAlert(AlertType.INFORMATION, "Select User", "Please click on the user you want to send the email to.");
         }
     }
 }
