@@ -11,4 +11,5 @@ public interface UserServiceInterface {
     void deleteUser(int userId) throws SQLException;
     List<User> getAllUsers() throws SQLException;
     void sendCredentials(User user);
+    boolean isCINExists(int cin) throws SQLException;
 }

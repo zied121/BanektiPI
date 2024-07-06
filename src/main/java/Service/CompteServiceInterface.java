@@ -10,4 +10,5 @@ public interface CompteServiceInterface {
     void createCompte(Compte compte) throws SQLException;
     void updateCompte(Compte compte) throws SQLException;
     void deleteCompte(int compteId, int userId) throws SQLException;
+    boolean hasCourantAccount(int userId) throws SQLException;
 }

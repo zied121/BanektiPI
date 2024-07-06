@@ -5,11 +5,8 @@ import entite.User;
 import Service.CompteServiceInterface;
 import Service.CompteService;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 
@@ -37,13 +34,13 @@ public class CompteController {
     @FXML
     private TextField compteIdField;
     @FXML
-    private TextField typeField;
+    private ComboBox<String> typeField;
     @FXML
     private TextField numField;
     @FXML
     private TextField ribField;
     @FXML
-    private TextField statutField;
+    private ComboBox<String> statutField;
     @FXML
     private TextField soldeField;
     @FXML
@@ -67,6 +64,9 @@ public class CompteController {
         deviseColumn.setCellValueFactory(new PropertyValueFactory<>("devise"));
 
         compteTable.setOnMouseClicked(this::handleMouseClick);
+
+        typeField.getItems().addAll("Courant", "Épargne");
+        statutField.getItems().addAll("Active", "Inactive");
     }
 
     private void handleMouseClick(MouseEvent event) {
@@ -84,10 +84,10 @@ public class CompteController {
         if (compteTable.getSelectionModel().getSelectedItem() != null) {
             Compte selectedCompte = compteTable.getSelectionModel().getSelectedItem();
             compteIdField.setText(String.valueOf(selectedCompte.getId()));
-            typeField.setText(selectedCompte.getType());
+            typeField.setValue(selectedCompte.getType());
             numField.setText(String.valueOf(selectedCompte.getNum()));
             ribField.setText(String.valueOf(selectedCompte.getRib()));
-            statutField.setText(selectedCompte.getStatut());
+            statutField.setValue(selectedCompte.getStatut());
             soldeField.setText(String.valueOf(selectedCompte.getSolde()));
             deviseField.setText(selectedCompte.getDevise());
         }
@@ -95,11 +95,19 @@ public class CompteController {
 
     @FXML
     private void createCompte() throws SQLException {
+        if (!isNumValid(numField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid Number", "Phone number must be exactly 8 digits.");
+            return;
+        }
+        if ("Courant".equalsIgnoreCase(typeField.getValue()) && compteService.hasCourantAccount(selectedUser.getId())) {
+            showAlert(AlertType.ERROR, "Duplicate Account Type", "User can only have one 'Courant' account.");
+            return;
+        }
         Compte compte = new Compte();
-        compte.setType(typeField.getText());
+        compte.setType(typeField.getValue());
         compte.setNum(Integer.parseInt(numField.getText()));
         compte.setRib(Long.parseLong(ribField.getText()));
-        compte.setStatut(statutField.getText());
+        compte.setStatut(statutField.getValue());
         compte.setSolde(Float.parseFloat(soldeField.getText()));
         compte.setDevise(deviseField.getText());
         compte.setUserId(selectedUser.getId());
@@ -110,12 +118,16 @@ public class CompteController {
 
     @FXML
     private void updateCompte() throws SQLException {
+        if (!isNumValid(numField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid Number", "Phone number must be exactly 8 digits.");
+            return;
+        }
         Compte compte = new Compte();
         compte.setId(Integer.parseInt(compteIdField.getText()));
-        compte.setType(typeField.getText());
+        compte.setType(typeField.getValue());
         compte.setNum(Integer.parseInt(numField.getText()));
         compte.setRib(Long.parseLong(ribField.getText()));
-        compte.setStatut(statutField.getText());
+        compte.setStatut(statutField.getValue());
         compte.setSolde(Float.parseFloat(soldeField.getText()));
         compte.setDevise(deviseField.getText());
         compteService.updateCompte(compte);
@@ -134,15 +146,19 @@ public class CompteController {
     @FXML
     private void clearCompteFields() {
         compteIdField.clear();
-        typeField.clear();
+        typeField.setValue(null);
         numField.clear();
         ribField.clear();
-        statutField.clear();
+        statutField.setValue(null);
         soldeField.clear();
         deviseField.clear();
     }
 
-    private void showAlert(AlertType alertType, String title, String message) {
+    private boolean isNumValid(String num) {
+        return num.matches("\\d{8}");
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);

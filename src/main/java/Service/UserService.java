@@ -32,6 +32,20 @@ public class UserService implements UserServiceInterface {
             }
         }
     }
+    @Override
+
+    public boolean isCINExists(int cin) throws SQLException {
+        String query = "SELECT COUNT(*) FROM user WHERE CIN = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, cin);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
 
     @Override
     public void updateUser(User user) throws SQLException {

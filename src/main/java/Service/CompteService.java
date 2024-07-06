@@ -69,6 +69,19 @@ public class CompteService implements CompteServiceInterface {
     }
 
     @Override
+    public boolean hasCourantAccount(int userId) throws SQLException {
+        String query = "SELECT COUNT(*) FROM compte WHERE type = 'courant' AND id_user = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+    @Override
     public void updateCompte(Compte compte) throws SQLException {
         String query = "UPDATE compte SET type = ?, num = ?, rib = ?, statut = ?, solde = ?, devise = ? WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();

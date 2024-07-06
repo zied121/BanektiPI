@@ -17,10 +17,10 @@
             </columns>
         </TableView>
         <TextField fx:id="compteIdField" promptText="Compte ID" disable="true"/>
-        <TextField fx:id="typeField" promptText="Type"/>
+        <ComboBox fx:id="typeField" promptText="Type"/>
         <TextField fx:id="numField" promptText="Num"/>
         <TextField fx:id="ribField" promptText="RIB"/>
-        <TextField fx:id="statutField" promptText="Statut"/>
+        <ComboBox fx:id="statutField" promptText="Statut"/>
         <TextField fx:id="soldeField" promptText="Solde"/>
         <TextField fx:id="deviseField" promptText="Devise"/>
         <HBox>

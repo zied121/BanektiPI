@@ -157,12 +157,18 @@ public class UserController {
             return;
         }
 
+        int cin = Integer.parseInt(cinField.getText());
+        if (userService.isCINExists(cin)) {
+            showAlert(AlertType.ERROR, "Duplicate CIN", "A user with this CIN already exists.");
+            return;
+        }
+
         User user = new User();
         user.setNom(nomField.getText());
         user.setPrenom(prenomField.getText());
         user.setAge(Integer.parseInt(ageField.getText()));
         user.setMdp(mdpField.getText());
-        user.setCin(Integer.parseInt(cinField.getText()));
+        user.setCin(cin);
         user.setRole(roleComboBox.getValue());
         user.setEmail(EmailField.getText());
         userService.createUser(user);
