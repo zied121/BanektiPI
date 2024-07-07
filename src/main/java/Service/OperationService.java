@@ -16,7 +16,7 @@ public class OperationService {
             pst.setString(1, operation.getTypeOp());
             pst.setDouble(2, operation.getMontant());
             pst.setInt(3, operation.getIdCompte());
-            pst.setDate(4, new java.sql.Date(operation.getDateOp().getTime()));
+            pst.setDate(4, new Date(System.currentTimeMillis()));
             pst.setLong(5, operation.getRibCompteDestination());
             pst.executeUpdate();
 

@@ -20,7 +20,7 @@
 
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
-                        User user = new User();
+                        User user = new User(); 
                         user.setId(resultSet.getInt("id"));
                         user.setNom(resultSet.getString("nom"));
                         user.setPrenom(resultSet.getString("prenom"));

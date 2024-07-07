@@ -149,7 +149,7 @@ public class OperationController {
             operation.setTypeOp(typeOpField.getValue());
             operation.setMontant(amount);
             operation.setIdCompte(selectedAccountId);
-            operation.setDateOp(java.sql.Date.valueOf(dateOpPicker.getValue()));
+//            operation.setDateOp(java.sql.Date.valueOf(dateOpPicker.getValue()));
             operation.setRibCompteDestination(ribDestination);
 
             operationService.addOperation(operation);
@@ -166,7 +166,7 @@ public class OperationController {
         montantField.clear();
         idCompteField.setValue(null);
         RibCompteDestinationField.clear();
-        dateOpPicker.setValue(null);
+//        dateOpPicker.setValue(null);
     }
 
     private boolean isMontantValid(String montant) {

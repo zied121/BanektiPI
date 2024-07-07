@@ -61,8 +61,6 @@
                     <TextField fx:id="montantField"/>
                     <Label text="Compte RIB:"/>
                     <ComboBox fx:id="idCompteField"/>
-                    <Label text="Date Operation:"/>
-                    <DatePicker fx:id="dateOpPicker"/>
                     <Label text="Compte Destination RIB:"/>
                     <TextField fx:id="RibCompteDestinationField"/>
                     <Button text="Add Operation" onAction="#handleAddOperation"/>
