@@ -1,61 +1,4 @@
-.root {
-    -fx-font-family: 'Arial';
-    -fx-background-color: #ecf0f1;
-}
-
-.label {
-    -fx-text-fill: #2c3e50;
-    -fx-font-size: 14pt;
-}
-
-.text-field, .password-field, .combo-box {
-    -fx-background-color: #34495e;
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 12pt;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-    -fx-border-color: #2980b9;
-}
-
-.text-field:focused, .password-field:focused, .combo-box:focused {
-    -fx-background-color: #2c3e50;
-    -fx-border-color: #3498db;
-}
-
-.button {
-    -fx-background-color: linear-gradient(#3498db, #2980b9);
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 12pt;
-    -fx-background-radius: 5;
-    -fx-padding: 10 20 10 20;
-}
-
-.button:hover {
-    -fx-background-color: linear-gradient(#3cb0fd, #3498db);
-}
-
-.grid-pane {
-    -fx-background-color: #bdc3c7;
-    -fx-padding: 20;
-    -fx-hgap: 10;
-    -fx-vgap: 10;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-}
-
-.combo-box {
-    -fx-padding: 0 0 0 5; /* Adjust the padding for better alignment */
-}
-
-.combo-box .arrow {
-    -fx-background-color: #2980b9; /* Change the arrow background color */
-    -fx-padding: 5; /* Adjust the padding inside the arrow */
-}
-
-.combo-box .list-cell {
-    -fx-background-color: #2c3e50; /* Background color for dropdown items */
-    -fx-text-fill: #ffffff; /* Text color for dropdown items */
-}
+/* style.css */
 
 .sidebar {
     -fx-background-color: #2c3e50;
@@ -63,19 +6,66 @@
 }
 
 .navButton {
-    -fx-background-color: transparent;
-    -fx-text-fill: #ecf0f1;
-    -fx-font-size: 14px;
-    -fx-padding: 10 20;
-}
-
-.navButton:hover {
     -fx-background-color: #34495e;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: white;
+    -fx-pref-width: 180;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 20;
 }
 
 .header {
     -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 20 0;
+}
+
+.detailsHeader {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
     -fx-text-fill: #2c3e50;
     -fx-padding: 10 0;
+}
+
+.actionButton {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-pref-width: 120;
+    -fx-alignment: CENTER;
+    -fx-padding: 10;
+}
+
+.text-area {
+    -fx-pref-width: 400px;
+    -fx-pref-height: 100px;
+}
+
+.table-column {
+    -fx-text-fill: #2c3e50;
+}
+/* Style pour le texte du popup */
+.popup-text {
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #333; /* Couleur du texte */
+}
+
+/* Style pour les titres du popup */
+.popup-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000; /* Couleur du texte */
+}
+
+/* Style pour le bouton du popup */
+.popup-button {
+    -fx-background-color: #4CAF50; /* Couleur de fond du bouton */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px; /* Rembourrage (padding) */
+    -fx-border-radius: 3px; /* Rayon de bordure arrondi */
+}
+
+.popup-button:hover {
+    -fx-background-color: #45a049; /* Couleur de fond du bouton au survol */
 }

@@ -9,9 +9,21 @@ public class Demande {
     private String description;
     private int id_user; // Clé étrangère de la table User
     private LocalDate date;
+    private String reponse;
+    private Document document;
+    private String rib;
+    private String nom;
+   private String prenom;
+   private int nb_compte;
+    private double solde;
+    private String statut_compte;
+    private String type_op;
+    private double montant;
+    private LocalDate date_op;
+    private String email;
 
-    public Demande() {
-    }
+
+    public Demande() {}
 
     public Demande(int id, String type, String statut, String description, int id_user, LocalDate date) {
         this.id = id;
@@ -41,6 +53,54 @@ public class Demande {
         this.type = type;
         this.statut = statut;
         this.description = description;
+    }
+
+    public String getReponse() {
+        return reponse;
+    }
+
+    public void setReponse(String reponse) {
+        this.reponse = reponse;
+    }
+
+    public int getNb_compte() {
+        return nb_compte;
+    }
+
+    public void setNb_compte(int nb_compte) {
+        this.nb_compte = nb_compte;
+    }
+
+    public double getSolde() {
+        return solde;
+    }
+
+    public void setSolde(double solde) {
+        this.solde = solde;
+    }
+
+    public String getStatut_compte() {
+        return statut_compte;
+    }
+
+    public void setStatut_compte(String statut_compte) {
+        this.statut_compte = statut_compte;
+    }
+
+    public String getType_op() {
+        return type_op;
+    }
+
+    public void setType_op(String type_op) {
+        this.type_op = type_op;
+    }
+
+    public double getMontant() {
+        return montant;
+    }
+
+    public void setMontant(double montant) {
+        this.montant = montant;
     }
 
     // Getters and setters
@@ -88,8 +148,56 @@ public class Demande {
         return date;
     }
 
+    public LocalDate getDate_op() {
+        return date_op;
+    }
+
+    public void setDate_op(LocalDate date_op) {
+        this.date_op = date_op;
+    }
+
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Document getDocument() {
+        return document;
+    }
+
+    public void setDocument(Document document) {
+        this.document = document;
+    }
+
+    public String getRib() {
+        return rib;
+    }
+
+    public void setRib(String rib) {
+        this.rib = rib;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

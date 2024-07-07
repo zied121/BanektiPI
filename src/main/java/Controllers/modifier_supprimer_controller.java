@@ -1,5 +1,5 @@
 package Controllers;
-
+import Service.PdfGenerator;
 import entite.Demande;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -10,12 +10,24 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import Service.Demandeservice;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
+import java.io.File;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+
+
+import Service.Demandeservice;
+import javafx.scene.control.Alert.AlertType;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+
 
 public class modifier_supprimer_controller {
 
@@ -54,7 +66,6 @@ public class modifier_supprimer_controller {
     @FXML
     void initialize() {
         initializeTable();
-        setupComboBox();
         showDetails(null);
         demandesTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showDetails(newValue));
@@ -71,9 +82,7 @@ public class modifier_supprimer_controller {
         demandesTable.setItems(FXCollections.observableArrayList(demandes));
     }
 
-    private void setupComboBox() {
-        typeComboBox.setItems(FXCollections.observableArrayList("rib", "extraits de compte", "Identité banquaire", "autres"));
-    }
+
 
     private void showDetails(Demande demande) {
         if (demande != null) {
@@ -115,8 +124,11 @@ public class modifier_supprimer_controller {
             demandeservice.update(selectedDemande);
 
             loadDemandes();
+
+            // Afficher un popup de confirmation
+            showAlert(AlertType.INFORMATION, "Modification réussie", "La demande a été modifiée avec succès.");
         } else {
-            System.out.println("Aucune demande sélectionnée pour modification.");
+            showAlert(AlertType.WARNING, "Aucune sélection", "Aucune demande sélectionnée pour modification.");
         }
     }
 
@@ -126,10 +138,77 @@ public class modifier_supprimer_controller {
         if (selectedDemande != null) {
             demandeservice.delete(selectedDemande);
             loadDemandes();
+
+            // Afficher un popup de confirmation
+            showAlert(AlertType.INFORMATION, "Suppression réussie", "La demande a été supprimée avec succès.");
         } else {
-            System.out.println("Aucune demande sélectionnée pour suppression.");
+            showAlert(AlertType.WARNING, "Aucune sélection", "Aucune demande sélectionnée pour suppression.");
         }
     }
+
+
+    @FXML
+    private void telechargerPDF() {
+        Demande selectedDemande = demandesTable.getSelectionModel().getSelectedItem();
+        if (selectedDemande != null && selectedDemande.getReponse() != null && !selectedDemande.getReponse().isEmpty()) {
+            String content = selectedDemande.getReponse();
+            String fileName = "reponse_demande_" + selectedDemande.getId() + ".pdf";
+            String fileLocation = System.getProperty("user.home") + "/Downloads/" + fileName;
+
+            // Générer le PDF avec une mise en page améliorée
+            String formattedContent = generateFormattedContent(selectedDemande);
+
+            PdfGenerator.generatePdf(fileLocation, formattedContent);
+
+            showAlert(Alert.AlertType.INFORMATION, "Téléchargement réussi", "Le PDF a été généré et téléchargé avec succès.");
+
+            // Ouvrir automatiquement le fichier PDF après le téléchargement
+            openPdfFile(fileLocation);
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Aucune réponse disponible", "Aucune réponse n'est disponible pour cette demande.");
+        }
+    }
+
+    private String generateFormattedContent(Demande demande) {
+        StringBuilder contentBuilder = new StringBuilder();
+
+        // Ajouter un titre
+        contentBuilder.append("Réponse à la demande ").append(demande.getId()).append("\n\n");
+
+        // Ajouter les détails de la demande
+        contentBuilder.append("Type de demande : ").append(demande.getType()).append("\n");
+        contentBuilder.append("Description : ").append(demande.getDescription()).append("\n");
+        contentBuilder.append("Statut : ").append(demande.getStatut()).append("\n");
+        contentBuilder.append("Date : ").append(demande.getDate()).append("\n\n");
+
+        // Ajouter la réponse
+        contentBuilder.append("Réponse :\n");
+        contentBuilder.append(demande.getReponse()).append("\n");
+
+        return contentBuilder.toString();
+    }
+
+
+    private void openPdfFile(String fileLocation) {
+        try {
+            File pdfFile = new File(fileLocation);
+            if (pdfFile.exists()) {
+                Desktop.getDesktop().open(pdfFile);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Fichier introuvable", "Le fichier PDF n'a pas été trouvé.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur d'ouverture", "Erreur lors de l'ouverture du fichier PDF : " + e.getMessage());
+        }
+    }
+
+
+
+    @FXML
+
+
+
 
     private void loadDemandes() {
         List<Demande> demandes = demandeservice.readAll();
@@ -141,5 +220,13 @@ public class modifier_supprimer_controller {
         descriptionField.clear();
         statutField.clear();
         dateField.clear();
+    }
+
+    private void showAlert(AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

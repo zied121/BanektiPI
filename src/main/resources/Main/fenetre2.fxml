@@ -15,7 +15,7 @@
 <?import javafx.scene.image.Image?>
 <AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.modifier_supprimer_controller">
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@style_client.css" />
     </stylesheets>
 
     <HBox prefHeight="600.0" prefWidth="800.0" spacing="0">
@@ -45,7 +45,7 @@
                         <TableColumn prefWidth="126.4000244140625" text="Description" fx:id="descriptionColumn" />
                         <TableColumn minWidth="4.79998779296875" prefWidth="91.99993896484375" text="Statut" fx:id="statutColumn" />
                         <TableColumn prefWidth="78.4000244140625" text="Date" fx:id="dateColumn" />
-                        <TableColumn prefWidth="100.0" text="Réponse" fx:id="reponseColumn" />
+                        <TableColumn text="Réponse" fx:id="reponseColumn" />
                     </columns>
                 </TableView>
                 <VBox spacing="10">
@@ -53,6 +53,7 @@
                         <Button onAction="#ajouterDemande" text="Ajouter" />
                         <Button onAction="#modifierDemande" text="Modifier" />
                         <Button onAction="#supprimerDemande" text="Supprimer" />
+                        <Button onAction="#telechargerPDF" text="Télécharger PDF" />
                     </HBox>
                     <Label text="Détails de la demande sélectionnée" />
                     <HBox spacing="10">
@@ -61,8 +62,12 @@
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
                                     <String fx:value="rib" />
-                                    <String fx:value="sit" />
+                                    <String fx:value="extraits de compte" />
+                                    <String fx:value="Identité banquaire" />
+                                    <String fx:value="autres" />
+
                                 </FXCollections>
+
                             </items>
                         </ComboBox>
                     </HBox>

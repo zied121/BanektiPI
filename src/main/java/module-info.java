@@ -12,6 +12,9 @@ module com.example.projetpi {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.sql;
+    requires itextpdf;
+    requires java.desktop;
+    requires java.mail;
 
     opens Main to javafx.fxml;
     exports Main;

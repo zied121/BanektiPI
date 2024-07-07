@@ -14,6 +14,9 @@ import Service.Demandeservice;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 public class Ajoutercontroller {
 
     @FXML
@@ -33,9 +36,11 @@ public class Ajoutercontroller {
         Demandeservice demandeservice = new Demandeservice();
         demandeservice.insert(demande);
 
-        // je veut passer a la fenetre suivante fenetre2.fxml qui a le controller modifier_supprimer_controller
+        // Afficher un popup pour informer l'utilisateur de l'ajout réussi
+        showPopup("Demande ajoutée", "La demande a été ajoutée avec succès.");
+
+        // Passer à la fenêtre suivante fenetre2.fxml qui a le controller modifier_supprimer_controller
         try {
-            // Ensure the correct path to the FXML file
             Parent adminLoginRoot = FXMLLoader.load(getClass().getResource("/Main/fenetre2.fxml"));
             Scene adminLoginScene = new Scene(adminLoginRoot);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -44,5 +49,13 @@ public class Ajoutercontroller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showPopup(String title, String content) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
