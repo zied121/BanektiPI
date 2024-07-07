@@ -2,32 +2,92 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CompteController">
-    <children>
-        <TableView fx:id="compteTable">
-            <columns>
-                <TableColumn fx:id="compteIdColumn" text="Compte ID"/>
-                <TableColumn fx:id="typeColumn" text="Type"/>
-                <TableColumn fx:id="numColumn" text="Num"/>
-                <TableColumn fx:id="ribColumn" text="RIB"/>
-                <TableColumn fx:id="statutColumn" text="Statut"/>
-                <TableColumn fx:id="soldeColumn" text="Solde"/>
-                <TableColumn fx:id="deviseColumn" text="Devise"/>
-            </columns>
-        </TableView>
-        <TextField fx:id="compteIdField" promptText="Compte ID" disable="true"/>
-        <ComboBox fx:id="typeField" promptText="Type"/>
-        <TextField fx:id="numField" promptText="Num"/>
-        <TextField fx:id="ribField" promptText="RIB"/>
-        <ComboBox fx:id="statutField" promptText="Statut"/>
-        <TextField fx:id="soldeField" promptText="Solde"/>
-        <TextField fx:id="deviseField" promptText="Devise"/>
-        <HBox>
-            <Button text="Create Compte" onAction="#createCompte"/>
-            <Button text="Update Compte" onAction="#updateCompte"/>
-            <Button text="Delete Compte" onAction="#deleteCompte"/>
-            <Button text="Clear Fields" onAction="#clearCompteFields"/>
-        </HBox>
-    </children>
+    <stylesheets>
+        <URL value="@UserView.css" />
+    </stylesheets>
+    <HBox spacing="0" prefHeight="900.0" prefWidth="800.0">
+        <!-- Sidebar -->
+        <VBox spacing="10" alignment="TOP_LEFT" prefWidth="200.0" styleClass="sidebar">
+            <ImageView fitWidth="150.0" fitHeight="100.0">
+                <Image url="@logo.png" />
+            </ImageView>
+            <VBox spacing="5">
+                <Button text="Home" styleClass="navButton"/>
+                <Button text="Users" styleClass="navButton"/>
+                <Button text="Credits" styleClass="navButton"/>
+                <Button text="Assurance" styleClass="navButton"/>
+                <Button text="Operation" styleClass="navButton"/>
+                <Button text="Create Account" styleClass="navButton"/>
+                <Button text="Settings" styleClass="navButton"/>
+            </VBox>
+        </VBox>
+
+        <!-- Main Content -->
+        <AnchorPane prefWidth="600.0">
+            <VBox spacing="10" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0">
+                <Label text="account Management" styleClass="header"/>
+                <VBox spacing="10" alignment="CENTER">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+                    <TableView fx:id="compteTable">
+                        <columns>
+                            <TableColumn fx:id="compteIdColumn" text="Compte ID"/>
+                            <TableColumn fx:id="typeColumn" text="Type"/>
+                            <TableColumn fx:id="numColumn" text="Num"/>
+                            <TableColumn fx:id="ribColumn" text="RIB"/>
+                            <TableColumn fx:id="statutColumn" text="Statut"/>
+                            <TableColumn fx:id="soldeColumn" text="Solde"/>
+                            <TableColumn fx:id="deviseColumn" text="Devise"/>
+                        </columns>
+                    </TableView>
+
+                    <VBox spacing="5" alignment="CENTER_LEFT">
+                        <HBox spacing="10">
+                            <Label text="Compte ID"/>
+                            <TextField fx:id="compteIdField" promptText="Compte ID" disable="true"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Type"/>
+                            <ComboBox fx:id="typeField" promptText="Type"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Num tel"/>
+                            <TextField fx:id="numField" promptText="Num"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="RIB"/>
+                            <TextField fx:id="ribField" promptText="RIB"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Status"/>
+                            <ComboBox fx:id="statutField" promptText="Statut"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Solde"/>
+                            <TextField fx:id="soldeField" promptText="Solde"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Devise"/>
+                            <TextField fx:id="deviseField" promptText="Devise"/>
+                        </HBox>
+                    </VBox>
+
+                    <HBox spacing="10">
+                        <Button text="Create Compte" onAction="#createCompte"/>
+                        <Button text="Update Compte" onAction="#updateCompte"/>
+                        <Button text="Delete Compte" onAction="#deleteCompte"/>
+                        <Button text="Clear Fields" onAction="#clearCompteFields"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </AnchorPane>
+    </HBox>
 </VBox>

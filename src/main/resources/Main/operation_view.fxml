@@ -40,7 +40,7 @@
         <!-- Main Content -->
         <AnchorPane prefWidth="600.0">
             <VBox spacing="10" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0">
-                <Label text="Operation management" styleClass="header"/>
+                <Label text="Operation Management" styleClass="header"/>
                 <VBox spacing="10" alignment="CENTER">
                     <padding>
                         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -50,26 +50,22 @@
                             <TableColumn fx:id="typeOpColumn" text="Type Operation"/>
                             <TableColumn fx:id="montantColumn" text="Montant"/>
                             <TableColumn fx:id="idCompteColumn" text="Compte ID"/>
-                            <TableColumn fx:id="idCompteDestinationColumn" text="Compte Destination ID"/>
+                            <TableColumn fx:id="RibCompteDestinationColumn" text="Compte Destination Rib"/>
                             <TableColumn fx:id="dateOpColumn" text="Date Operation"/>
                         </columns>
                     </TableView>
 
-
-
-                            <Label text="Type Operation:"/>
-                            <TextField fx:id="typeOpField"/>
-                            <Label text="Montant:"/>
-                            <TextField fx:id="montantField"/>
-                            <Label text="Compte ID:"/>
-                            <TextField fx:id="idCompteField"/>
-                            <Label text="Date Operation:"/>
-                            <DatePicker fx:id="dateOpPicker"/>
-                            <Label text="Compte Destination ID:"/>
-                            <TextField fx:id="idCompteDestinationField"/>
-                            <Button text="Add Operation" onAction="#handleAddOperation"/>
-                            <Button text="View Operations" onAction="#handleViewOperations"/>
-
+                    <Label text="Type Operation:"/>
+                    <ComboBox fx:id="typeOpField"/>
+                    <Label text="Montant:"/>
+                    <TextField fx:id="montantField"/>
+                    <Label text="Compte RIB:"/>
+                    <ComboBox fx:id="idCompteField"/>
+                    <Label text="Date Operation:"/>
+                    <DatePicker fx:id="dateOpPicker"/>
+                    <Label text="Compte Destination RIB:"/>
+                    <TextField fx:id="RibCompteDestinationField"/>
+                    <Button text="Add Operation" onAction="#handleAddOperation"/>
 
                 </VBox>
             </VBox>

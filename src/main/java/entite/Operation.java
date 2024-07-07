@@ -3,19 +3,19 @@ package entite;
 import java.util.Date;
 
 public class Operation {
-    private Long id;
+    private int id;
     private String typeOp;
     private Double montant;
-    private Long idCompte;
+    private int idCompte;
     private Date dateOp;
-        private Long idCompteDestination;
+    private Long RIbCompteDestination;
 
     // Getters and Setters
-    public Long getId() {
+    public  int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -35,11 +35,11 @@ public class Operation {
         this.montant = montant;
     }
 
-    public Long getIdCompte() {
+    public int getIdCompte() {
         return idCompte;
     }
 
-    public void setIdCompte(Long idCompte) {
+    public void setIdCompte(Integer idCompte) {
         this.idCompte = idCompte;
     }
 
@@ -51,11 +51,11 @@ public class Operation {
         this.dateOp = dateOp;
     }
 
-    public Long getIdCompteDestination() {
-        return idCompteDestination;
+    public Long getRibCompteDestination() {
+        return RIbCompteDestination;
     }
 
-    public void setIdCompteDestination(Long idCompteDestination) {
-        this.idCompteDestination = idCompteDestination;
+    public void setRibCompteDestination(Long idCompteDestination) {
+        this.RIbCompteDestination = idCompteDestination;
     }
 }

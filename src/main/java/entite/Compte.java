@@ -95,4 +95,6 @@ public class Compte {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+
 }
