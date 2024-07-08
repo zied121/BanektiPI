@@ -14,7 +14,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         try {
             // Load the FXML file for the admin interface
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Main/user.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Main/login.fxml")));
 
             // Set the scene
             Scene scene = new Scene(root);
@@ -27,7 +27,6 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
-
     public static void main(String[] args) {
         launch(args);
     }

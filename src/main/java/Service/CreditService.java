@@ -3,7 +3,6 @@ package Service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import entite.Credit;
-import javafx.scene.control.ComboBox;
 import util.DatabaseConnection;
 
 import java.io.File;
@@ -12,10 +11,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import javafx.scene.control.DatePicker;
 public class CreditService {
     private Cloudinary cloudinary;
     private Connection cnx;
@@ -48,17 +48,21 @@ public class CreditService {
         }
         return false;
     }
-    public boolean updateCreditDetailsuser(String idCompte, String typeCredit, double montant, String echeancier, String document) {
-        String query = "INSERT INTO credit (type_credit, montant,  echeancier, document, id_compte)\n" +
-                "VALUES (?, ?, ?, ?, ?);";
+    public boolean updateCreditDetailsuser(String idCompte, String typeCredit,String status ,String montant, String echeancier, String document, String userId) {
+
+        String query = "INSERT INTO demande (id , type, statut,  description, id_user,echeancier,document,date)\n" +
+                "VALUES (?, ?, ?, ?, ?,?,?,?) ;";
         try {
 
             PreparedStatement statement = cnx.prepareStatement(query);
-            statement.setString(1, typeCredit);
-            statement.setDouble(2, montant);
-            statement.setString(3, echeancier);
-            statement.setString(4, document);
-            statement.setString(5, idCompte);
+            statement.setString(1, idCompte);
+            statement.setString(2, typeCredit);
+            statement.setString(3,status);
+            statement.setString(4, montant);
+            statement.setString(5, userId);
+            statement.setString(6, echeancier);
+            statement.setString(7, document);
+            statement.setDate(8, java.sql.Date.valueOf(LocalDate.now()));
             int rowsUpdated = statement.executeUpdate();
             return rowsUpdated > 0;
         } catch (SQLException e) {
@@ -160,8 +164,9 @@ public class CreditService {
     }
     public boolean updateCreditStatus(String idCompte, String status) {
         String query = "UPDATE credit SET statut = ? WHERE id_compte = ?";
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+        try {
+
+            PreparedStatement statement = cnx.prepareStatement(query);
 
             // Set the parameters for the prepared statement
             statement.setString(1, status);
@@ -184,4 +189,52 @@ public class CreditService {
         }
         return false;
     }
+    public String getAccountIdByUserId(String userId) {
+        String query = "SELECT id FROM compte WHERE id_user = ?";
+        try {
+
+            PreparedStatement statement = cnx.prepareStatement(query);
+            statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("id_compte");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public boolean insertCredit(Credit credit) {
+        String query = "INSERT INTO credit (id_compte, type_credit, montant, status, echeancier, document) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+
+            PreparedStatement statement = cnx.prepareStatement(query);
+            statement.setString(1, credit.getIdCompte());
+            statement.setString(2, credit.getTypeCredit());
+            statement.setDouble(3, credit.getMontant());
+            statement.setString(4, credit.getStatus());
+            statement.setString(5, credit.getEcheancier());
+            statement.setString(6, credit.getDocument());
+            int rowsInserted = statement.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deleteCreditRequest(String idCompte) {
+        String query = "DELETE FROM demande WHERE id_compte = ?";
+        try {
+
+            PreparedStatement statement = cnx.prepareStatement(query);
+            statement.setString(1, idCompte);
+            int rowsDeleted = statement.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
+

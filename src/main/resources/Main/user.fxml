@@ -57,16 +57,13 @@
                         </items>
                     </ComboBox>
                     <TextField fx:id="montantField" promptText="Montant" />
-<!--                    <Label text="Statut:"  />-->
-<!--                    <ComboBox fx:id="statusCombo"  />-->
-<!--                    <ComboBox fx:id="statutCombo" promptText="Status">-->
-<!--                        <items>-->
-<!--                            <FXCollections fx:factory="observableArrayList">-->
-<!--                                <String fx:value="Active"/>-->
-<!--                                <String fx:value="Inactive"/>-->
-<!--                            </FXCollections>-->
-<!--                        </items>-->
-<!--                    </ComboBox>-->
+                    <ComboBox fx:id="statusCombo" promptText="Status">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Request"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
 
                     <TextField fx:id="documentField" promptText="Document"/>
                     <Button text="Upload PDF" onAction="#handleUploadDocument"/>

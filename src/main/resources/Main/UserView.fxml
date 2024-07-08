@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.UserController">
+    <children>
+        <TableView fx:id="userTable">
+            <columns>
+                <TableColumn fx:id="userIdColumn" text="User ID"/>
+                <TableColumn fx:id="nomColumn" text="Nom"/>
+                <TableColumn fx:id="prenomColumn" text="Prenom"/>
+                <TableColumn fx:id="ageColumn" text="Age"/>
+                <TableColumn fx:id="mdpColumn" text="Mot de passe"/>
+                <TableColumn fx:id="cinColumn" text="CIN"/>
+                <TableColumn fx:id="roleColumn" text="Role"/>
+                <TableColumn fx:id="emailColumn" text="email"/>
+                <TableColumn fx:id="nbCompteColumn" text="Nombre de comptes"/>
+            </columns>
+        </TableView>
+        <TextField fx:id="userIdField" promptText="User ID" disable="true"/>
+        <TextField fx:id="nomField" promptText="Nom"/>
+        <TextField fx:id="prenomField" promptText="Prenom"/>
+        <TextField fx:id="ageField" promptText="Age"/>
+        <TextField fx:id="mdpField" promptText="Mot de passe"/>
+        <TextField fx:id="cinField" promptText="CIN"/>
+        <TextField fx:id="EmailField" promptText="email"/>
+        <TextField fx:id="roleField" promptText="Role"/>
+        <HBox>
+            <Button text="Create User" onAction="#createUser"/>
+            <Button text="Update User" onAction="#updateUser"/>
+            <Button text="Delete User" onAction="#deleteUser"/>
+            <Button text="Clear Fields" onAction="#clearFields"/>
+            <Button text="Get All Users" onAction="#loadUsers"/>
+        </HBox>
+    </children>
+</VBox>

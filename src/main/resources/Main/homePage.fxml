@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.collections.FXCollections?>
-<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<?import java.net.URL?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.HomepageController">
+<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.HomepageController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
-
-    <HBox spacing="0" prefHeight="600.0" prefWidth="800.0">
+    <HBox prefHeight="600.0" prefWidth="800.0" spacing="0">
         <!-- Sidebar -->
-        <VBox spacing="10" alignment="TOP_LEFT" prefWidth="200.0" styleClass="sidebar">
-            <ImageView fitWidth="150.0" fitHeight="100.0">
+        <VBox alignment="TOP_LEFT" prefWidth="200.0" spacing="10" styleClass="sidebar">
+            <ImageView fitHeight="100.0" fitWidth="150.0">
                 <Image url="@logo.png" />
             </ImageView>
             <VBox spacing="5">
-                <Button text="Home" styleClass="navButton"/>
-                <Button text="Users" styleClass="navButton"/>
-                <Button text="Credits" styleClass="navButton" />
-                <Button text="Assurance" styleClass="navButton"/>
-                <Button text="Operation" styleClass="navButton"/>
-                <Button text="Create Account" styleClass="navButton"/>
-                <Button text="Settings" styleClass="navButton"/>
+                <Button styleClass="navButton" text="Home" />
+                <Button styleClass="navButton" text="Users" />
+                <Button styleClass="navButton" text="Credits" onAction="#handlecreditButtoncredituser"/>
+                <Button styleClass="navButton" text="Assurance" onAction="#handleButtonAssurance" />
+                <Button styleClass="navButton" text="Operation" />
+                <Button styleClass="navButton" text="Create Account" />
+                <Button styleClass="navButton" text="Settings" />
             </VBox>
         </VBox>
 
         <!-- Main Content -->
-        <AnchorPane prefWidth="600.0">
-            <VBox spacing="10" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0">
-                <Label text="Credit Demands" styleClass="header"/>
-                <VBox spacing="10" alignment="CENTER">
-                    <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
-                    </padding>
-                    <ListView fx:id="creditListView" />
-                </VBox>
-            </VBox>
-        </AnchorPane>
+        <VBox spacing="20" styleClass="main-container">
+            <HBox styleClass="header">
+                <Label text="Welcome, " styleClass="welcome-label"/>
+                <Label fx:id="userNameLabel" styleClass="username-label"/>
+            </HBox>
+            <TableView fx:id="accountsTable" styleClass="accounts-table">
+                <columns>
+                    <TableColumn fx:id="ribColumn" text="RIB" styleClass="table-column"/>
+                    <TableColumn fx:id="soldeColumn" text="Solde" styleClass="table-column"/>
+                    <TableColumn fx:id="statusColumn" text="Status" styleClass="table-column"/>
+                </columns>
+            </TableView>
+        </VBox>
     </HBox>
 </AnchorPane>

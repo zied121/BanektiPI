@@ -62,7 +62,7 @@
 
                     <TextField fx:id="echeancierField" promptText="Schedule" disable="true"/>
                     <Button text="Check account" onAction="#handleCheckAccount" styleClass="checkButton"/>
-                    <Button text="Update Status" onAction="#handleValidate" styleClass="validateButton"/>
+                    <Button text="Update Status" onAction="#handleUpdateStatus" styleClass="validateButton"/>
                 </VBox>
             </VBox>
         </AnchorPane>

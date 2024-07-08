@@ -2,12 +2,16 @@ package entite;
 
 public class Credit {
     private String id;
+
+
+
+    private String iduser;
     private String idCompte;
-    private String typeCredit;
-    private double montant;
-    private String status;
-    private String echeancier;
-    private String document;
+        private String typeCredit;
+        private double montant;
+        private String status;
+        private String echeancier;
+        private String document;
 
     public Credit(String id, String idCompte, String typeCredit, double montant, String status, String echeancier, String document) {
         this.id = id;
@@ -23,8 +27,13 @@ public class Credit {
 
     }
 
-    // Getters and setters
+    public Credit(String userId, String typeCredit, double montant, String statut, String echeancier, String document) {
+    }
 
+    // Getters and setters
+    public String getIduser() {
+        return iduser;
+    }
     public String getId() {
         return id;
     }
