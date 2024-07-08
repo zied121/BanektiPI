@@ -7,7 +7,8 @@ import javafx.scene.control.*;
 import Service.CreditService;
 
 public class CreditadminController {
-
+    @FXML
+    private TextField userIdField;
     @FXML
     private TextField idCompteField;
     @FXML
@@ -66,32 +67,29 @@ public class CreditadminController {
 
     @FXML
     public void handleCheckAccount(ActionEvent actionEvent) {
-        // Get the user ID from the logged-in user (assume it's stored in a variable `userId`)
-        String userId = getUserId(); // You need to implement this method to get the logged-in user's ID
+        // Get the user ID from the TextField
+        String userId = userIdField.getText();
 
-        // Get the account ID using the user ID
-        String idCompte = creditService.getAccountIdByUserId(userId);
+        if (userId == null || userId.isEmpty()) {
+            showAlert("Validation Error", "Please enter a User ID.");
+            return;
+        }
 
-        if (idCompte != null) {
-            // Fetch credit details from the database
-            Credit credit = creditService.getCreditByAccountId(idCompte);
+        // Fetch credit details from the database using userId
+        Credit credit = creditService.getCreditByUserId(userId);
 
-            if (credit != null) {
-                // Populate fields with data from the database
-                idCompteField.setText(credit.getIdCompte());
-                typeCreditCombo.setValue(credit.getTypeCredit());
-                montantField.setText(String.valueOf(credit.getMontant()));
-                statusCombo.setValue(credit.getStatus());
-                documentField.setText(credit.getDocument());
-                echeancierField.setText(credit.getEcheancier());
-            } else {
-                showAlert("Error", "No credit found with the provided Account ID.");
-            }
+        if (credit != null) {
+            // Populate fields with data from the database
+            idCompteField.setText(credit.getIdCompte());
+            typeCreditCombo.setValue(credit.getTypeCredit());
+            montantField.setText(String.valueOf(credit.getMontant()));
+            statusCombo.setValue(credit.getStatus());
+            documentField.setText(credit.getDocument());
+            echeancierField.setText(credit.getEcheancier());
         } else {
-            showAlert("Error", "No account found for the provided User ID.");
+            showAlert("Error", "No credit found for the provided User ID.");
         }
     }
-
     @FXML
     public void handleUpdateStatus(ActionEvent actionEvent) {
         // Validate inputs
@@ -115,7 +113,7 @@ public class CreditadminController {
                 String document = documentField.getText();
 
                 // Create a new Credit object
-                Credit credit = new Credit(userId, typeCredit, montant, statut, echeancier, document);
+                Credit credit = new Credit(userId, idCompte,typeCredit, montant, statut, echeancier, document);
 
                 // Insert the new credit record into the credit table
                 boolean isInserted = creditService.insertCredit(credit);

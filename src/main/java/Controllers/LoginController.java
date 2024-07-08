@@ -1,7 +1,5 @@
-// File: Controllers/LoginController.java
 package Controllers;
 
-import entite.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -14,89 +12,50 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
 import Service.ClientAuthService;
-import Service.UserService;
+import entite.User;
 import util.UserSession;
 
 import java.io.IOException;
 
 public class LoginController {
-    public LoginController() {
-        UserService userService = new UserService();
-    }
-    @FXML
-    private TextField EmailField;
 
     @FXML
-    private PasswordField passwordField;
-
-
-    private final ClientAuthService clientAuthService = new ClientAuthService();
+    private TextField clientCinField;
 
     @FXML
-    private void handleLoginButtonAction(ActionEvent event) throws IOException {
-        String CIN = EmailField.getText();
-        String password = passwordField.getText();
+    private PasswordField clientpasswordField;
 
-        if (clientAuthService.authenticate(CIN, password)) {
-            User userDetails = UserService.getUserIdByCIN(CIN);
-            if (userDetails != null) {
-                UserSession.getInstance().setUserId(userDetails.getId());
-                String userId = String.valueOf(UserSession.getInstance().getUserId());
-                UserSession.getInstance().setUserRole(userDetails.getRole());
-                String role = UserSession.getInstance().getUserRole();
-                showAlert(AlertType.INFORMATION, "Login Successful", "Welcome " + CIN + "!");
-                try {
-                    // Ensure the correct path to the FXML file
-                    Parent adminLoginRoot = FXMLLoader.load(getClass().getResource("/Main/homePage.fxml"));
-                    Scene adminLoginScene = new Scene(adminLoginRoot);
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    stage.setScene(adminLoginScene);
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    showAlert(AlertType.ERROR, "Error", "Unable to load admin login screen.");
-                }
+    private ClientAuthService clientAuthService = new ClientAuthService();
 
-//                // Load the admin interface after successful login
-//                if ("admin".equals(role)) {
-//                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/admin.fxml"));
-//                    Parent root = loader.load();
-//                    Scene scene = new Scene(root);
-//
-//                    // Get the controller and pass the userId
-//                   AssuranceController AssuranceController = loader.getController();
-//                    AssuranceController.setUserId(userId);
-//
-//                    // Set the scene
-//                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//                    stage.setScene(scene);
-//                    stage.show();
-//                } else if ("client".equals(role)) {
-//                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/Assurance.fxml"));
-//                    Parent root = loader.load();
-//                    Scene scene = new Scene(root);
-//
-//                    // Get the controller and pass the userId
-//                    AssuranceController assuranceController = loader.getController();
-//                    assuranceController.setUserId(userId);
-//
-//                    // Set the scene
-//                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//                    stage.setScene(scene);
-//                    stage.show();
-//                }
-//            } else {
-//                showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");
-//            }
-            } else {
-                showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");
+    @FXML
+    private void handleLoginButtonAction(ActionEvent event) {
+        String ClientCIN = clientCinField.getText();
+        String ClientPassword = clientpasswordField.getText();
+        User authenticatedUser = clientAuthService.authenticate(ClientCIN, ClientPassword);
+        if (authenticatedUser != null) {
+            UserSession.initSession(authenticatedUser);
+            showAlert(AlertType.INFORMATION, "Login Successful", "Welcome " + authenticatedUser.getNom() + "!");
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/operation_view.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert(AlertType.ERROR, "Error", "Unable to load operation view.");
             }
+        } else {
+            showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");
         }
     }
+
     @FXML
     private void handleCancelButtonAction() {
-        EmailField.clear();
-        passwordField.clear();
+        clientCinField.clear();
+        clientpasswordField.clear();
     }
 
     private void showAlert(AlertType alertType, String title, String message) {
@@ -110,8 +69,7 @@ public class LoginController {
     @FXML
     private void handleAdminLoginButtonAction(ActionEvent event) {
         try {
-            // Ensure the correct path to the FXML file
-            Parent adminLoginRoot = FXMLLoader.load(getClass().getResource("/Main/Assurance.fxml"));
+            Parent adminLoginRoot = FXMLLoader.load(getClass().getResource("/Main/login-admin.fxml"));
             Scene adminLoginScene = new Scene(adminLoginRoot);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(adminLoginScene);

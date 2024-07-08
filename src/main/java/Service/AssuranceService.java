@@ -32,7 +32,7 @@ public class AssuranceService {
     }
 
     public boolean addAssurance(Assurance assurance) {
-        String query = "INSERT INTO assurance (id_user, type, date_debut, date_fin, document, image,status) VALUES (?, ?, ?, ?, ?, ?,?)";
+        String query = "INSERT INTO assurance (id_user, type, date_debut, date_fin, document, image) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = cnx.prepareStatement(query)) {
             statement.setString(1, assurance.getIdUser());
             statement.setString(2, assurance.getType());
@@ -40,7 +40,6 @@ public class AssuranceService {
             statement.setString(4, assurance.getDateFin());
             statement.setString(5, assurance.getDocument());
             statement.setString(6, assurance.getImage());
-            statement.setString(7, assurance.getStatus());
             int rowsInserted = statement.executeUpdate();
             return rowsInserted > 0;
         } catch (SQLException e) {

@@ -1,7 +1,7 @@
 package entite;
 
 public class User {
-    private static int id;
+    private int id;
     private String nom;
     private String prenom;
     private int age;
@@ -10,12 +10,8 @@ public class User {
     private String role;
     private int nbCompte;
     private String email;
-    public User(String id, String role) {
-        User.id = Integer.parseInt(id);
-        this.role = role;
-    }
     // Getters and Setters
-    public static int getId() {
+    public int getId() {
         return id;
     }
 

@@ -36,9 +36,9 @@
                             </rowConstraints>
                             <children>
                                 <Label text="CIN:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                <TextField fx:id="EmailField" promptText="Placeholder" styleClass="input-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                <TextField fx:id="clientCinField" promptText="Placeholder" styleClass="input-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                 <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                <PasswordField fx:id="passwordField" promptText="************" styleClass="input-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <PasswordField fx:id="clientpasswordField" promptText="************" styleClass="input-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Label styleClass="forgot-password" text="Forgot your password?" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                     <children>

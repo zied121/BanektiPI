@@ -1,5 +1,6 @@
 package Controllers;
 
+import entite.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -30,26 +31,21 @@ public class CreditUserController {
 
     private CreditService creditService;
     private String userId;
+    private User user;
 
     public CreditUserController() {
         this.creditService = new CreditService();
     }
 
     public void initialize() {
-        this.userId = String.valueOf(UserSession.getInstance().getUserId());
-        showAlert("Error", this.userId);
-        //String accountId = getAccountIdByUserId(userId);
-//        if (accountId != null) {
-//            idCompteField.setText(accountId);
-//        } else {
-//            showAlert("Error", "No account found for the provided User ID.");
-//        }
+        User user = UserSession.getInstance().getUser();
+        this.userId = String.valueOf(user.getId());
+        System.out.println("User IDliiii: " + user.getId());
     }
-//    private String getAccountIdByUserId(String userId) {
-//        return creditService.getAccountIdByUserId(userId);
-//    }
+
         @FXML
         public void handleValidate(ActionEvent actionEvent) {
+            System.out.println("User IDliiii: " + this.userId);
             String typeCredit = typeCreditCombo.getValue();
             String idCompte = idCompteField.getText();
             String status = statusCombo.getValue();
@@ -57,7 +53,7 @@ public class CreditUserController {
             String echeancier = echeancierField.getText();
             String document = documentField.getText();
 
-            boolean isUpdated = creditService.updateCreditDetailsuser(idCompte, typeCredit, String.valueOf(montant), status,echeancier, document,this.userId);
+            boolean isUpdated = creditService.updateCreditDetailsuser(idCompte, typeCredit, String.valueOf(montant), status,echeancier, document, Integer.valueOf(this.userId));
 
             Alert alert = new Alert(isUpdated ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
             alert.setTitle(isUpdated ? "Success" : "Error");

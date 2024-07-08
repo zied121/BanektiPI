@@ -1,35 +1,45 @@
-// File: service/ClientAuthService.java
-package Service;
+    package Service;
+    import entite.User;
+    import util.DatabaseUtil;
+    import util.UserSession;
+    import java.sql.Connection;
+    import java.sql.PreparedStatement;
+    import java.sql.ResultSet;
+    import java.sql.SQLException;
+    public class    ClientAuthService {
 
-import util.DatabaseUtil;
+        public User authenticate(String ClientCIN, String ClientPassword) {
+            String sql = "SELECT * FROM user WHERE CIN = ? AND mdp = ? AND role = 'client'";
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import util.DatabaseConnection;
+            try (Connection connection = DatabaseUtil.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(sql)) {
+
+                statement.setString(1, ClientCIN);
+                statement.setString(2, ClientPassword);
 
 
-public class ClientAuthService {
-    private static Connection cnx;
-    public boolean authenticate(String CIN, String password) {
-        cnx = DatabaseConnection.getInstance().getConnection();
-        String query = "SELECT CIN, mdp FROM user WHERE CIN = ? AND mdp = ? AND role = 'client'";
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        User user = new User(); 
+                        user.setId(resultSet.getInt("id"));
+                        user.setNom(resultSet.getString("nom"));
+                        user.setPrenom(resultSet.getString("prenom"));
+                        user.setAge(resultSet.getInt("age"));
+                        user.setMdp(resultSet.getString("mdp"));
+                        user.setCin(resultSet.getInt("cin"));
+                        user.setRole(resultSet.getString("role"));
+                        user.setNbCompte(resultSet.getInt("nb_compte"));
+                        user.setEmail(resultSet.getString("email"));
+                        return user;
+                    }
+                }
 
-        try {
 
-            PreparedStatement statement = cnx.prepareStatement(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-            statement.setString(1, CIN);
-            statement.setString(2, password);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            return resultSet.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return null;
         }
 
-        return false;
     }
-}

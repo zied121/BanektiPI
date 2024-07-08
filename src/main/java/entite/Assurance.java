@@ -8,6 +8,7 @@ public class Assurance {
     private String dateFin;
     private String document;
     private String image;
+    private String status;
 
     // Getters and setters
     public int getId() {
@@ -67,9 +68,10 @@ public class Assurance {
     }
 
     public String getStatus() {
-        return null;
+        return status;
     }
 
-    public void setStatus(String newStatus) {
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

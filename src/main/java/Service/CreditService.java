@@ -48,18 +48,16 @@ public class CreditService {
         }
         return false;
     }
-    public boolean updateCreditDetailsuser(String idCompte, String typeCredit,String status ,String montant, String echeancier, String document, String userId) {
+    public boolean updateCreditDetailsuser(String idCompte, String typeCredit,String status ,String montant, String echeancier, String document, Integer userId) {
 
-        String query = "INSERT INTO demande (id , type, statut,  description, id_user,echeancier,document,date)\n" +
-                "VALUES (?, ?, ?, ?, ?,?,?,?) ;";
+        String query = "INSERT INTO demande (id , type, statut,  description, id_user,echeancier,document,date) VALUES (?, ?, ?, ?, ?,?,?,?) ;";
         try {
-
             PreparedStatement statement = cnx.prepareStatement(query);
             statement.setString(1, idCompte);
             statement.setString(2, typeCredit);
             statement.setString(3,status);
             statement.setString(4, montant);
-            statement.setString(5, userId);
+            statement.setString(5, String.valueOf(userId));
             statement.setString(6, echeancier);
             statement.setString(7, document);
             statement.setDate(8, java.sql.Date.valueOf(LocalDate.now()));
@@ -163,7 +161,7 @@ public class CreditService {
         return null;
     }
     public boolean updateCreditStatus(String idCompte, String status) {
-        String query = "UPDATE credit SET statut = ? WHERE id_compte = ?";
+        String query = "UPDATE credit SET status = ? WHERE id_compte = ?";
         try {
 
             PreparedStatement statement = cnx.prepareStatement(query);
@@ -197,7 +195,7 @@ public class CreditService {
             statement.setString(1, userId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getString("id_compte");
+                return resultSet.getString("id_user");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -205,16 +203,17 @@ public class CreditService {
         return null;
     }
     public boolean insertCredit(Credit credit) {
-        String query = "INSERT INTO credit (id_compte, type_credit, montant, status, echeancier, document) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO credit (id_compte,id_user, type_credit, montant, status, echeancier, document) VALUES (?,?, ?, ?, ?, ?, ?)";
         try {
 
             PreparedStatement statement = cnx.prepareStatement(query);
             statement.setString(1, credit.getIdCompte());
-            statement.setString(2, credit.getTypeCredit());
-            statement.setDouble(3, credit.getMontant());
-            statement.setString(4, credit.getStatus());
-            statement.setString(5, credit.getEcheancier());
-            statement.setString(6, credit.getDocument());
+            statement.setString(2, credit.getIdCompte());
+            statement.setString(3, credit.getTypeCredit());
+            statement.setDouble(4, credit.getMontant());
+            statement.setString(5, credit.getStatus());
+            statement.setString(6, credit.getEcheancier());
+            statement.setString(7, credit.getDocument());
             int rowsInserted = statement.executeUpdate();
             return rowsInserted > 0;
         } catch (SQLException e) {
@@ -235,6 +234,28 @@ public class CreditService {
             e.printStackTrace();
         }
         return false;
+    }
+    public Credit getCreditByUserId(String userId) {
+        String query = "SELECT * FROM demande WHERE id_compte = (SELECT id FROM compte WHERE id_user = ?)";
+        try {
+
+            PreparedStatement statement = cnx.prepareStatement(query);
+            statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Credit credit = new Credit();
+                credit.setIdCompte(resultSet.getString("id_compte"));
+                credit.setTypeCredit(resultSet.getString("type"));
+                credit.setMontant(resultSet.getDouble("description"));
+                credit.setStatus(resultSet.getString("statut"));
+                credit.setDocument(resultSet.getString("document"));
+                credit.setEcheancier(resultSet.getString("echeancier"));
+                return credit;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

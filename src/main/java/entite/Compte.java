@@ -64,11 +64,11 @@ public class Compte {
         this.dateValidite = dateValidite;
     }
 
-    public String getStatus() {
+    public String getStatut() {
         return statut;
     }
 
-    public void setStatus(String statut) {
+    public void setStatut(String statut) {
         this.statut = statut;
     }
 
@@ -97,4 +97,6 @@ public class Compte {
     }
 
 
+    public void setStatus(String statut) {
+    }
 }

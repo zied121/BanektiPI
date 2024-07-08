@@ -66,11 +66,10 @@
                     </columns>
                 </TableView>
                 <HBox spacing="10">
-                    <Label text="Status"/>
+                    <Label text="Statut"/>
                     <ComboBox fx:id="statusField">
                         <items>
                             <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Pending"/>
                                 <String fx:value="Approved"/>
                                 <String fx:value="Rejected"/>
                             </FXCollections>

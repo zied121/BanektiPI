@@ -26,7 +26,7 @@ public class CompteService implements CompteServiceInterface {
                     compte.setRib(resultSet.getLong("rib"));
                     compte.setDateOuverture(resultSet.getTimestamp("date_ouverture"));
                     compte.setDateValidite(resultSet.getDate("date_validite"));
-                    compte.setStatus(resultSet.getString("statut"));
+                    compte.setStatut(resultSet.getString("statut"));
                     compte.setSolde(resultSet.getFloat("solde"));
                     compte.setDevise(resultSet.getString("devise"));
                     compte.setUserId(resultSet.getInt("id_user"));
@@ -69,6 +69,19 @@ public class CompteService implements CompteServiceInterface {
     }
 
     @Override
+    public boolean hasCourantAccount(int userId) throws SQLException {
+        String query = "SELECT COUNT(*) FROM compte WHERE type = 'courant' AND id_user = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+    @Override
     public void updateCompte(Compte compte) throws SQLException {
         String query = "UPDATE compte SET type = ?, num = ?, rib = ?, statut = ?, solde = ?, devise = ? WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
@@ -76,7 +89,7 @@ public class CompteService implements CompteServiceInterface {
             statement.setString(1, compte.getType());
             statement.setInt(2, compte.getNum());
             statement.setLong(3, compte.getRib());
-            statement.setString(4, compte.getStatus());
+            statement.setString(4, compte.getStatut());
             statement.setFloat(5, compte.getSolde());
             statement.setString(6, compte.getDevise());
             statement.setInt(7, compte.getId());
@@ -106,19 +119,5 @@ public class CompteService implements CompteServiceInterface {
     private long generateRib() {
         SecureRandom random = new SecureRandom();
         return new BigInteger(52, random).longValue();
-    }
-
-    public String getUserName(int userId) throws SQLException {
-        String query = "SELECT nom FROM user WHERE id = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, userId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getString("nom");
-                }
-            }
-        }
-        return "Unknown"; // Return a default value if user not found or handle appropriately
     }
 }

@@ -2,6 +2,7 @@ package Controllers;
 
 import Service.AssuranceService;
 import entite.Assurance;
+import entite.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -51,6 +52,7 @@ public class AssuranceController {
 
     private ObservableList<Assurance> assuranceList;
     private String idUser;
+    private String userId;
 
     public AssuranceController() {
         assuranceService = new AssuranceService();
@@ -58,7 +60,8 @@ public class AssuranceController {
 
     @FXML
     public void initialize() {
-        this.idUser = String.valueOf(UserSession.getInstance().getUserId());
+        User user = UserSession.getInstance().getUser();
+        this.userId = String.valueOf(user.getId());
         idUserColumn.setCellValueFactory(new PropertyValueFactory<>("idUser"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         dateDebutColumn.setCellValueFactory(new PropertyValueFactory<>("dateDebut"));
@@ -75,36 +78,6 @@ public class AssuranceController {
     private void loadAssurances() {
         assuranceList.clear();
         assuranceList.addAll(assuranceService.getAllAssurances());
-    }
-    @FXML
-    public void handleAddAssurance(ActionEvent actionEvent) {
-        String idUser = this.idUser;
-        String type = typeField.getText();
-        String dateDebut = dateDebutField.getText();
-        String dateFin = dateFinField.getText();
-        String document = documentField.getText();
-        String image = imageField.getText();
-
-        if (!validateInputs(idUser, type, dateDebut, dateFin, document, image)) {
-            return;
-        }
-
-        Assurance assurance = new Assurance();
-        assurance.setIdUser(idUser);
-        assurance.setType(type);
-        assurance.setDateDebut(dateDebut);
-        assurance.setDateFin(dateFin);
-        assurance.setDocument(document);
-        assurance.setImage(image);
-        assurance.setStatus("Pending"); // Default status for user-added assurances
-
-        boolean success = assuranceService.addAssurance(assurance);
-        if (success) {
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Assurance added successfully!");
-            clearFields();
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to add assurance.");
-        }
     }
 
     private boolean validateInputs(String idUser, String type, String dateDebut, String dateFin, String document, String image) {

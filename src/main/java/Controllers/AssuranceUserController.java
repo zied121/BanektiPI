@@ -1,6 +1,7 @@
 package Controllers;
 import Service.AssuranceService;
 import entite.Assurance;
+import entite.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,8 +16,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 public class AssuranceUserController {
-    @FXML
-    private ComboBox<String> statusField;
+
     @FXML
     private TextField idUserField;
     @FXML
@@ -48,22 +48,18 @@ public class AssuranceUserController {
     private TableColumn<Assurance, Void> actionsColumn;
 
     private ObservableList<Assurance> assuranceList;
-    private String idUser;
+    private String userId;
+    private User user;
 
     public AssuranceUserController() {
         assuranceService = new AssuranceService();
     }
     @FXML
     public void initialize() {
-        this.idUser = String.valueOf(UserSession.getInstance().getUserId());
-        idUserField.setText(idUser);
+        User user = UserSession.getInstance().getUser();
+        this.userId = String.valueOf(user.getId());
+        idUserField.setText(this.userId);
 
-    }
-    @FXML
-
-    private void loadAssurances() {
-        assuranceList.clear();
-        assuranceList.addAll(assuranceService.getAllAssurances());
     }
     @FXML
     public void handleAddAssurance(ActionEvent actionEvent) {
@@ -73,6 +69,7 @@ public class AssuranceUserController {
         String dateFin = dateFinField.getText();
         String document = documentField.getText();
         String image = imageField.getText();
+
 
         if (!validateInputs(idUser, type, dateDebut, dateFin, document, image)) {
             return;
@@ -85,7 +82,7 @@ public class AssuranceUserController {
         assurance.setDateFin(dateFin);
         assurance.setDocument(document);
         assurance.setImage(image);
-        assurance.setStatus("Pending"); // Default status for user-added assurances
+       // assurance.setStatus("Pending"); // Default status for user-added assurances
 
         boolean success = assuranceService.addAssurance(assurance);
         if (success) {

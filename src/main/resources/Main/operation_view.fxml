@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -12,16 +14,13 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-
 <?import java.net.URL?>
 
-<?import javafx.scene.control.ListView?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.CreditadminController">
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.OperationController">
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@UserView.css" />
     </stylesheets>
-
-    <HBox spacing="0" prefHeight="600.0" prefWidth="800.0">
+    <HBox spacing="0" prefHeight="900.0" prefWidth="800.0">
         <!-- Sidebar -->
         <VBox spacing="10" alignment="TOP_LEFT" prefWidth="200.0" styleClass="sidebar">
             <ImageView fitWidth="150.0" fitHeight="100.0">
@@ -30,7 +29,7 @@
             <VBox spacing="5">
                 <Button text="Home" styleClass="navButton"/>
                 <Button text="Users" styleClass="navButton"/>
-                <Button text="Credits" styleClass="navButton"/>
+                <Button text="Credits" styleClass="navButton" onAction="#handlecreditButtoncredituser"/>
                 <Button text="Assurance" styleClass="navButton"/>
                 <Button text="Operation" styleClass="navButton"/>
                 <Button text="Create Account" styleClass="navButton"/>
@@ -41,31 +40,33 @@
         <!-- Main Content -->
         <AnchorPane prefWidth="600.0">
             <VBox spacing="10" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0">
-                <Label text="Consult Credit Operation" styleClass="header"/>
+                <Label text="Operation Management" styleClass="header"/>
                 <VBox spacing="10" alignment="CENTER">
                     <padding>
                         <Insets top="20" right="20" bottom="20" left="20"/>
                     </padding>
-                    <TextField fx:id="userIdField" promptText="Enter User ID" />
-                    <TextField fx:id="idCompteField" promptText="Account ID" />
-                    <ComboBox fx:id="typeCreditCombo" promptText="Type of Credit" disable="true"/>
-                    <TextField fx:id="montantField" promptText="Amount" disable="true"/>
-                    <ComboBox fx:id="statusCombo" promptText="Status">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Welcome to your agency"/>
-                                <String fx:value="refused"/>
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
-                    <TextField fx:id="documentField" promptText="Document" disable="true"/>
-                    <Button text="Download Selected File" onAction="#handleDownloadDocument"/>
+                    <TableView fx:id="operationTable">
+                        <columns>
+                            <TableColumn fx:id="typeOpColumn" text="Type Operation"/>
+                            <TableColumn fx:id="montantColumn" text="Montant"/>
+                            <TableColumn fx:id="idCompteColumn" text="Compte ID"/>
+                            <TableColumn fx:id="RibCompteDestinationColumn" text="Compte Destination Rib"/>
+                            <TableColumn fx:id="dateOpColumn" text="Date Operation"/>
+                        </columns>
+                    </TableView>
 
-                    <TextField fx:id="echeancierField" promptText="Schedule" disable="true"/>
-                    <Button text="Check account" onAction="#handleCheckAccount" styleClass="checkButton"/>
-                    <Button text="Update Status" onAction="#handleUpdateStatus" styleClass="validateButton"/>
+                    <Label text="Type Operation:"/>
+                    <ComboBox fx:id="typeOpField"/>
+                    <Label text="Montant:"/>
+                    <TextField fx:id="montantField"/>
+                    <Label text="Compte RIB:"/>
+                    <ComboBox fx:id="idCompteField"/>
+                    <Label text="Compte Destination RIB:"/>
+                    <TextField fx:id="RibCompteDestinationField"/>
+                    <Button text="Add Operation" onAction="#handleAddOperation"/>
+
                 </VBox>
             </VBox>
         </AnchorPane>
     </HBox>
-</AnchorPane>
+</VBox>

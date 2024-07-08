@@ -1,33 +1,35 @@
 package util;
 
+import entite.User;
+
 public class UserSession {
 
     private static UserSession instance;
-    private int userId;
-    private  String role;
-    private UserSession() {
-        // private constructor to prevent instantiation
-        userId = 0; // Or initialize with a default value
+    private User user;
+
+    private UserSession(User user) {
+        this.user = user;
+    }
+
+    public static void initSession(User user) {
+        if (instance == null) {
+            instance = new UserSession(user);
+        }
     }
 
     public static UserSession getInstance() {
-        if (instance == null) {
-            instance = new UserSession();
-        }
         return instance;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public User getUser() {
+        return user;
     }
 
-    public  int getUserId() {
-        return userId;
+    public void clearSession() {
+        instance = null;
     }
 
-    public void setUserRole(String role) {
-    }
-    public String getUserRole(){
-        return role;
+    public int getUserId() {
+        return 0;
     }
 }

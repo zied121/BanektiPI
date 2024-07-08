@@ -60,16 +60,8 @@
                     <Label text="Image URL"/>
                     <TextField fx:id="imageField"/>
                     <Button text="Upload Image" onAction="#handleUploadImage"/>
-                    <Label text="Status"/>
-                    <ComboBox fx:id="statusField">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Pending"/>
-                                <String fx:value="Approved"/>
-                                <String fx:value="Rejected"/>
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
+<!--                    <Label text="Status"/>-->
+<!--                    <TextField fx:id="statusField"/>-->
                     <Button text="Add Assurance" onAction="#handleAddAssurance"/>
                 </VBox>
             </VBox>

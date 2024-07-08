@@ -12,7 +12,8 @@ module com.example.projetpi {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.sql;
-    requires jdk.jsobject;
+    requires java.desktop;
+    requires java.mail;
     requires cloudinary.core;
 
     opens Main to javafx.fxml;
