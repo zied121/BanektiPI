@@ -25,7 +25,7 @@ public class UserSession {
         return user;
     }
 
-    public void clearSession() {
+    public static void clearSession() {
         instance = null;
     }
 

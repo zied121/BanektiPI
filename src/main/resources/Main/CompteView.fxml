@@ -47,12 +47,12 @@
                 <TableView fx:id="compteTable" prefHeight="365.0" prefWidth="974.0">
                     <columns>
                         <TableColumn fx:id="compteIdColumn"  prefWidth="60.20001220703125" text="User ID"/>
-                        <TableColumn fx:id="typeColumn" prefWidth="87.20001220703125" text="Nom"/>
-                        <TableColumn fx:id="numColumn" prefWidth="183.20001220703125" text="Prenom"/>
-                        <TableColumn fx:id="ribColumn"  text="Age"/>
-                        <TableColumn fx:id="statutColumn" text="Mot de passe"/>
-                        <TableColumn fx:id="soldeColumn" prefWidth="83.20001220703125" text="CIN"/>
-                        <TableColumn fx:id="deviseColumn"  text="Role"/>
+                        <TableColumn fx:id="typeColumn" prefWidth="87.20001220703125" text="type"/>
+                        <TableColumn fx:id="numColumn" prefWidth="183.20001220703125" text="Num-Tel"/>
+                        <TableColumn fx:id="ribColumn"  text="RIB"/>
+                        <TableColumn fx:id="statutColumn" text="Statut"/>
+                        <TableColumn fx:id="soldeColumn" prefWidth="83.20001220703125" text="Solde"/>
+                        <TableColumn fx:id="deviseColumn"  text="Devise"/>
 
 
 

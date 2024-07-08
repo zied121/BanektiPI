@@ -43,7 +43,7 @@
                                 <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                     <children>
                                         <Button fx:id="signInButton" onAction="#handleLoginButtonAction" styleClass="login-button" text="Sign In" />
-                                        <Button fx:id="adminDashboardButton" onAction="#handleLoginButtonAction" styleClass="login-button" text="Go To Admin Dashboard" />
+                                        <Button fx:id="adminDashboardButton" onAction="#handleAdminLoginButtonAction" styleClass="login-button" text="Go To Admin Dashboard" />
                                     </children>
                                 </HBox>
                             </children>

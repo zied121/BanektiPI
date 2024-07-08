@@ -118,3 +118,76 @@
     -fx-font-size: 14px;
     -fx-padding: 10px;
 }
+/* Chart Styles */
+.chart {
+    -fx-background-color: transparent;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-legend {
+    -fx-text-fill: #FFFFFF;
+}
+
+.chart-legend-item-symbol {
+    -fx-background-color: #1e88e5;
+}
+
+.chart-title {
+    -fx-text-fill: #FFFFFF;
+}
+
+.chart-line-symbol {
+    -fx-background-color: #42a5f5, white;
+    -fx-background-radius: 3px;
+}
+
+.chart-series-line {
+    -fx-stroke: #42a5f5;
+    -fx-stroke-width: 2px;
+}
+
+.table-view {
+    -fx-background-color: #394963;
+    -fx-text-background-color: #FFFFFF;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 10;
+    -fx-border-radius: 8;
+}
+
+.table-column-header-background {
+    -fx-background-color: #2E3B4E;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+}
+
+.table-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+}
+
+.vbox {
+    -fx-background-color: #2E3B4E;
+    -fx-padding: 20;
+    -fx-spacing: 20;
+}
+
+.hbox {
+    -fx-spacing: 20;
+}
+
+.recent-transactions-box {
+    -fx-background-color: #394963;
+    -fx-padding: 10;
+    -fx-border-radius: 8;
+}
+
+.recent-transactions-box .label {
+    -fx-text-fill: #42a5f5;
+    -fx-font-size: 16px;
+}

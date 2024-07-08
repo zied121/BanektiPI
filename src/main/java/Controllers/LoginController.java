@@ -37,7 +37,7 @@ public class LoginController {
             showAlert(AlertType.INFORMATION, "Login Successful", "Welcome " + authenticatedUser.getNom() + "!");
 
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/operation_view.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/homePage.fxml"));
                 Parent root = loader.load();
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -45,7 +45,7 @@ public class LoginController {
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert(AlertType.ERROR, "Error", "Unable to load operation view.");
+                showAlert(AlertType.ERROR, "Error", "Unable to homePage.");
             }
         } else {
             showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");

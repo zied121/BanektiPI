@@ -28,13 +28,11 @@
                 <Image url="@logo.png" />
             </ImageView>
             <VBox spacing="5">
-                <Button text="Home" styleClass="navButton"/>
-                <Button text="Users" styleClass="navButton"/>
-                <Button text="Credits" styleClass="navButton"/>
-                <Button text="Assurance" styleClass="navButton"/>
-                <Button text="Operation" styleClass="navButton"/>
-                <Button text="Create Account" styleClass="navButton"/>
-                <Button text="Settings" styleClass="navButton"/>
+                <Button text="Home" styleClass="navButton" onAction="#handlehomeButton"/>
+                <Button text="Credits" styleClass="navButton" onAction="#handlecreditButtoncredituser"/>
+                <Button text="Assurance" styleClass="navButton" onAction="#handleassuranceButtonuser"/>
+                <Button text="Operation" styleClass="navButton" onAction="#handleoperationButtonuser"/>
+                <Button text="Déconnecter" styleClass="navButton" onAction="#handlesginout"/>
             </VBox>
         </VBox>
 

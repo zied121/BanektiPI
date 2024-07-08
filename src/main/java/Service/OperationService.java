@@ -38,7 +38,7 @@ public class OperationService {
         }
     }
 
-    public List<Operation> getOperationsByAccountIds(List<Integer> accountIds) throws SQLException {
+    public  List<Operation> getOperationsByAccountIds(List<Integer> accountIds) throws SQLException {
         String query = "SELECT * FROM operation WHERE id_compte IN (" +
                 accountIds.stream().map(String::valueOf).reduce((a, b) -> a + "," + b).orElse("") + ")";
         List<Operation> operations = new ArrayList<>();

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import java.net.URL?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.HomepageController">
     <stylesheets>
@@ -21,29 +21,37 @@
                 <Image url="@logo.png" />
             </ImageView>
             <VBox spacing="5">
-                <Button styleClass="navButton" text="Home" />
-                <Button styleClass="navButton" text="Users" />
-                <Button styleClass="navButton" text="Credits" onAction="#handlecreditButtoncredituser"/>
-                <Button styleClass="navButton" text="Assurance" onAction="#handleButtonAssurance" />
-                <Button styleClass="navButton" text="Operation" />
-                <Button styleClass="navButton" text="Create Account" />
-                <Button styleClass="navButton" text="Settings" />
+                <Button text="Home" styleClass="navButton" onAction="#handlehomeButton"/>
+                <Button text="Credits" styleClass="navButton" onAction="#handlecreditButtoncredituser"/>
+                <Button text="Assurance" styleClass="navButton" onAction="#handleassuranceButtonuser"/>
+                <Button text="Operation" styleClass="navButton" onAction="#handleoperationButtonuser"/>
+                <Button text="Déconnecter" styleClass="navButton" onAction="#handlesignout"/>
             </VBox>
         </VBox>
 
         <!-- Main Content -->
         <VBox spacing="20" styleClass="main-container">
-            <HBox styleClass="header">
-                <Label text="Welcome, " styleClass="welcome-label"/>
-                <Label fx:id="userNameLabel" styleClass="username-label"/>
-            </HBox>
-            <TableView fx:id="accountsTable" styleClass="accounts-table">
-                <columns>
-                    <TableColumn fx:id="ribColumn" text="RIB" styleClass="table-column"/>
-                    <TableColumn fx:id="soldeColumn" text="Solde" styleClass="table-column"/>
-                    <TableColumn fx:id="statusColumn" text="Status" styleClass="table-column"/>
-                </columns>
-            </TableView>
+            <Label text="Overview" styleClass="header"/>
+            <VBox spacing="10">
+                <Label text="Money Flow" />
+                <HBox>
+                    <LineChart fx:id="moneyFlowChart">
+                        <xAxis>
+                            <NumberAxis label="Days"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis label="Balance"/>
+                        </yAxis>
+                    </LineChart>
+                </HBox>
+                <Label text="Total Balance:" />
+                <Label fx:id="totalBalanceLabel" text="0.00"/>
+                <Label text="Recent Transaction" styleClass="header"/>
+                <VBox fx:id="recentTransactionsBox" spacing="10" styleClass="recent-transactions-box">
+                    <!-- Recent transactions will be added here dynamically -->
+                </VBox>
+                <Button text="View More" />
+            </VBox>
         </VBox>
     </HBox>
 </AnchorPane>
