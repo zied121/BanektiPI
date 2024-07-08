@@ -1,144 +1,157 @@
 package Service;
 
 import entite.Reclamation;
-import entite.Reponse;
 import entite.User;
 import util.DatabaseUtil;
+import util.MyConnection;
+import util.UserSession;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-public class Reclamationservice implements IserviceReclamation<Reclamation> {
 
-    private Connection cnx;
+public class Reclamationservice implements Iservice<Reclamation> {
 
+    private Connection connection;
+    User user = UserSession.getInstance().getUser();
 
     public Reclamationservice() {
-            try {
-                cnx = DatabaseUtil.getConnection();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-
-
-    public void insertPST(Reclamation Reclamation) {
-        String requette="insert into reclamation(type_rec,description,statut,date_rec,id_user) " +
-                "values (?, ?, ?, ?,?)";
-
-        try  {
-            PreparedStatement pst=cnx.prepareStatement(requette);
-            pst.setString(1,Reclamation.getType_rec());
-            pst.setString(2,Reclamation.getDescription());
-            pst.setString(3,Reclamation.getStatut());
-            pst.setDate(4,Date.valueOf(Reclamation.getDate_rec()));
-            pst.setInt(5, Reclamation.getId_user());
-
-            pst.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-   // @Override
-    public void insert(Reclamation Reclamation) {
-        String requette="insert into Reclamation(type_rec,description,statut,date_rec) " +
-                "values ('"+Reclamation.getType_rec()+"','"+Reclamation.getDescription()+"''"+Reclamation.getStatut()+"',"+Reclamation.getDate_rec()+")";
-
+        // Accéder à la source de données
         try {
-            Statement ste = cnx.createStatement();
-            ste.executeUpdate(requette);
-        } catch (Exception e) {
+            connection = DatabaseUtil.getConnection();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void delete(Reclamation Reclamation) {
-        String requete = "DELETE FROM Reclamation WHERE id_rec = ?";
-        try (PreparedStatement pst = cnx.prepareStatement(requete)) {
-            pst.setInt(1, Reclamation.getId_rec());
+    public void insert(Reclamation Reclamation) {
+        String query = "INSERT INTO reclamation(type, statut, description, id_user, date) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pst = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            pst.setString(1, Reclamation.getType());
+            pst.setString(2, Reclamation.getStatut());
+            pst.setString(3, Reclamation.getDescription());
+             pst.setInt(4, Reclamation.getId_user());
+            //pst.setInt(4, User.getId();
+            pst.setDate(5, Date.valueOf(Reclamation.getDate()));
+
             pst.executeUpdate();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+
+
+    @Override
+    public void delete(Reclamation Reclamation){
+
+
+        try {
+            String requete="DELETE FROM reclamation WHERE id =" +Reclamation.getId(); ;
+
+            Statement st= MyConnection.getInstance().getCnx().createStatement();
+            st.executeUpdate(requete);
+            System.out.println("Reclamation supprimer!");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
     @Override
     public void update(Reclamation Reclamation) {
-        String requete = "UPDATE Reclamation SET type_rec = ?, description = ?, statut = ?, date_rec = ? WHERE id_rec = ?";
-        try (PreparedStatement pst = cnx.prepareStatement(requete)) {
-            pst.setString(1, Reclamation.getType_rec());
-            pst.setString(2, Reclamation.getDescription());
-            pst.setString(3, Reclamation.getStatut());
-            pst.setDate(4, Date.valueOf(Reclamation.getDate_rec()));
-            pst.setInt(5, Reclamation.getId_rec());
+        String query = "UPDATE reclamation SET type = ?, statut = ?, description = ?, id_user = ?, date = ? " +
+                "WHERE id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, Reclamation.getType());
+            pst.setString(2, Reclamation.getStatut());
+            pst.setString(3, Reclamation.getDescription());
+            pst.setInt(4, Reclamation.getId_user());
+            pst.setDate(5, Date.valueOf(Reclamation.getDate()));
+            pst.setInt(6, Reclamation.getId());
+
             pst.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public List<Reclamation> readAll(Reclamation reclamation) {
-        List<Reclamation> list=new ArrayList<>();
-        //String requette="select * from Reclamation where id_user="+reclamation.getId_user();
-        //select r.* , COALESCE(rep.message, 'Not Treated') AS message from Reclamation r , Reponse rep where r.id_user="+reclamation.getId_user()+" and r.id_rec=rep.id_rec"
-        String requette=" SELECT r.*, COALESCE(rep.message, 'Not Treated') AS message " +
-                "FROM Reclamation r LEFT JOIN Reponse rep ON r.id_rec = rep.id_rec " +
-                "WHERE r.id_user = " + reclamation.getId_user();
-        try {
-            Statement ste=cnx.createStatement();
-            ResultSet rs=ste.executeQuery(requette);
-            while (rs.next()){
-                Reclamation Reclamation=new Reclamation();
-                Reclamation.setId_rec(rs.getInt("id_rec"));
-                Reclamation.setType_rec(rs.getString("type_rec"));
-                Reclamation.setType_rec(rs.getString("description"));
+@Override
+    public List<Reclamation> readAll() {
+        List<Reclamation> Reclamations = new ArrayList<>();
+        String query = "SELECT d.*, doc.reponse FROM reclamation d LEFT JOIN repond doc ON d.id = doc.id_rec";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Reclamation Reclamation = new Reclamation();
+                Reclamation.setId(rs.getInt("id"));
+                Reclamation.setType(rs.getString("type"));
                 Reclamation.setStatut(rs.getString("statut"));
-                Reclamation.setDate_rec(rs.getDate("date_rec").toLocalDate());
+                Reclamation.setDescription(rs.getString("description"));
+                Reclamation.setId_user(rs.getInt("id_user"));
+                Reclamation.setDate(rs.getDate("date").toLocalDate());
+                Reclamation.setReponse(rs.getString("reponse"));
 
-                Reponse reponse = new Reponse();
-                reponse.setMessage(rs.getString("message"));
-                Reclamation.setReponse(reponse);
-
-                list.add(Reclamation);
+                Reclamations.add(Reclamation);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return list;
+        return Reclamations;
     }
 
+
     @Override
-    public List<Reclamation> readAll() {
+    public List<Reclamation> readAll(int id_user) { //id user
+        List<Reclamation> Reclamations = new ArrayList<>();
+        String query = "SELECT d.*, doc.reponse FROM reclamation d LEFT JOIN repond doc ON d.id = doc.id_rec where d.id_user="+id_user;
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Reclamation Reclamation = new Reclamation();
+                Reclamation.setId(rs.getInt("id"));
+                Reclamation.setType(rs.getString("type"));
+                Reclamation.setStatut(rs.getString("statut"));
+                Reclamation.setDescription(rs.getString("description"));
+                Reclamation.setId_user(rs.getInt("id_user"));
+                Reclamation.setDate(rs.getDate("date").toLocalDate());
+                Reclamation.setReponse(rs.getString("reponse"));
+
+                Reclamations.add(Reclamation);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Reclamations;
+    }
+
+
+    @Override
+    public Reclamation readById(int id) {
+        String query = "SELECT d.*, u.email FROM reclamation d JOIN user u ON d.id_user = u.id WHERE d.id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                Reclamation Reclamation = new Reclamation();
+                Reclamation.setId(rs.getInt("id"));
+                Reclamation.setType(rs.getString("type"));
+                Reclamation.setStatut(rs.getString("statut"));
+                Reclamation.setDescription(rs.getString("description"));
+                Reclamation.setId_user(rs.getInt("id_user"));
+                Reclamation.setDate(rs.getDate("date").toLocalDate());
+                Reclamation.setEmail(rs.getString("email")); // Add this line
+
+                return Reclamation;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
-    @Override
-
-
-    public Reclamation readbyid(int id) {
-        String requete="select * from Reclamation where id="+id;
-        Reclamation d=null;
-        try {
-            Statement ste=cnx.createStatement();
-            ResultSet rs=ste.executeQuery(requete);
-            User user = null;
-            if (rs.next())// if 5tr mara un seul objet
-            {
-                d=new Reclamation(rs.getString(1),rs.getString(2),rs.getString(3),rs.getDate(4).toLocalDate());//, rs.getInt(5));
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return d;
-
-    }
 
 
 }

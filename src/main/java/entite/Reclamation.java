@@ -1,71 +1,131 @@
 package entite;
 
 import java.time.LocalDate;
-// add read by status
+
 public class Reclamation {
-    private int id_rec;
-    private String type_rec;
-    private String description;
+    private int id;
+    private String type;
     private String statut;
+    private String description;
+    private int id_user; // Clé étrangère de la table User
+    private LocalDate date;
+    private String reponse;
+    private Repond Repond;
+    private String rib;
+    private String nom;
+    private String prenom;
+    private int nb_compte;
+    private double solde;
+    private String statut_compte;
+    private String type_op;
+    private double montant;
+    private LocalDate date_op;
+    private String email;
 
-    private LocalDate date_rec;
-    //private int id_user;
-    private User user;
-    private Reponse reponse;
-    public Reclamation() {
-    }
-    public Reclamation(int id_rec, String type_rec, String description, String statut, LocalDate date_rec, User id_user) {
-        this.id_rec = id_rec;
-        this.type_rec = type_rec;
-        this.description = description;
+
+    public Reclamation() {}
+
+    public Reclamation(int id, String type, String statut, String description, int id_user, LocalDate date) {
+        this.id = id;
+        this.type = type;
         this.statut = statut;
-        this.date_rec = date_rec;
-        this.user = id_user;
+        this.description = description;
+        this.id_user = id_user;
+        this.date = date;
     }
 
-    public Reclamation(String type_rec, String description, String statut, LocalDate date_rec, int id_user) {
-        this.type_rec = type_rec;
-        this.description = description;
+    public Reclamation(String type, String statut, String description, int id_user, LocalDate date) {
+        this.type = type;
         this.statut = statut;
-        this.date_rec = date_rec;
-        //   this.id_user = id_user;
+        this.description = description;
+        this.id_user = id_user;
+        this.date = date;
     }
 
-
-    public Reclamation(String type_rec, String description, String statut, LocalDate date_rec) {
-        this.type_rec = type_rec;
-        this.description = description;
+    public Reclamation(String type, String statut, String description, LocalDate date) {
+        this.type = type;
         this.statut = statut;
-        this.date_rec = date_rec;
-    }
-
-    public Reclamation(String sujetRec, String typeRec) {
-        this.type_rec = typeRec;
-        this.description = sujetRec;
-    }
-
-    public int getId_rec() {
-        return id_rec;
-    }
-
-    public void setId_rec(int id_rec) {
-        this.id_rec = id_rec;
-    }
-
-    public String getType_rec() {
-        return type_rec;
-    }
-
-    public void setType_rec(String type_rec) {
-        this.type_rec = type_rec;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
+        this.date = date;
+    }
+
+    public Reclamation(String type, String statut, String description) {
+        this.type = type;
+        this.statut = statut;
+        this.description = description;
+    }
+
+    public Reclamation(String type, String statut, String description, LocalDate date, int id_user) {
+        this.type = type;
+        this.statut = statut;
+        this.description = description;
+        this.date = date;
+        this.id_user = id_user;
+    }
+
+    public String getReponse() {
+        return reponse;
+    }
+
+    public void setReponse(String reponse) {
+        this.reponse = reponse;
+    }
+
+    public int getNb_compte() {
+        return nb_compte;
+    }
+
+    public void setNb_compte(int nb_compte) {
+        this.nb_compte = nb_compte;
+    }
+
+    public double getSolde() {
+        return solde;
+    }
+
+    public void setSolde(double solde) {
+        this.solde = solde;
+    }
+
+    public String getStatut_compte() {
+        return statut_compte;
+    }
+
+    public void setStatut_compte(String statut_compte) {
+        this.statut_compte = statut_compte;
+    }
+
+    public String getType_op() {
+        return type_op;
+    }
+
+    public void setType_op(String type_op) {
+        this.type_op = type_op;
+    }
+
+    public double getMontant() {
+        return montant;
+    }
+
+    public void setMontant(double montant) {
+        this.montant = montant;
+    }
+
+    // Getters and setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getStatut() {
@@ -76,45 +136,87 @@ public class Reclamation {
         this.statut = statut;
     }
 
-    public LocalDate getDate_rec() {
-        return date_rec;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDate_rec(LocalDate date_rec) {
-        this.date_rec = date_rec;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getId_user() {
-//        return user.getId();
-        if (this.user == null) {
-            return 1;
-        } else {
-            return this.user.getId();
+        return id_user;
+    }
 
-        }}
+    public void setId_user(int id_user) {
+        this.id_user = id_user;
+    }
 
+    public LocalDate getDate() {
+        return date;
+    }
 
-//    public int getId_user() {
-//        return id_user;
-//    }
+    public LocalDate getDate_op() {
+        return date_op;
+    }
+
+    public void setDate_op(LocalDate date_op) {
+        this.date_op = date_op;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public Repond getRepond() {
+        return Repond;
+    }
+
+    public void setRepond(Repond Repond) {
+        this.Repond = Repond;
+    }
+
+    public String getRib() {
+        return rib;
+    }
+
+    public void setRib(String rib) {
+        this.rib = rib;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Override
     public String toString() {
         return "Reclamation{" +
-                "id_rec=" + id_rec +
-                ", type_rec='" + type_rec + '\'' +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", statut='" + statut + '\'' +
                 ", description='" + description + '\'' +
-                ", statut=" + statut +
-                ", date_rec='" + date_rec + '\'' +
-                ", id_user=" + user +
+                ", id_user=" + id_user +
+                ", date=" + date +
                 '}';
-    }
-
-    public Reponse getReponse() {
-        return reponse;
-    }
-
-    public void setReponse(Reponse reponse) {
-        this.reponse=reponse;
     }
 }

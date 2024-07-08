@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.UpdateDelete">
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.modifier_supprimer_reclamation">
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@styleFile.css" />
     </stylesheets>
 
-    <HBox prefHeight="600.0" prefWidth="800.0" spacing="0">
+    <HBox prefHeight="800.0" prefWidth="1200.0" spacing="0">
         <!-- Sidebar -->
         <VBox alignment="TOP_LEFT" prefWidth="200.0" spacing="10" styleClass="sidebar">
             <ImageView fitHeight="100.0" fitWidth="150.0">
@@ -37,48 +38,47 @@
         </VBox>
 
         <!-- Main Content -->
-        <AnchorPane prefWidth="600.0">
-            <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0" spacing="10">
-                <Label styleClass="header" text="Liste des reclamations" />
-                <TableView fx:id="RecTable" prefHeight="400.0" prefWidth="600.0">
+        <AnchorPane prefWidth="1000.0">
+            <VBox alignment="TOP_CENTER" layoutX="-1.0" layoutY="3.0" prefHeight="900.0" prefWidth="1000.0" spacing="10">
+                <Label styleClass="header" text="Liste des Reclamations" />
+                <TableView fx:id="ReclamationsTable" prefHeight="365.0" prefWidth="974.0">
                     <columns>
                         <TableColumn text="Type" fx:id="typeColumn" />
                         <TableColumn prefWidth="126.4000244140625" text="Description" fx:id="descriptionColumn" />
                         <TableColumn minWidth="4.79998779296875" prefWidth="91.99993896484375" text="Statut" fx:id="statutColumn" />
-                        <TableColumn prefWidth="126.4000244140625" text="Reponse" fx:id="reponseColumn" />
                         <TableColumn prefWidth="78.4000244140625" text="Date" fx:id="dateColumn" />
+                        <TableColumn text="Réponse" fx:id="reponseColumn" />
                     </columns>
                 </TableView>
-                <VBox spacing="10">
-                    <HBox spacing="10">
-                        <Button onAction="#modifierRec" text="Modifier" />
-                        <Button onAction="#DeleteRec" text="Supprimer" />
-                        <Button onAction="#action_ajouter" text="Ajouter" />
-
+                <VBox prefHeight="368.0" prefWidth="980.0" spacing="10">
+                    <HBox alignment="CENTER" spacing="10">
+                        <Button onAction="#ajouterReclamation" styleClass="actionButton" text="Ajouter" />
+                        <Button onAction="#modifierReclamation" styleClass="actionButton" text="Modifier" />
+                        <Button onAction="#supprimerReclamation" styleClass="actionButton" text="Supprimer" />
                     </HBox>
-                    <Label text="Détails de la demande sélectionnée" />
-                    <HBox spacing="10">
+                    <Label styleClass="detailsHeader" text="Détails de la Reclamation sélectionnée" />
+                    <HBox alignment="CENTER" spacing="10">
                         <Label text="Type:" />
                         <ComboBox fx:id="typeComboBox">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Service clientele" />
-                                    <String fx:value="Remboursement" />
-                                    <String fx:value="Validite carte" />
+                                    <String fx:value="rib" />
+                                    <String fx:value="extraits de compte" />
+                                    <String fx:value="Identité banquaire" />
                                     <String fx:value="autres" />
                                 </FXCollections>
                             </items>
                         </ComboBox>
                     </HBox>
-                    <HBox spacing="10">
+                    <HBox alignment="CENTER" spacing="10">
                         <Label text="Description:" />
                         <TextField fx:id="descriptionField" />
                     </HBox>
-                    <HBox spacing="10">
+                    <HBox alignment="CENTER" spacing="10">
                         <Label text="Statut:" />
                         <TextField fx:id="statutField" disable="true" />
                     </HBox>
-                    <HBox spacing="10">
+                    <HBox alignment="CENTER" spacing="10">
                         <Label text="Date:" />
                         <TextField fx:id="dateField" disable="true" />
                     </HBox>

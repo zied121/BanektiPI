@@ -9,7 +9,7 @@ public class User {
     private int cin;
     private String role;
     private int nbCompte;
-
+    private String email;
     // Getters and Setters
     public int getId() {
         return id;
@@ -73,5 +73,13 @@ public class User {
 
     public void setNbCompte(int nbCompte) {
         this.nbCompte = nbCompte;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

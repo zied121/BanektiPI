@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import java.net.URL?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.UserController">
+    <stylesheets>
+        <URL value="@UserView.css" />
+    </stylesheets>
+
+    <HBox prefHeight="800.0" prefWidth="1200.0" spacing="0">
+        <!-- Sidebar -->
+        <VBox alignment="TOP_LEFT" prefWidth="200.0" spacing="10" styleClass="sidebar">
+            <ImageView fitHeight="100.0" fitWidth="150.0">
+                <Image url="@logo.png" />
+            </ImageView>
+            <VBox spacing="5">
+                <Button styleClass="navButton" text="Home" />
+                <Button styleClass="navButton" text="Users" />
+                <Button styleClass="navButton" text="Credits" />
+                <Button styleClass="navButton" text="Assurance" />
+                <Button styleClass="navButton" text="Operation" />
+                <Button styleClass="navButton" text="Create Account" />
+                <Button styleClass="navButton" text="Settings" />
+            </VBox>
+        </VBox>
+
+        <!-- Main Content -->
+        <AnchorPane prefWidth="1000.0">
+            <VBox alignment="TOP_CENTER" layoutX="-1.0" layoutY="3.0" prefHeight="900.0" prefWidth="1000.0" spacing="10">
+                <Label styleClass="header" text="Liste des Utilisateurs" />
+                <TableView fx:id="userTable" prefHeight="365.0" prefWidth="974.0">
+                    <columns>
+                        <TableColumn fx:id="userIdColumn"  prefWidth="60.20001220703125" text="User ID"/>
+                        <TableColumn fx:id="nomColumn" prefWidth="87.20001220703125" text="Nom"/>
+                        <TableColumn fx:id="prenomColumn"  prefWidth="183.20001220703125" text="Prenom"/>
+                        <TableColumn fx:id="ageColumn"  text="Age"/>
+                        <TableColumn fx:id="mdpColumn" text="Mot de passe"/>
+                        <TableColumn fx:id="cinColumn" prefWidth="83.20001220703125" text="CIN"/>
+                        <TableColumn fx:id="roleColumn"  text="Role"/>
+                        <TableColumn fx:id="emailColumn"  prefWidth="183.20001220703125" text="Email"/>
+                        <TableColumn fx:id="nbCompteColumn" text="Nombre de comptes"/>
+
+
+
+                    </columns>
+                </TableView>
+
+                <VBox prefHeight="368.0" prefWidth="980.0" spacing="10">
+                    <HBox alignment="CENTER" spacing="10">
+                        <Button text="Create User"  styleClass="actionButton" onAction="#createUser"/>
+                        <Button text="Update User"  styleClass="actionButton" onAction="#updateUser"/>
+                        <Button text="Delete User" styleClass="actionButton" onAction="#deleteUser"/>
+                        <Button text="Clear Fields"  styleClass="actionButton" onAction="#clearFields"/>
+
+                        <Button fx:id="sendCredentialsButton"  styleClass="actionButton" text="Send Credentials via Email" onAction="#sendCredentials"/>
+                    </HBox>
+                    <Label styleClass="detailsHeader" text="Détails du user sélectionné" />
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label text="User ID"/>
+                        <TextField  fx:id="userIdField" prefHeight="100.0" prefWidth="600.0" disable="true" />
+                    </HBox>
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label text="Nom" />
+                        <TextField fx:id="nomField" prefHeight="100.0" prefWidth="600.0" promptText="Nom"/>
+                    </HBox>
+
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label text="Prenom"/>
+                        <TextField fx:id="prenomField" prefHeight="100.0" prefWidth="600.0" promptText="Prenom"/>
+                    </HBox>
+                    <HBox  alignment="CENTER" spacing="10">
+                        <Label text="Birthdate"/>
+                        <DatePicker fx:id="birthdatePicker" promptText="Birthdate"/>
+                    </HBox>
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label text="Age"/>
+                        <TextField fx:id="ageField"  prefHeight="100.0" prefWidth="600.0" promptText="Age" disable="true"/>
+                    </HBox>
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label text="Mot de passe"/>
+                        <TextField fx:id="mdpField" prefHeight="100.0" prefWidth="600.0" promptText="Mot de passe"/>
+                    </HBox>
+                    <HBox  alignment="CENTER" spacing="10">
+                        <Label text="CIN"/>
+                        <TextField fx:id="cinField" prefHeight="100.0" prefWidth="600.0" promptText="CIN"/>
+                    </HBox>
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label text="Email"/>
+                        <TextField fx:id="EmailField" prefHeight="100.0" prefWidth="600.0" promptText="Email"/>
+                    </HBox>
+                    <HBox  alignment="CENTER" spacing="10">
+                        <Label text="Role"/>
+                        <ComboBox fx:id="roleComboBox">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="client"/>
+                                    <String fx:value="admin"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </AnchorPane>
+    </HBox>
+</AnchorPane>

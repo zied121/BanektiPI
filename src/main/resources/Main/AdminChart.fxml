@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.chart.PieChart?>
+<?import java.net.URL?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Controllers.AdminChart"
+            prefHeight="500.0" prefWidth="1200.0">
+    <stylesheets>
+        <URL value="@styleFile.css" />
+    </stylesheets>
+
+    <HBox prefHeight="800.0" prefWidth="2000.0" spacing="0">
+        <!-- Sidebar -->
+        <VBox alignment="TOP_LEFT" prefWidth="200.0" spacing="10" styleClass="sidebar">
+            <ImageView fitHeight="100.0" fitWidth="150.0">
+                <Image url="@logo.png" />
+            </ImageView>
+            <VBox spacing="5">
+                <Button styleClass="navButton" text="Home" />
+                <Button styleClass="navButton" text="Users" />
+                <Button styleClass="navButton" text="Credits" />
+                <Button styleClass="navButton" text="Assurance" />
+                <Button styleClass="navButton" text="Operation" />
+                <Button styleClass="navButton" text="Create Account" />
+                <Button styleClass="navButton" text="Settings" />
+            </VBox>
+        </VBox>
+
+        <!-- Main Content -->
+        <StackPane alignment="CENTER" prefWidth="800.0" prefHeight="400.0">
+            <VBox fx:id="pieChartContainer" alignment="TOP_CENTER" spacing="10">
+                <Label text="Statut des reclamations" styleClass="titleLabel"/>
+                <PieChart fx:id="pieChart" prefHeight="100.0" prefWidth="1200.0" />
+                <Button onAction="#GoToAdmin" styleClass="recbutton" text="Passer >>"
+                        prefHeight="60.0" prefWidth="300.0" />
+            </VBox>
+        </StackPane>
+
+    </HBox>
+</AnchorPane>
