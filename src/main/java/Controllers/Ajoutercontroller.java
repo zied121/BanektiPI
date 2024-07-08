@@ -1,6 +1,7 @@
 package Controllers;
 
 import entite.Demande;
+import entite.User;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import util.UserSession;
 
 public class Ajoutercontroller {
 
@@ -24,6 +26,7 @@ public class Ajoutercontroller {
 
     @FXML
     private TextField txtdes;
+    User user = UserSession.getInstance().getUser();
 
     @FXML
     void action_ajouter(ActionEvent event) {
@@ -31,10 +34,10 @@ public class Ajoutercontroller {
         String description = txtdes.getText();
         String statut = "pas encore"; //  valeur par défaut
         LocalDate date = LocalDate.now();
-
-        Demande demande = new Demande(type, statut, description, date);
+        int user_id = user.getId();
+        Demande demande = new Demande(type, statut, description,user_id, date);
         Demandeservice demandeservice = new Demandeservice();
-        demandeservice.insert(demande);
+        demandeservice.insert(demande, user.getId() );
 
         // Afficher un popup pour informer l'utilisateur de l'ajout réussi
         showPopup("Demande ajoutée", "La demande a été ajoutée avec succès.");

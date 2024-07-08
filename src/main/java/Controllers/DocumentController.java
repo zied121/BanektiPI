@@ -7,15 +7,20 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DocumentController {
 
@@ -46,22 +51,33 @@ public class DocumentController {
     @FXML
     private TableColumn<Document, String> emailColumn;
 
-
     @FXML
     private TextArea reponseField;
 
     @FXML
     private TextField dateField;
+
     @FXML
     private ComboBox<String> statutComboBox;
+
+    @FXML
+    private ComboBox<String> filterStatusComboBox;
+    @FXML
+    private VBox pieChartContainer;
 
     private Documentservice documentService = new Documentservice();
     private Demandeservice demandeService = new Demandeservice();
 
+    private List<Document> allDocuments;
+    private PieChart pieChart;
+
     @FXML
     void initialize() {
         initializeTable();
+        loadData();
         showDetails(null);
+        PieChart pieChart = createPieChart();
+        pieChartContainer.getChildren().add(pieChart);
 
         documentsTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showDetails(newValue));
@@ -76,13 +92,47 @@ public class DocumentController {
         idUserColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getDemande().getId_user()).asObject());
         demandeDateColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getDemande().getDate()));
         emailColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDemande().getEmail()));
-        loadDocuments();
+    }
+
+    private void loadData() {
+        allDocuments = documentService.readAllWithDemandeDetails();
+        documentsTable.setItems(FXCollections.observableArrayList(allDocuments));
+    }
+
+    @FXML
+    private void filterByStatus(ActionEvent event) {
+        String selectedStatus = filterStatusComboBox.getValue();
+        if (selectedStatus.equals("Tous")) {
+            documentsTable.setItems(FXCollections.observableArrayList(allDocuments));
+        } else {
+            List<Document> filteredDocuments = allDocuments.stream()
+                    .filter(doc -> doc.getDemande().getStatut().equals(selectedStatus))
+                    .collect(Collectors.toList());
+            documentsTable.setItems(FXCollections.observableArrayList(filteredDocuments));
+        }
     }
 
     private void loadDocuments() {
         List<Document> documents = documentService.readAllWithDemandeDetails();
         documentsTable.setItems(FXCollections.observableArrayList(documents));
     }
+
+    private PieChart createPieChart() {
+        Map<String, Integer> data = documentService.fetchDataFromDatabase();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        data.forEach((status, count) -> pieChartData.add(new PieChart.Data(status, count)));
+
+        PieChart pieChart = new PieChart(pieChartData);
+        pieChart.setTitle("Répartition des Statuts");
+        loadDocuments();
+        return pieChart;
+    }
+
+
+
+
+
 
     @FXML
     private void showDetails(Document document) {
@@ -152,8 +202,8 @@ public class DocumentController {
         if (selectedDocument != null) {
             String newReponse;
 
-                // Sinon, utiliser la réponse saisie dans le champ
-                newReponse = reponseField.getText();
+            // Sinon, utiliser la réponse saisie dans le champ
+            newReponse = reponseField.getText();
             if (newReponse != null && !newReponse.isEmpty()) {
                 Document newDocument = new Document();
                 newDocument.setReponse(newReponse);
@@ -230,7 +280,7 @@ public class DocumentController {
             String newStatut = statutComboBox.getValue();
             if (newStatut != null && !newStatut.isEmpty()) {
                 selectedDocument.getDemande().setStatut(newStatut);
-                demandeService.update(selectedDocument.getDemande());
+                demandeService.update(selectedDocument.getDemande(), selectedDocument.getDemande().getId());
                 loadDocuments();
                 showAlert("Modification du Statut Réussie", null, "Le statut a été modifié avec succès.");
 
@@ -242,13 +292,14 @@ public class DocumentController {
                     String body;
                     if ("terminé".equals(newStatut)) {
                         subject = "Votre demande est terminée";
-                        body = "Bonjour," +"/n"+  "votre demande est terminée." + "/n" + "Vous pouvez consulter notre application pour voir la réponse.";
+                        body = "Bonjour,\n  Votre demande est terminée.\n  Vous pouvez consulter notre application pour voir la réponse.\nCordialement.\nMerci pour votre confiance.\nBnekti ";
                     } else if ("annulée".equals(newStatut)) {
                         subject = "Votre demande est annulée";
-                        body = "Bonjour, votre demande est annulée. Pour connaître les raisons de l'annulation, vous pouvez consulter notre application ou appeler notre service client.";
+                        body = "Bonjour,\n  Votre demande est annulée. \n  Pour connaître les raisons de l'annulation, vous pouvez consulter notre application ou appeler notre service client.\nCordialement.\nMerci pour votre confiance.\n Bnekti ";
                     } else {
                         return;
                     }
+
                     documentService.sendEmail(email, subject, body);
                 }
             } else {

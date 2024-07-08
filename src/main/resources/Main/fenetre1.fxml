@@ -16,10 +16,10 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Ajoutercontroller">
     <stylesheets>
-        <URL value="@style_client.css" />
+        <URL value="@style_document.css" />
     </stylesheets>
 
-    <HBox prefHeight="600.0" prefWidth="800.0" spacing="0">
+    <HBox prefHeight="800.0" prefWidth="1200.0" spacing="0">
         <!-- Sidebar -->
         <VBox alignment="TOP_LEFT" prefWidth="200.0" spacing="10" styleClass="sidebar">
             <ImageView fitHeight="100.0" fitWidth="150.0">
@@ -37,8 +37,8 @@
         </VBox>
 
         <!-- Main Content -->
-        <AnchorPane prefWidth="600.0">
-            <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0" spacing="10">
+        <AnchorPane prefWidth="1000.0">
+            <VBox alignment="TOP_CENTER" layoutX="-1.0" layoutY="3.0" prefHeight="900.0" prefWidth="1000.0" spacing="10">
                 <Label styleClass="header" text="Demande Document" />
                 <VBox alignment="CENTER" spacing="10">
                     <padding>
@@ -55,7 +55,7 @@
                         </items>
                     </ComboBox>
                     <TextField fx:id="txtdes" prefHeight="242.0" prefWidth="560.0" promptText="description" />
-                    <Button onAction="#action_ajouter" styleClass="checkButton" text="Validate" />
+                    <Button onAction="#action_ajouter" styleClass="actionButton" text="Validate" />
                 </VBox>
                 <Label fx:id="statutLabel1" prefHeight="22.0" prefWidth="7.0" style="-fx-text-fill: red;" />
             </VBox>

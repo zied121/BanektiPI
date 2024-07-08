@@ -8,14 +8,13 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import static util.DatabaseUtil.getConnection;
 
-public class Documentservice implements Iservice<Document> {
+public class Documentservice implements IserviceDocument<Document> {
 
     private Connection connection;
 
@@ -35,6 +34,7 @@ public class Documentservice implements Iservice<Document> {
             pst.setDate(2, Date.valueOf(document.getDate()));
             pst.setInt(3, document.getId_dem());
 
+
             System.out.println("Requête exécutée : " + pst.toString());
 
             pst.executeUpdate();
@@ -45,10 +45,11 @@ public class Documentservice implements Iservice<Document> {
     }
 
     @Override
-    public void delete(Document document) {
-        String query = "DELETE FROM document_1 WHERE id = ?";
+    public void delete(Document document ) {
+        String query = "DELETE FROM document_1 WHERE id = ? ";
         try (PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setInt(1, document.getId());
+
 
             pst.executeUpdate();
         } catch (SQLException e) {
@@ -65,6 +66,7 @@ public class Documentservice implements Iservice<Document> {
             pst.setInt(3, document.getId_dem());
             pst.setInt(4, document.getId());
 
+
             pst.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -72,9 +74,9 @@ public class Documentservice implements Iservice<Document> {
     }
 
     @Override
-    public List<Document> readAll() {
+    public List<Document> readAll( ) {
         List<Document> documents = new ArrayList<>();
-        String query = "SELECT * FROM document_1";
+        String query = "SELECT * FROM document_1 WHERE id_user = ?";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
@@ -83,6 +85,7 @@ public class Documentservice implements Iservice<Document> {
                 document.setReponse(rs.getString("reponse"));
                 document.setDate(rs.getDate("date").toLocalDate());
                 document.setId_dem(rs.getInt("id_dem"));
+
 
                 documents.add(document);
             }
@@ -184,6 +187,26 @@ public class Documentservice implements Iservice<Document> {
         return documents;
     }
 
+    public Map<String, Integer> fetchDataFromDatabase() {
+        Map<String, Integer> data = new HashMap<>();
+        String query = "SELECT statut, COUNT(*) as count FROM demande GROUP BY statut";
+
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String statut = resultSet.getString("statut");
+                int count = resultSet.getInt("count");
+                data.put(statut, count);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+
+
     public void sendEmail(String to, String subject, String body) {
         String from = "zied.s@convegen.io";
         String host = "smtp.gmail.com";
@@ -201,17 +224,28 @@ public class Documentservice implements Iservice<Document> {
             }
         });
         try {
+            // Crée un objet MimeMessage pour contenir le message e-mail
+
             MimeMessage message = new MimeMessage(session);
+            // Définit l'adresse e-mail de l'expéditeur
+
             message.setFrom(new InternetAddress(from));
+            // Ajoute le destinataire à l'e-mail
+
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            // Définit le sujet de l'e-mail
+
             message.setSubject(subject);
-        message.setText(body);
+            // Définit le corps de l'e-mail
+
+            message.setText(body);
 
             Transport.send(message);
             System.out.println("Sent message successfully....");
         } catch (MessagingException mex) {
             mex.printStackTrace();
         }
+
 
     }
 }

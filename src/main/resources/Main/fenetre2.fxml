@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.modifier_supprimer_controller">
+
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.modifier_supprimer_controller">
     <stylesheets>
-        <URL value="@style_client.css" />
+        <URL value="@style_document.css" />
     </stylesheets>
 
-    <HBox prefHeight="600.0" prefWidth="800.0" spacing="0">
+    <HBox prefHeight="800.0" prefWidth="1200.0" spacing="0">
         <!-- Sidebar -->
         <VBox alignment="TOP_LEFT" prefWidth="200.0" spacing="10" styleClass="sidebar">
             <ImageView fitHeight="100.0" fitWidth="150.0">
@@ -36,27 +38,27 @@
         </VBox>
 
         <!-- Main Content -->
-        <AnchorPane prefWidth="600.0">
-            <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0" spacing="10">
+        <AnchorPane prefWidth="1000.0">
+            <VBox alignment="TOP_CENTER" layoutX="-1.0" layoutY="3.0" prefHeight="900.0" prefWidth="1000.0" spacing="10">
                 <Label styleClass="header" text="Liste des Demandes" />
-                <TableView fx:id="demandesTable" prefHeight="400.0" prefWidth="600.0">
+                <TableView fx:id="demandesTable" prefHeight="365.0" prefWidth="974.0">
                     <columns>
-                        <TableColumn text="Type" fx:id="typeColumn" />
-                        <TableColumn prefWidth="126.4000244140625" text="Description" fx:id="descriptionColumn" />
-                        <TableColumn minWidth="4.79998779296875" prefWidth="91.99993896484375" text="Statut" fx:id="statutColumn" />
-                        <TableColumn prefWidth="78.4000244140625" text="Date" fx:id="dateColumn" />
-                        <TableColumn text="Réponse" fx:id="reponseColumn" />
+                        <TableColumn fx:id="typeColumn" prefWidth="120.0" text="Type" />
+                        <TableColumn fx:id="descriptionColumn" prefWidth="257.6000061035156" text="Description" />
+                        <TableColumn fx:id="statutColumn" minWidth="4.79998779296875" prefWidth="99.199951171875" text="Statut" />
+                        <TableColumn fx:id="dateColumn" prefWidth="135.199951171875" text="Date" />
+                        <TableColumn fx:id="reponseColumn" prefWidth="296.00006103515625" text="Réponse" />
                     </columns>
                 </TableView>
-                <VBox spacing="10">
-                    <HBox spacing="10">
-                        <Button onAction="#ajouterDemande" text="Ajouter" />
-                        <Button onAction="#modifierDemande" text="Modifier" />
-                        <Button onAction="#supprimerDemande" text="Supprimer" />
-                        <Button onAction="#telechargerPDF" text="Télécharger PDF" />
+                <VBox prefHeight="368.0" prefWidth="980.0" spacing="10">
+                    <HBox alignment="CENTER" spacing="10">
+                        <Button onAction="#ajouterDemande" styleClass="actionButton" text="Ajouter" />
+                        <Button onAction="#modifierDemande" styleClass="actionButton" text="Modifier" />
+                        <Button onAction="#supprimerDemande" styleClass="actionButton" text="Supprimer" />
+                        <Button onAction="#telechargerPDF" styleClass="actionButton" text="Télécharger PDF" />
                     </HBox>
-                    <Label text="Détails de la demande sélectionnée" />
-                    <HBox spacing="10">
+                    <Label styleClass="detailsHeader" text="Détails de la demande sélectionnée" />
+                    <HBox alignment="CENTER" spacing="10">
                         <Label text="Type:" />
                         <ComboBox fx:id="typeComboBox">
                             <items>
@@ -65,21 +67,19 @@
                                     <String fx:value="extraits de compte" />
                                     <String fx:value="Identité banquaire" />
                                     <String fx:value="autres" />
-
                                 </FXCollections>
-
                             </items>
                         </ComboBox>
                     </HBox>
-                    <HBox spacing="10">
+                    <HBox alignment="CENTER" spacing="10">
                         <Label text="Description:" />
                         <TextField fx:id="descriptionField" />
                     </HBox>
-                    <HBox spacing="10">
+                    <HBox alignment="CENTER" spacing="10">
                         <Label text="Statut:" />
                         <TextField fx:id="statutField" disable="true" />
                     </HBox>
-                    <HBox spacing="10">
+                    <HBox alignment="CENTER" spacing="10">
                         <Label text="Date:" />
                         <TextField fx:id="dateField" disable="true" />
                     </HBox>

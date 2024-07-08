@@ -1,6 +1,8 @@
 package Controllers;
+
 import Service.PdfGenerator;
 import entite.Demande;
+import entite.User;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,23 +13,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.stage.FileChooser;
-import java.io.File;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-
-
-import Service.Demandeservice;
-import javafx.scene.control.Alert.AlertType;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
+import Service.Demandeservice;
+import javafx.scene.control.Alert.AlertType;
+import util.UserSession;
 
 public class modifier_supprimer_controller {
 
@@ -62,6 +57,8 @@ public class modifier_supprimer_controller {
     private TextField dateField;
 
     private Demandeservice demandeservice = new Demandeservice();
+User user = UserSession.getInstance().getUser();
+
 
     @FXML
     void initialize() {
@@ -78,11 +75,14 @@ public class modifier_supprimer_controller {
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         reponseColumn.setCellValueFactory(new PropertyValueFactory<>("reponse"));
 
-        List<Demande> demandes = demandeservice.readAll();
+        List<Demande> demandes = demandeservice.readAll(user.getId());
+        for (Demande demande : demandes) {
+            if (demande.getReponse() == null || demande.getReponse().isEmpty()) {
+                demande.setReponse("Votre réponse sera traitée au plus tôt possible. Merci.\n");
+            }
+        }
         demandesTable.setItems(FXCollections.observableArrayList(demandes));
     }
-
-
 
     private void showDetails(Demande demande) {
         if (demande != null) {
@@ -121,11 +121,15 @@ public class modifier_supprimer_controller {
             selectedDemande.setType(newType);
             selectedDemande.setDescription(newDescription);
 
-            demandeservice.update(selectedDemande);
+            // Vérifier et remplir la réponse par défaut si elle est vide
+            if (selectedDemande.getReponse() == null || selectedDemande.getReponse().isEmpty()) {
+                selectedDemande.setReponse("Votre réponse sera traitée au plus tôt possible. Merci.\n");
+            }
+
+            demandeservice.update(selectedDemande, user.getId())    ;
 
             loadDemandes();
 
-            // Afficher un popup de confirmation
             showAlert(AlertType.INFORMATION, "Modification réussie", "La demande a été modifiée avec succès.");
         } else {
             showAlert(AlertType.WARNING, "Aucune sélection", "Aucune demande sélectionnée pour modification.");
@@ -136,33 +140,37 @@ public class modifier_supprimer_controller {
     private void supprimerDemande() {
         Demande selectedDemande = demandesTable.getSelectionModel().getSelectedItem();
         if (selectedDemande != null) {
-            demandeservice.delete(selectedDemande);
+            demandeservice.delete(selectedDemande, user.getId())   ;
             loadDemandes();
 
-            // Afficher un popup de confirmation
             showAlert(AlertType.INFORMATION, "Suppression réussie", "La demande a été supprimée avec succès.");
         } else {
             showAlert(AlertType.WARNING, "Aucune sélection", "Aucune demande sélectionnée pour suppression.");
         }
     }
 
-
     @FXML
     private void telechargerPDF() {
         Demande selectedDemande = demandesTable.getSelectionModel().getSelectedItem();
         if (selectedDemande != null && selectedDemande.getReponse() != null && !selectedDemande.getReponse().isEmpty()) {
-            String content = selectedDemande.getReponse();
-            String fileName = "reponse_demande_" + selectedDemande.getId() + ".pdf";
-            String fileLocation = System.getProperty("user.home") + "/Downloads/" + fileName;
+            // Récupère le contenu de la réponse de la demande sélectionnée
 
-            // Générer le PDF avec une mise en page améliorée
+            String content = selectedDemande.getReponse();
+            // Génère le nom de fichier pour le PDF
+
+            String fileName = "reponse_demande_" + selectedDemande.getId() + ".pdf";
+            // Définit l'emplacement où le fichier PDF sera sauvegardé
+
+            String fileLocation = System.getProperty("user.home") + "/Downloads/" + fileName;
+            // Formate le contenu de la réponse
+
             String formattedContent = generateFormattedContent(selectedDemande);
+            // Génère le fichier PDF en utilisant le contenu formaté
 
             PdfGenerator.generatePdf(fileLocation, formattedContent);
 
             showAlert(Alert.AlertType.INFORMATION, "Téléchargement réussi", "Le PDF a été généré et téléchargé avec succès.");
 
-            // Ouvrir automatiquement le fichier PDF après le téléchargement
             openPdfFile(fileLocation);
         } else {
             showAlert(Alert.AlertType.WARNING, "Aucune réponse disponible", "Aucune réponse n'est disponible pour cette demande.");
@@ -172,27 +180,27 @@ public class modifier_supprimer_controller {
     private String generateFormattedContent(Demande demande) {
         StringBuilder contentBuilder = new StringBuilder();
 
-        // Ajouter un titre
         contentBuilder.append("Réponse à la demande ").append(demande.getId()).append("\n\n");
 
-        // Ajouter les détails de la demande
         contentBuilder.append("Type de demande : ").append(demande.getType()).append("\n");
         contentBuilder.append("Description : ").append(demande.getDescription()).append("\n");
         contentBuilder.append("Statut : ").append(demande.getStatut()).append("\n");
         contentBuilder.append("Date : ").append(demande.getDate()).append("\n\n");
 
-        // Ajouter la réponse
         contentBuilder.append("Réponse :\n");
         contentBuilder.append(demande.getReponse()).append("\n");
 
         return contentBuilder.toString();
     }
 
-
     private void openPdfFile(String fileLocation) {
         try {
+            // Vérifie si le fichier PDF existe
+
             File pdfFile = new File(fileLocation);
             if (pdfFile.exists()) {
+                // Ouvre le fichier PDF en utilisant l'application par défaut du système
+
                 Desktop.getDesktop().open(pdfFile);
             } else {
                 showAlert(Alert.AlertType.ERROR, "Fichier introuvable", "Le fichier PDF n'a pas été trouvé.");
@@ -203,15 +211,14 @@ public class modifier_supprimer_controller {
         }
     }
 
-
-
     @FXML
-
-
-
-
     private void loadDemandes() {
-        List<Demande> demandes = demandeservice.readAll();
+        List<Demande> demandes = demandeservice.readAll(user.getId());
+        for (Demande demande : demandes) {
+            if (demande.getReponse() == null || demande.getReponse().isEmpty()) {
+                demande.setReponse("Votre réponse sera traitée au plus tôt possible. Merci.\n");
+            }
+        }
         demandesTable.setItems(FXCollections.observableArrayList(demandes));
     }
 
