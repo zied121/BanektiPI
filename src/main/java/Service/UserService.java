@@ -1,20 +1,19 @@
 package Service;
 
 import entite.User;
-import entite.Compte;
-import entite.UserWithCompte;
 import util.DatabaseUtil;
-
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.util.Properties;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserService {
-    // Create User and Compte
+public class UserService implements UserServiceInterface {
+    @Override
     public void createUser(User user) throws SQLException {
         try (Connection connection = DatabaseUtil.getConnection()) {
-            // Insert user
-            String userQuery = "INSERT INTO user (nom, prenom, age, mdp, CIN, role, nb_compte) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO user (nom, prenom, age, mdp, CIN, role, nb_compte,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement userStatement = connection.prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS)) {
                 userStatement.setString(1, user.getNom());
                 userStatement.setString(2, user.getPrenom());
@@ -22,7 +21,8 @@ public class UserService {
                 userStatement.setString(4, user.getMdp());
                 userStatement.setInt(5, user.getCin());
                 userStatement.setString(6, user.getRole());
-                userStatement.setInt(7, user.getNbCompte());
+                userStatement.setInt(7, 0); // nb_compte is initially 0
+                userStatement.setString(8, user.getEmail());
                 userStatement.executeUpdate();
 
                 ResultSet rs = userStatement.getGeneratedKeys();
@@ -30,43 +30,26 @@ public class UserService {
                     user.setId(rs.getInt(1));
                 }
             }
-
-            // Insert compte
-            Compte compte = new Compte();
-            compte.setUserId(user.getId());
-            compte.setType("Default Type"); // Example type
-            compte.setNum(12345); // Example num
-            compte.setRib(67890); // Example RIB
-            compte.setDateOuverture(new Timestamp(System.currentTimeMillis())); // Example date
-            compte.setDateValidite(new Date(System.currentTimeMillis() + (365L * 24 * 60 * 60 * 1000))); // Example date
-            compte.setStatut("Active"); // Example statut
-            compte.setSolde(0.0f); // Initial balance
-            compte.setDevise("USD"); // Example devise
-
-            String compteQuery = "INSERT INTO compte (type, num, rib, date_ouverture, date_validite, statut, solde, devise, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement compteStatement = connection.prepareStatement(compteQuery, Statement.RETURN_GENERATED_KEYS)) {
-                compteStatement.setString(1, compte.getType());
-                compteStatement.setInt(2, compte.getNum());
-                compteStatement.setInt(3, compte.getRib());
-                compteStatement.setTimestamp(4, compte.getDateOuverture());
-                compteStatement.setDate(5, compte.getDateValidite());
-                compteStatement.setString(6, compte.getStatut());
-                compteStatement.setFloat(7, compte.getSolde());
-                compteStatement.setString(8, compte.getDevise());
-                compteStatement.setInt(9, compte.getUserId());
-                compteStatement.executeUpdate();
-
-                ResultSet rs = compteStatement.getGeneratedKeys();
-                if (rs.next()) {
-                    compte.setId(rs.getInt(1));
-                }
-            }
         }
     }
+    @Override
 
-    // Update User
+    public boolean isCINExists(int cin) throws SQLException {
+        String query = "SELECT COUNT(*) FROM user WHERE CIN = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, cin);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void updateUser(User user) throws SQLException {
-        String query = "UPDATE user SET nom = ?, prenom = ?, age = ?, mdp = ?, CIN = ?, role = ?, nb_compte = ? WHERE id = ?";
+        String query = "UPDATE user SET nom = ?, prenom = ?, age = ?, mdp = ?, CIN = ?, role = ? ,email= ?  WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getNom());
@@ -75,13 +58,14 @@ public class UserService {
             statement.setString(4, user.getMdp());
             statement.setInt(5, user.getCin());
             statement.setString(6, user.getRole());
-            statement.setInt(7, user.getNbCompte());
+            statement.setString(7, user.getEmail());
             statement.setInt(8, user.getId());
+
             statement.executeUpdate();
         }
     }
 
-    // Delete User and associated Compte
+    @Override
     public void deleteUser(int userId) throws SQLException {
         try (Connection connection = DatabaseUtil.getConnection()) {
             String deleteUserQuery = "DELETE FROM user WHERE id = ?";
@@ -89,44 +73,68 @@ public class UserService {
                 userStatement.setInt(1, userId);
                 userStatement.executeUpdate();
             }
-
-            String deleteCompteQuery = "DELETE FROM compte WHERE id_user = ?";
-            try (PreparedStatement compteStatement = connection.prepareStatement(deleteCompteQuery)) {
-                compteStatement.setInt(1, userId);
-                compteStatement.executeUpdate();
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1451) { // MySQL error code for foreign key constraint violation
+                throw new SQLException("Cannot delete user because they have associated accounts.");
+            } else {
+                throw e;
             }
         }
     }
 
-    // Get All Users with their Compte
-    public List<UserWithCompte> getAllUsersWithCompte() throws SQLException {
-        String query = "SELECT u.id, u.nom, u.prenom, u.age, u.mdp, u.CIN, u.role, u.nb_compte, c.type, c.num, c.rib, c.date_ouverture, c.date_validite, c.statut, c.solde, c.devise " +
-                "FROM user u LEFT JOIN compte c ON u.id = c.id_user";
-        List<UserWithCompte> usersWithCompte = new ArrayList<>();
+    @Override
+    public List<User> getAllUsers() throws SQLException {
+        String query = "SELECT * FROM user";
+        List<User> users = new ArrayList<>();
         try (Connection connection = DatabaseUtil.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
-                UserWithCompte userWithCompte = new UserWithCompte();
-                userWithCompte.setUserId(resultSet.getInt("u.id"));
-                userWithCompte.setNom(resultSet.getString("u.nom"));
-                userWithCompte.setPrenom(resultSet.getString("u.prenom"));
-                userWithCompte.setAge(resultSet.getInt("u.age"));
-                userWithCompte.setMdp(resultSet.getString("u.mdp"));
-                userWithCompte.setCin(resultSet.getInt("u.CIN"));
-                userWithCompte.setRole(resultSet.getString("u.role"));
-                userWithCompte.setNbCompte(resultSet.getInt("u.nb_compte"));
-                userWithCompte.setType(resultSet.getString("c.type"));
-                userWithCompte.setNum(resultSet.getInt("c.num"));
-                userWithCompte.setRib(resultSet.getInt("c.rib"));
-                userWithCompte.setDateOuverture(resultSet.getTimestamp("c.date_ouverture"));
-                userWithCompte.setDateValidite(resultSet.getDate("c.date_validite"));
-                userWithCompte.setStatut(resultSet.getString("c.statut"));
-                userWithCompte.setSolde(resultSet.getFloat("c.solde"));
-                userWithCompte.setDevise(resultSet.getString("c.devise"));
-                usersWithCompte.add(userWithCompte);
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setNom(resultSet.getString("nom"));
+                user.setPrenom(resultSet.getString("prenom"));
+                user.setAge(resultSet.getInt("age"));
+                user.setMdp(resultSet.getString("mdp"));
+                user.setCin(resultSet.getInt("CIN"));
+                user.setEmail(resultSet.getString("email"));
+                user.setRole(resultSet.getString("role"));
+                user.setNbCompte(resultSet.getInt("nb_compte"));
+                users.add(user);
             }
         }
-        return usersWithCompte;
+        return users;
+    }
+    @Override
+    public void sendCredentials(User user) {
+        // Email configuration
+        String to = user.getEmail();
+        String from = "zied.s@convegen.io";
+        String host = "smtp.gmail.com";
+
+        Properties properties = System.getProperties();
+        properties.setProperty("mail.smtp.host", host);
+        properties.setProperty("mail.smtp.port", "587"); // replace with your SMTP port
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("zied.s@convergen.io", "yxdnryxspyycpvjd"); // replace with your credentials
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.setSubject("Your Access Credentials");
+            message.setText("CIN: " + user.getCin() + "\nPassword: " + user.getMdp());
+
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
     }
 }

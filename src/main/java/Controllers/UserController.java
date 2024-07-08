@@ -1,54 +1,51 @@
 package Controllers;
 
 import entite.User;
-import entite.UserWithCompte;
+import Service.UserServiceInterface;
 import Service.UserService;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 
+import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class UserController {
     @FXML
-    private TableView<UserWithCompte> userTable;
+    private TableView<User> userTable;
     @FXML
-    private TableColumn<UserWithCompte, Integer> userIdColumn;
+    private TableColumn<User, Integer> userIdColumn;
     @FXML
-    private TableColumn<UserWithCompte, String> nomColumn;
+    private TableColumn<User, String> nomColumn;
     @FXML
-    private TableColumn<UserWithCompte, String> prenomColumn;
+    private TableColumn<User, String> prenomColumn;
     @FXML
-    private TableColumn<UserWithCompte, Integer> ageColumn;
+    private TableColumn<User, Integer> ageColumn;
     @FXML
-    private TableColumn<UserWithCompte, String> mdpColumn;
+    private TableColumn<User, String> mdpColumn;
     @FXML
-    private TableColumn<UserWithCompte, Integer> cinColumn;
+    private TableColumn<User, Integer> cinColumn;
     @FXML
-    private TableColumn<UserWithCompte, String> roleColumn;
+    private TableColumn<User, String> roleColumn;
     @FXML
-    private TableColumn<UserWithCompte, Integer> nbCompteColumn;
+    private TableColumn<User, String> emailColumn;
     @FXML
-    private TableColumn<UserWithCompte, String> typeColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Integer> numColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Integer> ribColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Timestamp> dateOuvertureColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Date> dateValiditeColumn;
-    @FXML
-    private TableColumn<UserWithCompte, String> statutColumn;
-    @FXML
-    private TableColumn<UserWithCompte, Float> soldeColumn;
-    @FXML
-    private TableColumn<UserWithCompte, String> deviseColumn;
+    private TableColumn<User, Integer> nbCompteColumn;
 
     @FXML
     private TextField userIdField;
@@ -63,59 +60,133 @@ public class UserController {
     @FXML
     private TextField cinField;
     @FXML
-    private TextField roleField;
+    private TextField EmailField;
     @FXML
-    private TextField nbCompteField;
+    private ComboBox<String> roleComboBox;
+    @FXML
+    private DatePicker birthdatePicker;
 
-    private UserService userService = new UserService();
+    private UserServiceInterface userService = new UserService();
 
     @FXML
     public void initialize() {
-        userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        userIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
         prenomColumn.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
         mdpColumn.setCellValueFactory(new PropertyValueFactory<>("mdp"));
         cinColumn.setCellValueFactory(new PropertyValueFactory<>("cin"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
         nbCompteColumn.setCellValueFactory(new PropertyValueFactory<>("nbCompte"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        numColumn.setCellValueFactory(new PropertyValueFactory<>("num"));
-        ribColumn.setCellValueFactory(new PropertyValueFactory<>("rib"));
-        dateOuvertureColumn.setCellValueFactory(new PropertyValueFactory<>("dateOuverture"));
-        dateValiditeColumn.setCellValueFactory(new PropertyValueFactory<>("dateValidite"));
-        statutColumn.setCellValueFactory(new PropertyValueFactory<>("statut"));
-        soldeColumn.setCellValueFactory(new PropertyValueFactory<>("solde"));
-        deviseColumn.setCellValueFactory(new PropertyValueFactory<>("devise"));
+
+        userTable.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getClickCount() == 1) {
+                onEdit();
+            } else if (event.getClickCount() == 2) {
+                onShowCompteDetails();
+            }
+        });
+
+        birthdatePicker.valueProperty().addListener((observable, oldValue, newValue) -> calculateAndSetAge(newValue));
 
         try {
-            loadUsersWithCompte();
+            loadUsers();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    private void calculateAndSetAge(LocalDate birthdate) {
+        if (birthdate != null) {
+            int age = Period.between(birthdate, LocalDate.now()).getYears();
+            ageField.setText(String.valueOf(age));
+        }
+    }
+
+    private void onEdit() {
+        if (userTable.getSelectionModel().getSelectedItem() != null) {
+            User selectedUser = userTable.getSelectionModel().getSelectedItem();
+            userIdField.setText(String.valueOf(selectedUser.getId()));
+            nomField.setText(selectedUser.getNom());
+            prenomField.setText(selectedUser.getPrenom());
+            ageField.setText(String.valueOf(selectedUser.getAge()));
+            mdpField.setText(selectedUser.getMdp());
+            cinField.setText(String.valueOf(selectedUser.getCin()));
+            roleComboBox.setValue(selectedUser.getRole());
+            EmailField.setText(selectedUser.getEmail());
+            birthdatePicker.setValue(null);  // Reset DatePicker, or set to a saved value if available
+        }
+    }
+
+    private void onShowCompteDetails() {
+        try {
+            User selectedUser = userTable.getSelectionModel().getSelectedItem();
+            if (selectedUser != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/CompteView.fxml"));
+                Parent root = loader.load();
+
+                CompteController compteController = loader.getController();
+                compteController.setUser(selectedUser);
+                compteController.loadComptes(selectedUser.getId());
+
+                Stage stage = new Stage();
+                stage.setTitle("Compte Details");
+                stage.setScene(new Scene(root));
+                stage.show();
+            }
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
-    private void loadUsersWithCompte() throws SQLException {
-        List<UserWithCompte> usersWithCompte = userService.getAllUsersWithCompte();
-        userTable.getItems().setAll(usersWithCompte);
+    private void loadUsers() throws SQLException {
+        List<User> users = userService.getAllUsers();
+        userTable.getItems().setAll(users);
     }
 
     @FXML
     private void createUser() throws SQLException {
+        if (!isCINValid(cinField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid CIN", "CIN must be exactly 8 digits.");
+            return;
+        }
+        if (!isEmailValid(EmailField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid Email", "Please enter a valid email address.");
+            return;
+        }
+
+        int cin = Integer.parseInt(cinField.getText());
+        if (userService.isCINExists(cin)) {
+            showAlert(AlertType.ERROR, "Duplicate CIN", "A user with this CIN already exists.");
+            return;
+        }
+
         User user = new User();
         user.setNom(nomField.getText());
         user.setPrenom(prenomField.getText());
         user.setAge(Integer.parseInt(ageField.getText()));
         user.setMdp(mdpField.getText());
-        user.setCin(Integer.parseInt(cinField.getText()));
-        user.setRole(roleField.getText());
-        user.setNbCompte(Integer.parseInt(nbCompteField.getText()));
+        user.setCin(cin);
+        user.setRole(roleComboBox.getValue());
+        user.setEmail(EmailField.getText());
         userService.createUser(user);
-        loadUsersWithCompte();
+        showAlert(AlertType.INFORMATION, "User Created", "User created successfully!");
+        loadUsers();
     }
 
     @FXML
     private void updateUser() throws SQLException {
+        if (!isCINValid(cinField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid CIN", "CIN must be exactly 8 digits.");
+            return;
+        }
+        if (!isEmailValid(EmailField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid Email", "Please enter a valid email address.");
+            return;
+        }
+
         User user = new User();
         user.setId(Integer.parseInt(userIdField.getText()));
         user.setNom(nomField.getText());
@@ -123,16 +194,68 @@ public class UserController {
         user.setAge(Integer.parseInt(ageField.getText()));
         user.setMdp(mdpField.getText());
         user.setCin(Integer.parseInt(cinField.getText()));
-        user.setRole(roleField.getText());
-        user.setNbCompte(Integer.parseInt(nbCompteField.getText()));
+        user.setRole(roleComboBox.getValue());
+        user.setEmail(EmailField.getText());
         userService.updateUser(user);
-        loadUsersWithCompte();
+        showAlert(AlertType.INFORMATION, "User Updated", "User updated successfully!");
+        loadUsers();
     }
 
     @FXML
     private void deleteUser() throws SQLException {
-        int userId = Integer.parseInt(userIdField.getText());
-        userService.deleteUser(userId);
-        loadUsersWithCompte();
+        try {
+            int userId = Integer.parseInt(userIdField.getText());
+            userService.deleteUser(userId);
+            showAlert(AlertType.INFORMATION, "User Deleted", "User deleted successfully!");
+            loadUsers();
+        } catch (SQLException e) {
+            if (e.getMessage().contains("Cannot delete user because they have associated accounts")) {
+                showAlert(AlertType.ERROR, "Delete Error", "Cannot delete user because they have associated accounts.");
+            } else {
+                showAlert(AlertType.ERROR, "Error", "An error occurred: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void clearFields() {
+        userIdField.clear();
+        nomField.clear();
+        prenomField.clear();
+        ageField.clear();
+        mdpField.clear();
+        cinField.clear();
+        roleComboBox.setValue(null);
+        EmailField.clear();
+        birthdatePicker.setValue(null);
+    }
+
+    private void showAlert(AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private boolean isCINValid(String cin) {
+        return cin != null && cin.matches("\\d{8}");
+    }
+
+    private boolean isEmailValid(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return email != null && pattern.matcher(email).matches();
+    }
+
+    @FXML
+    private void sendCredentials() {
+        User selectedUser = userTable.getSelectionModel().getSelectedItem();
+        if (selectedUser != null) {
+            userService.sendCredentials(selectedUser);
+            showAlert(AlertType.INFORMATION, "Email sent", "Email has been sent successfully!");
+        } else {
+            showAlert(AlertType.INFORMATION, "Select User", "Please click on the user you want to send the email to.");
+        }
     }
 }
