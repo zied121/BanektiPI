@@ -1,0 +1,109 @@
+/* style.css */
+
+/* Styles for sidebar */
+.sidebar {
+    -fx-background-color: #2c3e50;
+    -fx-padding: 10;
+}
+
+/* Styles for navigation buttons */
+.navButton {
+    -fx-background-color: #34495e;
+    -fx-text-fill: white;
+    -fx-pref-width: 180;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 20;
+}
+
+/* Styles for header label */
+.header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 20 0;
+}
+
+/* Styles for details header label */
+.detailsHeader {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 10 0;
+}
+
+/* Styles for action buttons */
+.actionButton {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-pref-width: 120;
+    -fx-alignment: CENTER;
+    -fx-padding: 10;
+}
+
+/* Styles for text area */
+.text-area {
+    -fx-pref-width: 400px;
+    -fx-pref-height: 100px;
+}
+
+/* Styles for table columns */
+.table-column {
+    -fx-text-fill: #2c3e50;
+}
+
+/* Styles for filter label */
+.filterLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 5 10 5 0; /* Ajustement du padding pour l'espace autour du texte */
+}
+
+/* Styles for filter ComboBox */
+.filterComboBox {
+    -fx-pref-width: 120px; /* Largeur préférée du ComboBox */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-padding: 5; /* Padding intérieur */
+    -fx-border-color: #bdc3c7; /* Couleur de la bordure */
+    -fx-border-width: 1px; /* Largeur de la bordure */
+    -fx-border-radius: 5px; /* Rayon de bordure arrondi */
+    -fx-background-color: white; /* Couleur de fond */
+}
+
+/* Styles for ComboBox items */
+.filterComboBox .list-cell {
+    -fx-padding: 5;
+    -fx-font-size: 14px;
+}
+
+/* Hover effect on ComboBox items */
+.filterComboBox .list-cell:hover {
+    -fx-background-color: #ecf0f1; /* Couleur de fond au survol */
+}
+
+/* Styles for popup text */
+.popup-text {
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #333; /* Couleur du texte */
+}
+
+/* Styles for popup title */
+.popup-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000; /* Couleur du texte */
+}
+
+/* Styles for popup button */
+.popup-button {
+    -fx-background-color: #4CAF50; /* Couleur de fond du bouton */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px; /* Padding intérieur */
+    -fx-border-radius: 5px; /* Rayon de bordure arrondi */
+}
+
+/* Hover effect on popup button */
+.popup-button:hover {
+    -fx-background-color: #45a049; /* Couleur de fond au survol */
+}

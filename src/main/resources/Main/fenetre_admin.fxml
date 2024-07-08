@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DocumentController">
+    <stylesheets>
+        <URL value="@style_document.css" />
+    </stylesheets>
+
+    <HBox prefHeight="800.0" prefWidth="2000.0" spacing="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"> <!-- Ajout des ancres -->
+        <!-- Sidebar -->
+        <VBox alignment="TOP_LEFT" prefWidth="200.0" spacing="10" styleClass="sidebar">
+            <ImageView fitHeight="100.0" fitWidth="150.0">
+                <Image url="@logo.png" />
+            </ImageView>
+            <VBox spacing="5">
+                <Button styleClass="navButton" text="Home" />
+                <Button styleClass="navButton" text="Users" />
+                <Button styleClass="navButton" text="Credits" />
+                <Button styleClass="navButton" text="Assurance" />
+                <Button styleClass="navButton" text="Operation" />
+                <Button styleClass="navButton" text="Create Account" />
+                <Button styleClass="navButton" text="Settings" />
+            </VBox>
+        </VBox>
+
+        <!-- Main Content -->
+        <AnchorPane prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"> <!-- Ajout des ancres -->
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="800.0" prefWidth="1200.0">
+                <HBox spacing="20">
+                    <VBox alignment="TOP_CENTER" layoutX="-1.0" layoutY="3.0" prefHeight="1000.0" prefWidth="900.0" spacing="10">
+                        <Label styleClass="header" text="Liste des Documents" />
+
+                        <!-- ComboBox for filtering by status -->
+                        <HBox alignment="CENTER" spacing="10">
+                            <Label styleClass="filterLabel" text="Filtrer par statut:" />
+                            <ComboBox fx:id="filterStatusComboBox" onAction="#filterByStatus" prefHeight="42.0" prefWidth="233.0" styleClass="filterComboBox">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="Tous" />
+                                        <String fx:value="en cours" />
+                                        <String fx:value="traitée" />
+                                        <String fx:value="terminé" />
+                                        <String fx:value="annulée" />
+                                        <String fx:value="pas encore" />
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                        </HBox>
+
+                        <TableView fx:id="documentsTable" prefHeight="318.0" prefWidth="890.0"> <!-- Augmenté de 674.0 à 824.0 -->
+                            <columns>
+                                <TableColumn fx:id="idUserColumn" prefWidth="87.20001220703125" text="ID Utilisateur" />
+                                <TableColumn fx:id="emailColumn" prefWidth="170.40000915527344" text="Email" />
+                                <TableColumn fx:id="typeColumn" prefWidth="114.4000244140625" text="Type" />
+                                <TableColumn fx:id="statutColumn" text="Statut" />
+                                <TableColumn fx:id="descriptionColumn" minWidth="0.0" prefWidth="136.0" text="Description" />
+                                <TableColumn fx:id="demandeDateColumn" prefWidth="115.199951171875" text="Date Demande" />
+                                <TableColumn fx:id="reponseColumn" prefWidth="198.39996337890625" text="Réponse" />
+                                <TableColumn fx:id="dateColumn" prefWidth="104.0001220703125" text="Date Réponse" />
+                            </columns>
+                        </TableView>
+
+                        <VBox prefHeight="368.0" prefWidth="900.0" spacing="10"> <!-- Augmenté de 680.0 à 830.0 -->
+                            <HBox alignment="CENTER" spacing="10">
+                                <Button onAction="#ajouterDocument" styleClass="actionButton" text="Ajouter" />
+                                <Button onAction="#modifierDocument" styleClass="actionButton" text="Modifier" />
+                                <Button onAction="#supprimerDocument" styleClass="actionButton" text="Supprimer" />
+                                <Button onAction="#modifierStatut" styleClass="actionButton" text="Modifier Statut" />
+                            </HBox>
+                            <Label styleClass="detailsHeader" text="Détails du document sélectionné" />
+                            <VBox alignment="CENTER" spacing="10">
+                                <HBox alignment="CENTER" spacing="10">
+                                    <Label text="Réponse:" />
+                                    <TextArea fx:id="reponseField" prefHeight="200.0" prefWidth="850.0" />
+                                </HBox>
+                                <HBox alignment="CENTER" spacing="10">
+                                    <Label text="Date:" />
+                                    <TextField fx:id="dateField" disable="true" prefWidth="200.0" />
+                                    <Label text="Statut:" />
+                                    <ComboBox fx:id="statutComboBox" prefHeight="34.0" prefWidth="200.0">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <String fx:value="en cours" />
+                                                <String fx:value="traitée" />
+                                                <String fx:value="terminé" />
+                                                <String fx:value="annulée" />
+                                            </FXCollections>
+                                        </items>
+                                    </ComboBox>
+                                </HBox>
+                            </VBox>
+                        </VBox>
+                    </VBox>
+                    <!-- Pie Chart Container -->
+                    <VBox fx:id="pieChartContainer" alignment="CENTER" prefHeight="900.0" prefWidth="300.0" spacing="10">
+                        <Label styleClass="header" text="Répartition des Statuts" />
+                    </VBox>
+                </HBox>
+            </ScrollPane>
+        </AnchorPane>
+    </HBox>
+</AnchorPane>
