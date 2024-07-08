@@ -16,7 +16,7 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.web.WebView?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.userController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.CreditUserController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>

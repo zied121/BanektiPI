@@ -6,9 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import Service.CreditService;
 
-import java.util.List;
-
-public class adminController {
+public class CreditadminController {
 
     @FXML
     private TextField idCompteField;
@@ -26,7 +24,7 @@ public class adminController {
     private CreditService creditService;
     private String userId;
 
-    public adminController() {
+    public CreditadminController() {
         this.creditService = new CreditService();
     }
 

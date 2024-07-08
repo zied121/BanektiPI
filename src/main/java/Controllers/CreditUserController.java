@@ -5,17 +5,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import entite.Credit;
 import Service.CreditService;
 import javafx.stage.FileChooser;
 import util.UserSession;
 
 import java.io.*;
-import java.util.List;
 
 
-
-public class userController  {
+public class CreditUserController {
 
     @FXML
     private ComboBox<String> typeCreditCombo;
@@ -34,7 +31,7 @@ public class userController  {
     private CreditService creditService;
     private String userId;
 
-    public userController() {
+    public CreditUserController() {
         this.creditService = new CreditService();
     }
 
