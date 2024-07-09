@@ -16,6 +16,7 @@ module com.example.projetpi {
     requires java.mail;
     requires cloudinary.core;
     requires itextpdf;
+    requires twilio;
 
     opens Main to javafx.fxml;
     exports Main;

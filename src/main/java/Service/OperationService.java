@@ -1,10 +1,12 @@
 package Service;
 
 import entite.Operation;
+import util.DatabaseUtil;
+import util.SmsUtil;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import util.DatabaseUtil;
 
 public class OperationService {
 
@@ -22,7 +24,11 @@ public class OperationService {
 
             ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {
-                operation.setId(rs.getInt(1));
+                int operationId = rs.getInt(1);
+                operation.setId(operationId);
+
+                // Retrieve the operation details including the date_op
+                retrieveOperationDetails(operationId, operation);
             }
 
             // Update the balance of the source account
@@ -35,10 +41,36 @@ public class OperationService {
             } else {
                 throw new SQLException("Destination account with specified RIB does not exist.");
             }
+
+            // Send SMS notification
+            sendSmsNotification(operation);
         }
     }
 
-    public  List<Operation> getOperationsByAccountIds(List<Integer> accountIds) throws SQLException {
+    private void retrieveOperationDetails(int operationId, Operation operation) throws SQLException {
+        String query = "SELECT * FROM operation WHERE id = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, operationId);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                operation.setDateOp(rs.getDate("date_op"));
+            }
+        }
+    }
+
+    private void sendSmsNotification(Operation operation) {
+        try {
+            String phoneNumber = "+216" + getPhoneNumberByAccountId(operation.getIdCompte()); // Assuming Tunisian phone numbers
+            String message = "An operation has been performed on your account. Type: " + operation.getTypeOp() +
+                    ", Amount: " + operation.getMontant() + ", Date: " + operation.getDateOp();
+            SmsUtil.sendSms(phoneNumber, message);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Operation> getOperationsByAccountIds(List<Integer> accountIds) throws SQLException {
         String query = "SELECT * FROM operation WHERE id_compte IN (" +
                 accountIds.stream().map(String::valueOf).reduce((a, b) -> a + "," + b).orElse("") + ")";
         List<Operation> operations = new ArrayList<>();
@@ -95,5 +127,18 @@ public class OperationService {
             }
         }
         return -1;
+    }
+
+    public String getPhoneNumberByAccountId(int accountId) throws SQLException {
+        String query = "SELECT num FROM compte WHERE id = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, accountId);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getString("num");
+            }
+        }
+        return null;
     }
 }
