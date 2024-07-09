@@ -1,6 +1,8 @@
     package Service;
 
     import entite.Demande;
+    import entite.Reclamation;
+    import entite.Repond;
     import util.DatabaseUtil;
 
     import java.sql.*;
@@ -18,6 +20,16 @@
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        @Override
+        public void delete(Repond Repond) {
+
+        }
+
+        @Override
+        public void update(Repond Repond) {
+
         }
 
         @Override
@@ -75,10 +87,28 @@
             }
         }
 
+        @Override
+        public void insert(Reclamation Reclamation) {
+
+        }
+
+        @Override
+        public void delete(Reclamation Reclamation) {
+
+        }
+
+        @Override
+        public void update(Reclamation Reclamation) {
+
+        }
+
+        @Override
+        public List<Demande> readAll() {
+            return null;
+        }
 
 
-
-            @Override
+        @Override
             public List<Demande> readAll(int id_user) {
                 List<Demande> demandes = new ArrayList<>();
                 String query = "SELECT DISTINCT d.*, doc.reponse " +

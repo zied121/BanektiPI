@@ -1,13 +1,12 @@
 package Service;
 
+import entite.Demande;
 import entite.Reclamation;
-import entite.User;
+import entite.Repond;
 import util.DatabaseUtil;
 import util.MyConnection;
-import util.UserSession;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +22,31 @@ public class Reclamationservice implements Iservice<Reclamation> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void delete(Repond Repond) {
+
+    }
+
+    @Override
+    public void update(Repond Repond) {
+
+    }
+
+    @Override
+    public void insert(Reclamation entity, int id_user) {
+
+    }
+
+    @Override
+    public void delete(Reclamation entity, int id_user) {
+
+    }
+
+    @Override
+    public void update(Reclamation entity, int id_user) {
+
     }
 
     @Override
@@ -106,11 +130,29 @@ public class Reclamationservice implements Iservice<Reclamation> {
     @Override
     public List<Reclamation> readAll(int id_user) { //id user
         List<Reclamation> Reclamations = new ArrayList<>();
-        String query = "SELECT d.*, doc.reponse FROM reclamation d LEFT JOIN repond doc ON d.id = doc.id_rec where d.id_user="+id_user;
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()) {
-                Reclamation Reclamation = new Reclamation();
+        String query = "SELECT d.*, doc.reponse FROM reclamation d LEFT JOIN repond doc ON d.id = doc.id_rec where d.id_user=?";
+//        try (Statement stmt = connection.createStatement();
+//             ResultSet rs = stmt.executeQuery(query)) {
+//            stmt.setInt(1, id_user);
+//            while (rs.next()) {
+//                Reclamation Reclamation = new Reclamation();
+//                Reclamation.setId(rs.getInt("id"));
+//                Reclamation.setType(rs.getString("type"));
+//                Reclamation.setStatut(rs.getString("statut"));
+//                Reclamation.setDescription(rs.getString("description"));
+//                Reclamation.setId_user(rs.getInt("id_user"));
+//                Reclamation.setDate(rs.getDate("date").toLocalDate());
+//                Reclamation.setReponse(rs.getString("reponse"));
+//
+//                Reclamations.add(Reclamation);
+//            }
+//        }
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id_user);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Reclamation Reclamation = new Reclamation();
                 Reclamation.setId(rs.getInt("id"));
                 Reclamation.setType(rs.getString("type"));
                 Reclamation.setStatut(rs.getString("statut"));
@@ -120,8 +162,10 @@ public class Reclamationservice implements Iservice<Reclamation> {
                 Reclamation.setReponse(rs.getString("reponse"));
 
                 Reclamations.add(Reclamation);
+                }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return Reclamations;

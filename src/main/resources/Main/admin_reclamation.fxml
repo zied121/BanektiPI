@@ -22,20 +22,20 @@
     </stylesheets>
 
 
-    <HBox prefHeight="800.0" prefWidth="1200.0" spacing="0">
+    <HBox spacing="0" prefHeight="600.0" prefWidth="800.0">
         <!-- Sidebar -->
-        <VBox alignment="TOP_LEFT" prefWidth="200.0" spacing="10" styleClass="sidebar">
-            <ImageView fitHeight="100.0" fitWidth="150.0">
+        <VBox spacing="10" alignment="TOP_LEFT" prefWidth="200.0" styleClass="sidebar">
+            <ImageView fitWidth="150.0" fitHeight="100.0">
                 <Image url="@logo.png" />
             </ImageView>
             <VBox spacing="5">
-                <Button styleClass="navButton" text="Home" />
-                <Button styleClass="navButton" text="Users" />
-                <Button styleClass="navButton" text="Credits" />
-                <Button styleClass="navButton" text="Assurance" />
-                <Button styleClass="navButton" text="Operation" />
-                <Button styleClass="navButton" text="Create Account" />
-                <Button styleClass="navButton" text="Settings" />
+                <Button text="Home" styleClass="navButton" onAction="#handlehomeButton"/>
+                <Button text="Users" styleClass="navButton" onAction="#handleusersButton"/>
+                <Button text="Credits" styleClass="navButton" onAction="#handlecreditButton"/>
+                <Button text="Assurance" styleClass="navButton" onAction="#handleassuranceButton"/>
+                <Button text="Document" styleClass="navButton" onAction="#handledocumentButtonuser"/>
+                <Button text="Réclamation" styleClass="navButton" onAction="#handlereclamationButtonuser"/>
+                <Button text="Déconnecter" styleClass="navButton" onAction="#handlesignout"/>
             </VBox>
         </VBox>
 

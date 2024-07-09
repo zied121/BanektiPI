@@ -184,7 +184,7 @@ public class AssuranceController {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/UserView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/fenetre2.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Home");
@@ -265,5 +265,36 @@ public class AssuranceController {
             e.printStackTrace();
         }
     }
-
+    @FXML
+    private void handledocumentButtonuser(ActionEvent event) {
+        try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/fenetre_admin.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Assurance Management");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handlereclamationButtonuser(ActionEvent event) {
+        try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/AdminChart.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Assurance Management");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

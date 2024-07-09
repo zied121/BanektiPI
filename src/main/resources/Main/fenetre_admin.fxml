@@ -22,7 +22,7 @@
         <URL value="@style_document.css" />
     </stylesheets>
 
-    <HBox prefHeight="800.0" prefWidth="2000.0" spacing="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"> <!-- Ajout des ancres -->
+    <HBox prefHeight="800.0" prefWidth="800.0" spacing="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"> <!-- Ajout des ancres -->
         <!-- Sidebar -->
         <VBox alignment="TOP_LEFT" prefWidth="200.0" spacing="10" styleClass="sidebar">
             <ImageView fitHeight="100.0" fitWidth="150.0">
@@ -34,6 +34,7 @@
                 <Button text="Credits" styleClass="navButton" onAction="#handlecreditButton"/>
                 <Button text="Assurance" styleClass="navButton" onAction="#handleassuranceButton"/>
                 <Button text="Document" styleClass="navButton" onAction="#handledocumentButtonuser"/>
+                <Button text="Réclamation" styleClass="navButton" onAction="#handlereclamationButtonuser"/>
                 <Button text="Déconnecter" styleClass="navButton" onAction="#handlesignout"/>
             </VBox>
         </VBox>

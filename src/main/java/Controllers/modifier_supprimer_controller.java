@@ -57,7 +57,8 @@ public class modifier_supprimer_controller {
     private TextField dateField;
 
     private Demandeservice demandeservice = new Demandeservice();
-User user = UserSession.getInstance().getUser();
+     User user = UserSession.getInstance().getUser();
+
 
 
     @FXML

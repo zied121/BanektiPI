@@ -49,7 +49,7 @@ public class LoginAdminController {
 
     private void redirectToGestionUser(ActionEvent event) {
         try {
-            Parent gestionUserRoot = FXMLLoader.load(getClass().getResource("/Main/UserView.fxml"));
+            Parent gestionUserRoot = FXMLLoader.load(getClass().getResource("/Main/fenetre_admin.fxml"));
             Scene gestionUserScene = new Scene(gestionUserRoot);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(gestionUserScene);

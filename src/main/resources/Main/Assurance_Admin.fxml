@@ -33,6 +33,8 @@
                 <Button text="Users" styleClass="navButton" onAction="#handleusersButton"/>
                 <Button text="Credits" styleClass="navButton" onAction="#handlecreditButton"/>
                 <Button text="Assurance" styleClass="navButton" onAction="#handleassuranceButton"/>
+                <Button text="Document" styleClass="navButton" onAction="#handledocumentButtonuser"/>
+                <Button text="Réclamation" styleClass="navButton" onAction="#handlereclamationButtonuser"/>
                 <Button text="Déconnecter" styleClass="navButton" onAction="#handlesignout"/>
             </VBox>
         </VBox>
