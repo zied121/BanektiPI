@@ -54,11 +54,11 @@ public class CreditUserController {
             String typeCredit = typeCreditCombo.getValue();
             String idCompte = idCompteField.getText();
             String status = statusCombo.getValue();
-            double montant = Double.parseDouble(montantField.getText());
+            String montant = montantField.getText();
             String echeancier = echeancierField.getText();
             String document = documentField.getText();
 
-            boolean isUpdated = creditService.updateCreditDetailsuser(idCompte, typeCredit, String.valueOf(montant), status,echeancier, document, Integer.valueOf(this.userId));
+            boolean isUpdated = creditService.updateCreditDetailsuser(idCompte, typeCredit, Double.valueOf(montant), status,echeancier, document, Integer.valueOf(this.userId));
 
             Alert alert = new Alert(isUpdated ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
             alert.setTitle(isUpdated ? "Success" : "Error");
@@ -104,6 +104,9 @@ public class CreditUserController {
     @FXML
     private void handlecreditButtoncredituser(ActionEvent event) {
         try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/user.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -117,6 +120,9 @@ public class CreditUserController {
     @FXML
     private void handleassuranceButtonuser(ActionEvent event) {
         try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/Assurance.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -130,6 +136,9 @@ public class CreditUserController {
     @FXML
     private void handleoperationButtonuser(ActionEvent event) {
         try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/operation_view.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -143,6 +152,9 @@ public class CreditUserController {
     @FXML
     private void handlehomeButton(ActionEvent event) {
         try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/homePage.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -156,12 +168,29 @@ public class CreditUserController {
     @FXML
     private void handlesginout(ActionEvent event) {
         try {
+
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
 
             UserSession.clearSession();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/login.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Assurance Management");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handledocumentButtonuser(ActionEvent event) {
+        try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/fenetre2.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Assurance Management");

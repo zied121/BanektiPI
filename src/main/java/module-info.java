@@ -15,8 +15,6 @@ module com.example.projetpi {
     requires java.desktop;
     requires java.mail;
     requires cloudinary.core;
-    requires java.desktop;
-    requires java.mail;
     requires itextpdf;
 
     opens Main to javafx.fxml;

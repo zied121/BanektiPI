@@ -195,6 +195,9 @@ public class OperationController {
     @FXML
     private void handlecreditButtoncredituser(ActionEvent event) {
         try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/user.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -208,6 +211,9 @@ public class OperationController {
     @FXML
     private void handleassuranceButtonuser(ActionEvent event) {
         try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/Assurance.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -221,6 +227,9 @@ public class OperationController {
     @FXML
     private void handleoperationButtonuser(ActionEvent event) {
         try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/operation_view.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -234,7 +243,10 @@ public class OperationController {
     @FXML
     private void handlehomeButton(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/homePage.fxml"));
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/UserView.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Assurance Management");
@@ -253,6 +265,22 @@ public class OperationController {
 
             UserSession.clearSession();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/login.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Assurance Management");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handledocumentButtonuser(ActionEvent event) {
+        try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/fenetre2.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Assurance Management");

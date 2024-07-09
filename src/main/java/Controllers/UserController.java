@@ -264,7 +264,10 @@ public class UserController {
     @FXML
     private void handlehomeButton(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/homePage.fxml"));
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/UserView.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Home");
@@ -278,6 +281,10 @@ public class UserController {
     @FXML
     private void handleusersButton(ActionEvent event) {
         try {
+
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/UserView.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -292,6 +299,9 @@ public class UserController {
     @FXML
     private void handlecreditButton(ActionEvent event) {
         try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/admin.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -306,6 +316,9 @@ public class UserController {
     @FXML
     private void handleassuranceButton(ActionEvent event) {
         try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/Assurance_Admin.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -330,6 +343,22 @@ public class UserController {
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Login");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handledocumentButtonuser(ActionEvent event) {
+        try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/fenetre2.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Assurance Management");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {

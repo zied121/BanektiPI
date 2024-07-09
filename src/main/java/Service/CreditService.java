@@ -48,15 +48,15 @@ public class CreditService {
         }
         return false;
     }
-    public boolean updateCreditDetailsuser(String idCompte, String typeCredit,String status ,String montant, String echeancier, String document, Integer userId) {
+    public boolean updateCreditDetailsuser(String idCompte, String typeCredit,Double montant ,String status , String echeancier, String document, Integer userId) {
 
-        String query = "INSERT INTO demande (id , type, statut,  description, id_user,echeancier,document,date) VALUES (?, ?, ?, ?, ?,?,?,?) ;";
+        String query = "INSERT INTO demande (id , type, statut,  montant, id_user,echeancier,document,date) VALUES (?, ?, ?, ?, ?,?,?,?) ;";
         try {
             PreparedStatement statement = cnx.prepareStatement(query);
             statement.setString(1, idCompte);
             statement.setString(2, typeCredit);
             statement.setString(3,status);
-            statement.setString(4, montant);
+            statement.setDouble(4,montant);
             statement.setString(5, String.valueOf(userId));
             statement.setString(6, echeancier);
             statement.setString(7, document);
@@ -137,29 +137,29 @@ public class CreditService {
         }
         return null;
     }
-    public Credit getCreditByAccountId(String idCompte) {
-        String query = "SELECT * FROM credit WHERE id_compte = ?";
-        try {
-
-            PreparedStatement statement = cnx.prepareStatement(query);
-            statement.setString(1, idCompte);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                Credit credit = new Credit();
-                credit.setId(resultSet.getString("id"));
-                credit.setIdCompte(resultSet.getString("id_compte"));
-                credit.setTypeCredit(resultSet.getString("type_credit"));
-                credit.setMontant(resultSet.getDouble("montant"));
-                credit.setStatus(resultSet.getString("status"));
-                credit.setEcheancier(resultSet.getString("echeancier"));
-                credit.setDocument(resultSet.getString("document"));
-                return credit;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    public Credit getCreditByAccountId(String idCompte) {
+//        String query = "SELECT * FROM credit WHERE id_compte = ?";
+//        try {
+//
+//            PreparedStatement statement = cnx.prepareStatement(query);
+//            statement.setString(1, idCompte);
+//            ResultSet resultSet = statement.executeQuery();
+//            if (resultSet.next()) {
+//                Credit credit = new Credit();
+//                credit.setId(resultSet.getString("id"));
+//                credit.setIdCompte(resultSet.getString("id_compte"));
+//                credit.setTypeCredit(resultSet.getString("type_credit"));
+//                credit.setMontant(resultSet.getDouble("montant"));
+//                credit.setStatus(resultSet.getString("status"));
+//                credit.setEcheancier(resultSet.getString("echeancier"));
+//                credit.setDocument(resultSet.getString("document"));
+//                return credit;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
     public boolean updateCreditStatus(String idCompte, String status) {
         String query = "UPDATE credit SET status = ? WHERE id_compte = ?";
         try {
@@ -235,25 +235,45 @@ public class CreditService {
         }
         return false;
     }
-    public Credit getCreditByUserId(String userId) {
-        String query = "SELECT * FROM demande WHERE id_compte = (SELECT id FROM compte WHERE id_user = ?)";
-        try {
-
-            PreparedStatement statement = cnx.prepareStatement(query);
+    public List<Credit> getCreditsByUserId(String userId) {
+        List<Credit> credits = new ArrayList<>();
+        String sql = "SELECT * FROM demande WHERE id_user = ?";
+        try (PreparedStatement statement = cnx.prepareStatement(sql)) {
             statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Credit credit = new Credit();
+                credit.setIdCompte(resultSet.getString("id_compte"));
+                credit.setTypeCredit(resultSet.getString("type"));
+                credit.setMontant(resultSet.getDouble("montant"));
+                credit.setStatus(resultSet.getString("statut"));
+                credit.setDocument(resultSet.getString("document"));
+                credit.setEcheancier(resultSet.getString("echeancier"));
+                credits.add(credit);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return credits;
+    }
+
+    public Credit getCreditByAccountId(String accountId) {
+        String sql = "SELECT * FROM credit WHERE id_compte = ?";
+        try (PreparedStatement statement = cnx.prepareStatement(sql)) {
+            statement.setString(1, accountId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 Credit credit = new Credit();
                 credit.setIdCompte(resultSet.getString("id_compte"));
-                credit.setTypeCredit(resultSet.getString("type"));
-                credit.setMontant(resultSet.getDouble("description"));
-                credit.setStatus(resultSet.getString("statut"));
+                credit.setTypeCredit(resultSet.getString("type_credit"));
+                credit.setMontant(resultSet.getDouble("montant"));
+                credit.setStatus(resultSet.getString("status"));
                 credit.setDocument(resultSet.getString("document"));
                 credit.setEcheancier(resultSet.getString("echeancier"));
                 return credit;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }

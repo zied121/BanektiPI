@@ -32,6 +32,7 @@
                 <Button text="Users" styleClass="navButton" onAction="#handleusersButton"/>
                 <Button text="Credits" styleClass="navButton" onAction="#handlecreditButton"/>
                 <Button text="Assurance" styleClass="navButton" onAction="#handleassuranceButton"/>
+                <Button text="Document" styleClass="navButton" onAction="#handledocumentButtonuser"/>
                 <Button text="Déconnecter" styleClass="navButton" onAction="#handlesignout"/>
             </VBox>
         </VBox>
@@ -45,6 +46,8 @@
                         <Insets top="20" right="20" bottom="20" left="20"/>
                     </padding>
                     <TextField fx:id="userIdField" promptText="Enter User ID" />
+                    <Button text="Check Account" onAction="#handleCheckAccount" />
+                    <ComboBox fx:id="accountComboBox" promptText="Select Account"  onAction="#handleAccountSelection" />
                     <TextField fx:id="idCompteField" promptText="Account ID" />
                     <ComboBox fx:id="typeCreditCombo" promptText="Type of Credit" disable="true"/>
                     <TextField fx:id="montantField" promptText="Amount" disable="true"/>
