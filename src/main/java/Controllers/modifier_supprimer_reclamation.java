@@ -1,5 +1,6 @@
 package Controllers;
 
+import Service.PDFReclamation;
 import entite.Reclamation;
 import entite.User;
 import javafx.collections.FXCollections;
@@ -148,25 +149,34 @@ public class modifier_supprimer_reclamation {
         }
     }
 
-//    @FXML
-//    private void telechargerPDF() {
-//        Reclamation selectedReclamation = ReclamationsTable.getSelectionModel().getSelectedItem();
-//        if (selectedReclamation != null && selectedReclamation.getReponse() != null && !selectedReclamation.getReponse().isEmpty()) {
-//            String content = selectedReclamation.getReponse();
-//            String fileName = "reponse_Reclamation_" + selectedReclamation.getId() + ".pdf";
-//            String fileLocation = System.getProperty("user.home") + "/Downloads/" + fileName;
-//
-//            String formattedContent = generateFormattedContent(selectedReclamation);
-//
-//            PdfGenerator.generatePdf(fileLocation, formattedContent);
-//
-//            showAlert(Alert.AlertType.INFORMATION, "Téléchargement réussi", "Le PDF a été généré et téléchargé avec succès.");
-//
-//            openPdfFile(fileLocation);
-//        } else {
-//            showAlert(Alert.AlertType.WARNING, "Aucune réponse disponible", "Aucune réponse n'est disponible pour cette Reclamation.");
-//        }
-//    }
+
+@FXML
+private void telechargerPDF() {
+    Reclamation selectedReclamation = ReclamationsTable.getSelectionModel().getSelectedItem();
+    if (selectedReclamation != null && selectedReclamation.getReponse() != null && !selectedReclamation.getReponse().isEmpty()) {
+        // Récupère le contenu de la réponse de la demande sélectionnée
+
+        String content = selectedReclamation.getReponse();
+        // Génère le nom de fichier pour le PDF
+
+        String fileName = "reponse_demande_" + selectedReclamation.getId() + ".pdf";
+        // Définit l'emplacement où le fichier PDF sera sauvegardé
+
+        String fileLocation = System.getProperty("user.home") + "/Downloads/" + fileName;
+        // Formate le contenu de la réponse
+
+        String formattedContent = generateFormattedContent(selectedReclamation);
+        // Génère le fichier PDF en utilisant le contenu formaté
+
+        PDFReclamation.generatePdf(fileLocation, formattedContent);
+
+        showAlert(Alert.AlertType.INFORMATION, "Téléchargement réussi", "Le PDF a été généré et téléchargé avec succès.");
+
+        openPdfFile(fileLocation);
+    } else {
+        showAlert(Alert.AlertType.WARNING, "Aucune réponse disponible", "Aucune réponse n'est disponible pour cette demande.");
+    }
+}
 
     private String generateFormattedContent(Reclamation Reclamation) {
         StringBuilder contentBuilder = new StringBuilder();
@@ -183,20 +193,21 @@ public class modifier_supprimer_reclamation {
 
         return contentBuilder.toString();
     }
+///
 
-//    private void openPdfFile(String fileLocation) {
-//        try {
-//            File pdfFile = new File(fileLocation);
-//            if (pdfFile.exists()) {
-//                Desktop.getDesktop().open(pdfFile);
-//            } else {
-//                showAlert(Alert.AlertType.ERROR, "Fichier introuvable", "Le fichier PDF n'a pas été trouvé.");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            showAlert(Alert.AlertType.ERROR, "Erreur d'ouverture", "Erreur lors de l'ouverture du fichier PDF : " + e.getMessage());
-//        }
-//    }
+    private void openPdfFile(String fileLocation) {
+        try {
+            File pdfFile = new File(fileLocation);
+            if (pdfFile.exists()) {
+                Desktop.getDesktop().open(pdfFile);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Fichier introuvable", "Le fichier PDF n'a pas été trouvé.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur d'ouverture", "Erreur lors de l'ouverture du fichier PDF : " + e.getMessage());
+        }
+    }
 
     @FXML
     private void loadReclamations() {

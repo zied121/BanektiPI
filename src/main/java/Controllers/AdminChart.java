@@ -44,7 +44,7 @@ public class AdminChart {
     @FXML
     private void GoToAdmin (ActionEvent event) {
         try {
-            Parent adminLoginRoot = FXMLLoader.load(getClass().getResource("/Main/fenetre1_reclamation.fxml"));
+            Parent adminLoginRoot = FXMLLoader.load(getClass().getResource("/Main/admin_reclamation.fxml"));
             Scene adminLoginScene = new Scene(adminLoginRoot);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(adminLoginScene);

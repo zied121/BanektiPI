@@ -14,7 +14,7 @@ import java.util.List;
 public class Reclamationservice implements Iservice<Reclamation> {
 
     private Connection connection;
-    User user = UserSession.getInstance().getUser();
+    //User user = UserSession.getInstance().getUser();
 
     public Reclamationservice() {
         // Accéder à la source de données

@@ -39,17 +39,17 @@
         <!-- Main Content -->
         <AnchorPane prefWidth="1000.0">
             <VBox alignment="TOP_CENTER" layoutX="-1.0" layoutY="3.0" prefHeight="900.0" prefWidth="1000.0" spacing="10">
-                <Label styleClass="header" text="Reclamation Repond" />
+                <Label styleClass="header" text="Faire une reclamation" />
                 <VBox alignment="CENTER" spacing="10">
                     <padding>
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
-                    <ComboBox fx:id="comboType" prefHeight="33.0" prefWidth="555.0" promptText="Type Repond">
+                    <ComboBox fx:id="comboType" prefHeight="33.0" prefWidth="555.0" promptText="Type de reclamation">
                         <items>
                             <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="rib" />
-                                <String fx:value="extraits de compte" />
-                                <String fx:value="Identité banquaire" />
+                                <String fx:value="Service client" />
+                                <String fx:value="Carte" />
+                                <String fx:value="Remboursement" />
                                 <String fx:value="autres" />
                             </FXCollections>
                         </items>

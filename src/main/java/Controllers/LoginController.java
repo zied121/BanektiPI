@@ -37,7 +37,7 @@ public class LoginController {
             showAlert(AlertType.INFORMATION, "Login Successful", "Welcome " + authenticatedUser.getNom() + "!");
 
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/AdminChart.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/fenetre1_reclamation.fxml"));
                 Parent root = loader.load();
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

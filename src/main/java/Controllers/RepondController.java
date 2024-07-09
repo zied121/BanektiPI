@@ -72,7 +72,7 @@ public class RepondController {
         typeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReclamation().getType()));
         statutColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReclamation().getStatut()));
         descriptionColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReclamation().getDescription()));
-        idUserColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getReclamation().getId_user()).asObject());
+       // idUserColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getReclamation().getId_user()).asObject());
         ReclamationDateColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getReclamation().getDate()));
         emailColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReclamation().getEmail()));
         loadReponds();
@@ -117,7 +117,7 @@ public class RepondController {
                 System.out.println("La réponse ne peut pas être vide.");
             }
         } else {
-            System.out.println("Aucun Repond sélectionné pour modification.");
+            System.out.println("Aucune Reponse sélectionnée pour modification.");
         }
     }
 
@@ -149,9 +149,9 @@ public class RepondController {
         if (selectedRepond != null) {
             RepondService.delete(selectedRepond);
             loadReponds();
-            showAlert("Suppression Réussie", null, "Le Repond a été supprimé avec succès.");
+            showAlert("Suppression Réussie", null, "La reponse a été supprimé avec succès.");
         } else {
-            System.out.println("Aucun Repond sélectionné pour suppression.");
+            System.out.println("Aucune reponse sélectionné pour suppression.");
         }
     }
 
@@ -186,7 +186,7 @@ public class RepondController {
                     String subject;
                     String body;
                     if ("terminé".equals(newStatut)) {
-                        subject = "Votre Reclamation est terminée";
+                        subject = "Votre Reclamation est traitée";
                         body = "Bonjour," +"/n"+  "votre Reclamation est terminée." + "/n" + "Vous pouvez consulter notre application pour voir la réponse.";
                     } else if ("annulée".equals(newStatut)) {
                         subject = "Votre Reclamation est annulée";
