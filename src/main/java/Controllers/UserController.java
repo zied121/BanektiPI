@@ -267,7 +267,7 @@ public class UserController {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/UserView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/fenetre_admin.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Home");
@@ -281,7 +281,6 @@ public class UserController {
     @FXML
     private void handleusersButton(ActionEvent event) {
         try {
-
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
@@ -319,7 +318,7 @@ public class UserController {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/Assurance_Admin.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/Assurance.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Assurance Management");
@@ -330,7 +329,22 @@ public class UserController {
         }
     }
 
-
+    @FXML
+    private void handleoperationButton(ActionEvent event) {
+        try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/operation_view.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Assurance Management");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     private void handlesignout(ActionEvent event) {
         try {
@@ -371,7 +385,7 @@ public class UserController {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/AdminChart.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/fenetre1_reclamation.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Assurance Management");

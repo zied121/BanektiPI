@@ -150,33 +150,33 @@ public class modifier_supprimer_reclamation {
     }
 
 
-@FXML
-private void telechargerPDF() {
-    Reclamation selectedReclamation = ReclamationsTable.getSelectionModel().getSelectedItem();
-    if (selectedReclamation != null && selectedReclamation.getReponse() != null && !selectedReclamation.getReponse().isEmpty()) {
-        // Récupère le contenu de la réponse de la demande sélectionnée
+    @FXML
+    private void telechargerPDF() {
+        Reclamation selectedReclamation = ReclamationsTable.getSelectionModel().getSelectedItem();
+        if (selectedReclamation != null && selectedReclamation.getReponse() != null && !selectedReclamation.getReponse().isEmpty()) {
+            // Récupère le contenu de la réponse de la demande sélectionnée
 
-        String content = selectedReclamation.getReponse();
-        // Génère le nom de fichier pour le PDF
+            String content = selectedReclamation.getReponse();
+            // Génère le nom de fichier pour le PDF
 
-        String fileName = "reponse_demande_" + selectedReclamation.getId() + ".pdf";
-        // Définit l'emplacement où le fichier PDF sera sauvegardé
+            String fileName = "reponse_demande_" + selectedReclamation.getId() + ".pdf";
+            // Définit l'emplacement où le fichier PDF sera sauvegardé
 
-        String fileLocation = System.getProperty("user.home") + "/Downloads/" + fileName;
-        // Formate le contenu de la réponse
+            String fileLocation = System.getProperty("user.home") + "/Downloads/" + fileName;
+            // Formate le contenu de la réponse
 
-        String formattedContent = generateFormattedContent(selectedReclamation);
-        // Génère le fichier PDF en utilisant le contenu formaté
+            String formattedContent = generateFormattedContent(selectedReclamation);
+            // Génère le fichier PDF en utilisant le contenu formaté
 
-        PDFReclamation.generatePdf(fileLocation, formattedContent);
+            PDFReclamation.generatePdf(fileLocation, formattedContent);
 
-        showAlert(Alert.AlertType.INFORMATION, "Téléchargement réussi", "Le PDF a été généré et téléchargé avec succès.");
+            showAlert(Alert.AlertType.INFORMATION, "Téléchargement réussi", "Le PDF a été généré et téléchargé avec succès.");
 
-        openPdfFile(fileLocation);
-    } else {
-        showAlert(Alert.AlertType.WARNING, "Aucune réponse disponible", "Aucune réponse n'est disponible pour cette demande.");
+            openPdfFile(fileLocation);
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Aucune réponse disponible", "Aucune réponse n'est disponible pour cette demande.");
+        }
     }
-}
 
     private String generateFormattedContent(Reclamation Reclamation) {
         StringBuilder contentBuilder = new StringBuilder();
@@ -234,8 +234,43 @@ private void telechargerPDF() {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
     @FXML
-    private void handlecreditButtoncredituser(ActionEvent event) {
+    private void handlehomeButton(ActionEvent event) {
+        try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/homePage.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Home");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleusersButton(ActionEvent event) {
+        try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/UserView.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Users Management");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handlecreditButton(ActionEvent event) {
         try {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -243,15 +278,16 @@ private void telechargerPDF() {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/user.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
-            stage.setTitle("Assurance Management");
+            stage.setTitle("Credits Management");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     @FXML
-    private void handleassuranceButtonuser(ActionEvent event) {
+    private void handleassuranceButton(ActionEvent event) {
         try {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -266,8 +302,9 @@ private void telechargerPDF() {
             e.printStackTrace();
         }
     }
+
     @FXML
-    private void handleoperationButtonuser(ActionEvent event) {
+    private void handleoperationButton(ActionEvent event) {
         try {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -282,24 +319,9 @@ private void telechargerPDF() {
             e.printStackTrace();
         }
     }
+
     @FXML
-    private void handlehomeButton(ActionEvent event) {
-        try {
-            // Close the current window
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            currentStage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/homePage.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Assurance Management");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    @FXML
-    private void handlesginout(ActionEvent event) {
+    private void handlesignout(ActionEvent event) {
         try {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -309,13 +331,14 @@ private void telechargerPDF() {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/login.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
-            stage.setTitle("Assurance Management");
+            stage.setTitle("Login");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void handledocumentButtonuser(ActionEvent event) {
         try {
@@ -332,13 +355,14 @@ private void telechargerPDF() {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void handlereclamationButtonuser(ActionEvent event) {
         try {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/ajouter_reclamation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/fenetre1_reclamation.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Assurance Management");

@@ -193,7 +193,41 @@ public class OperationController {
         alert.showAndWait();
     }
     @FXML
-    private void handlecreditButtoncredituser(ActionEvent event) {
+    private void handlehomeButton(ActionEvent event) {
+        try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/homePage.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Home");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleusersButton(ActionEvent event) {
+        try {
+            // Close the current window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/UserView.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Users Management");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handlecreditButton(ActionEvent event) {
         try {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -201,15 +235,16 @@ public class OperationController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/user.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
-            stage.setTitle("Assurance Management");
+            stage.setTitle("Credits Management");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     @FXML
-    private void handleassuranceButtonuser(ActionEvent event) {
+    private void handleassuranceButton(ActionEvent event) {
         try {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -224,8 +259,9 @@ public class OperationController {
             e.printStackTrace();
         }
     }
+
     @FXML
-    private void handleoperationButtonuser(ActionEvent event) {
+    private void handleoperationButton(ActionEvent event) {
         try {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -241,23 +277,7 @@ public class OperationController {
         }
     }
     @FXML
-    private void handlehomeButton(ActionEvent event) {
-        try {
-            // Close the current window
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            currentStage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/UserView.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Assurance Management");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    @FXML
-    private void handlesginout(ActionEvent event) {
+    private void handlesignout(ActionEvent event) {
         try {
             // Close the current window
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -267,7 +287,7 @@ public class OperationController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Main/login.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
-            stage.setTitle("Assurance Management");
+            stage.setTitle("Login");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {

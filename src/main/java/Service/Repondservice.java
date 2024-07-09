@@ -148,11 +148,11 @@ public class Repondservice implements Iservice<Repond> {
     public List<Repond> readAllWithReclamationDetails() {
         List<Repond> Reponds = new ArrayList<>();
 
-        String query = "SELECT dd.id_rec, dd.type_rec, dd.statut, dd.description, dd.id_user, dd.date_rec, " +
+        String query = "SELECT dd.id, dd.type, dd.statut, dd.description, dd.id_user, dd.date, " +
                 "d.id AS Repond_id, d.reponse, d.date AS Repond_date, d.id_rec, " +
                 "u.nom, u.prenom, u.nb_compte, u.email " + // Jointure avec la table user
                 "FROM reclamation dd " +
-                "LEFT JOIN repond d ON dd.id_rec = d.id_rec " +
+                "LEFT JOIN repond d ON dd.id = d.id_rec " +
                 "LEFT JOIN user u ON dd.id_user = u.id "; // Jointure avec la table user
 
         try (Statement statement = connection.createStatement();
@@ -160,12 +160,12 @@ public class Repondservice implements Iservice<Repond> {
 
             while (resultSet.next()) {
                 // Fields from the Reclamation table
-                int ReclamationId = resultSet.getInt("id_rec");
-                String type = resultSet.getString("type_rec");
+                int ReclamationId = resultSet.getInt("id");
+                String type = resultSet.getString("type");
                 String statut = resultSet.getString("statut");
                 String description = resultSet.getString("description");
                 int id_user = resultSet.getInt("id_user");
-                LocalDate ReclamationDate = resultSet.getDate("date_rec").toLocalDate();
+                LocalDate ReclamationDate = resultSet.getDate("date").toLocalDate();
                 String nomUtilisateur = resultSet.getString("nom"); // Récupérer le nom de l'utilisateur
                 String prenomUtilisateur = resultSet.getString("prenom"); // Récupérer le prénom de l'utilisateur
                 int nb_compte = resultSet.getInt("nb_compte");
