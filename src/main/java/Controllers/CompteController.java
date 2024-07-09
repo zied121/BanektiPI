@@ -107,6 +107,10 @@ public class CompteController {
             showAlert(AlertType.ERROR, "Invalid Number", "Phone number must be exactly 8 digits.");
             return;
         }
+        if (!isRibValid(ribField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid RIB", "RIB must be exactly 11 digits.");
+            return;
+        }
         if ("Courant".equalsIgnoreCase(typeField.getValue()) && compteService.hasCourantAccount(selectedUser.getId())) {
             showAlert(AlertType.ERROR, "Duplicate Account Type", "User can only have one 'Courant' account.");
             return;
@@ -128,6 +132,10 @@ public class CompteController {
     private void updateCompte() throws SQLException {
         if (!isNumValid(numField.getText())) {
             showAlert(AlertType.ERROR, "Invalid Number", "Phone number must be exactly 8 digits.");
+            return;
+        }
+        if (!isRibValid(ribField.getText())) {
+            showAlert(AlertType.ERROR, "Invalid RIB", "RIB must be exactly 11 digits.");
             return;
         }
         Compte compte = new Compte();
@@ -164,6 +172,10 @@ public class CompteController {
 
     private boolean isNumValid(String num) {
         return num.matches("\\d{8}");
+    }
+
+    private boolean isRibValid(String rib) {
+        return rib.matches("\\d{11}");
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

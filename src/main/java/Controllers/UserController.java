@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class UserController {
     @FXML
@@ -68,6 +69,8 @@ public class UserController {
     private ComboBox<String> roleComboBox;
     @FXML
     private DatePicker birthdatePicker;
+    @FXML
+    private TextField searchField;
 
     private UserServiceInterface userService = new UserService();
 
@@ -141,6 +144,22 @@ public class UserController {
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void searchUsers() throws SQLException {
+        String keyword = searchField.getText().trim().toLowerCase();
+        List<User> users = userService.getAllUsers();
+        List<User> filteredUsers = users.stream()
+                .filter(user -> user.getNom().toLowerCase().contains(keyword) ||
+                        user.getPrenom().toLowerCase().contains(keyword) ||
+                        String.valueOf(user.getAge()).contains(keyword) ||
+                        user.getMdp().toLowerCase().contains(keyword) ||
+                        String.valueOf(user.getCin()).contains(keyword) ||
+                        user.getEmail().toLowerCase().contains(keyword) ||
+                        user.getRole().toLowerCase().contains(keyword))
+                .collect(Collectors.toList());
+        userTable.getItems().setAll(filteredUsers);
     }
 
     @FXML

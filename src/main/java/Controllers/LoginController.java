@@ -8,6 +8,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
@@ -53,7 +54,7 @@ public class LoginController {
     }
 
     @FXML
-    private void handleCancelButtonAction() {
+    private void handleCancelButtonAction(ActionEvent event) {  // Added ActionEvent parameter
         clientCinField.clear();
         clientpasswordField.clear();
     }
@@ -77,6 +78,20 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(AlertType.ERROR, "Error", "Unable to load admin login screen.");
+        }
+    }
+
+    @FXML
+    private void handleForgotPasswordAction(MouseEvent event) {
+        try {
+            Parent forgotPasswordRoot = FXMLLoader.load(getClass().getResource("/Main/ForgotPassword.fxml"));
+            Scene forgotPasswordScene = new Scene(forgotPasswordRoot);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(forgotPasswordScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Error", "Unable to load forgot password screen.");
         }
     }
 }

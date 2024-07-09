@@ -44,6 +44,10 @@
         <AnchorPane prefWidth="1000.0">
             <VBox alignment="TOP_CENTER" layoutX="-1.0" layoutY="3.0" prefHeight="900.0" prefWidth="1000.0" spacing="10">
                 <Label styleClass="header" text="Liste des Utilisateurs" />
+                <HBox alignment="CENTER" spacing="10">
+                    <TextField fx:id="searchField" promptText="Search by any field" />
+                    <Button text="Search" onAction="#searchUsers" />
+                </HBox>
                 <TableView fx:id="userTable" prefHeight="365.0" prefWidth="974.0">
                     <columns>
                         <TableColumn fx:id="userIdColumn"  prefWidth="60.20001220703125" text="User ID"/>
