@@ -134,10 +134,10 @@ public class CompteController {
             showAlert(AlertType.ERROR, "Invalid Number", "Phone number must be exactly 8 digits.");
             return;
         }
-        if (!isRibValid(ribField.getText())) {
-            showAlert(AlertType.ERROR, "Invalid RIB", "RIB must be exactly 11 digits.");
-            return;
-        }
+//        if (!isRibValid(ribField.getText())) {
+//            showAlert(AlertType.ERROR, "Invalid RIB", "RIB must be exactly 11 digits.");
+//            return;
+//        }
         Compte compte = new Compte();
         compte.setId(Integer.parseInt(compteIdField.getText()));
         compte.setType(typeField.getValue());

@@ -18,8 +18,6 @@ public class SmsUtil {
                 new PhoneNumber(to),
                 new PhoneNumber(TWILIO_PHONE_NUMBER),
                 message
-        ).create();
+        ).  create();
     }
 }
-
-
